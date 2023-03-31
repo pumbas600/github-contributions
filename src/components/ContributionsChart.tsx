@@ -1,3 +1,4 @@
+import { Options } from '@/models/Options';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 interface Contribution {
@@ -5,20 +6,11 @@ interface Contribution {
     count: number;
 }
 
-const LabelStyles = {
-    fill: '#5bcdec',
-    fontSize: 20,
-    fontWeight: 700,
-};
+interface ContributionProps {
+    options: Options;
+}
 
-const AxisStyles = {
-    tick: { fill: '#5bcdec' },
-};
-
-// You don't seem to be able to directly assign this to a react component
-const htmlXmlNs = { xmlns: 'http://www.w3.org/1999/xhtml' };
-
-export default function ContributionsChart() {
+export default function ContributionsChart({ options }: ContributionProps) {
     const contributions: Contribution[] = [
         {
             day: 1,
@@ -62,10 +54,20 @@ export default function ContributionsChart() {
         },
     ];
 
+    const labelStyles = {
+        fill: options.color,
+        fontSize: 20,
+        fontWeight: 700,
+    };
+
+    const axisStyles = {
+        tick: { fill: options.color },
+    };
+
     return (
         <LineChart
-            width={1200}
-            height={450}
+            width={options.width}
+            height={options.height}
             data={contributions}
             margin={{
                 top: 80,
@@ -77,28 +79,28 @@ export default function ContributionsChart() {
                 backgroundColor: '#0d1117',
             }}
         >
-            <text x={1200 / 2 + 30} y={32} fill="#5bcdec" textAnchor="middle" dominantBaseline="central">
+            <text x={1200 / 2 + 30} y={32} fill={options.color} textAnchor="middle" dominantBaseline="central">
                 <tspan fontSize={32} fontWeight={800}>
                     {`pumbas600's Contributions`}
                 </tspan>
             </text>
-            <CartesianGrid strokeDasharray="3 3" stroke="#5bcdec" strokeOpacity={0.3} />
-            <XAxis dataKey="day" label={{ value: 'Day', dy: 15, ...LabelStyles }} {...AxisStyles} />
+            <CartesianGrid strokeDasharray="3 3" stroke={options.color} strokeOpacity={0.3} />
+            <XAxis dataKey="day" label={{ value: 'Day', dy: 15, ...labelStyles }} {...axisStyles} />
             <YAxis
                 label={{
                     value: 'Contributions',
                     angle: -90,
                     dx: -15,
-                    ...LabelStyles,
+                    ...labelStyles,
                 }}
-                {...AxisStyles}
+                {...axisStyles}
             />
             <Line
                 type="monotone"
                 dataKey="count"
-                stroke="#5bcdec"
+                stroke={options.color}
                 strokeWidth={4}
-                fill="#5bcdec"
+                fill={options.color}
                 dot={{ fill: 'white', stroke: 'white' }}
             />
         </LineChart>
