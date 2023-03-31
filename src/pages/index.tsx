@@ -1,9 +1,7 @@
 import Head from 'next/head';
-import useChart from '@/hooks/useChart';
+import ContributionsChart from '@/components/ContributionsChart';
 
 export default function Home() {
-    const containerRef = useChart();
-
     return (
         <>
             <Head>
@@ -13,7 +11,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <div ref={containerRef} />
+                <ContributionsChart />
             </main>
         </>
     );
