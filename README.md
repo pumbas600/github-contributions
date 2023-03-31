@@ -1,4 +1,4 @@
-![Test](http://localhost:3000/api/contributions/pumbas600)
+![Test](https://github-contributions-chi.vercel.app/api/contributions/pumbas600)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
