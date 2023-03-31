@@ -1,9 +1,8 @@
-.animated-chart {
-    stroke-dasharray: 2000;
-    stroke-dashoffset: 2000;
-    animation: draw 1s 0s ease both;
-    fill: none;
-    opacity: 0.8;
+.ct-line {
+    stroke-width: 4px;
+    stroke-dasharray: 5000;
+    stroke-dashoffset: 5000;
+    animation: draw 5s ease-in-out forwards;
 }
 
 @keyframes draw {
