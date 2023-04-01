@@ -17,6 +17,7 @@ export default function ContributionsChart({ username, options, contributions }:
 
     const axisStyles = {
         tick: { fill: options.color },
+        allowDecimals: false,
     };
 
     return (

@@ -15,7 +15,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let svg = getCachedSvg(username, options);
         if (!svg) {
             const contributions = await ContributionsService.getContributions(username);
-            console.log('Contributions!');
             const html = renderToString(
                 <ContributionsChart username={username} options={options} contributions={contributions} />,
             );
