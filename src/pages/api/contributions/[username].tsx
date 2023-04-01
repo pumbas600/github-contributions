@@ -1,22 +1,15 @@
 import { cacheSvg, getCachedSvg } from '@/cache';
 import ContributionsChart from '@/components/ContributionsChart';
-import { Options } from '@/models/Options';
 import { QueryParamsModel } from '@/models/QueryParams';
+import { OptionsService } from '@/services/OptionsService';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToString } from 'react-dom/server';
 import { ZodError } from 'zod';
 
-export const DefaultOptions: Options = {
-    color: '5bcdec',
-    width: 1200,
-    height: 450,
-};
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
-        const options = { ...DefaultOptions, ...queryOptions };
-        options.color = `#${options.color}`; // Add the # back to the hexadecimal colour
+        const options = OptionsService.getOptions(queryOptions);
 
         let svg = getCachedSvg(username, options);
         if (!svg) {

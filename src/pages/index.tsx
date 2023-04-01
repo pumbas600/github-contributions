@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import ContributionsChart from '@/components/ContributionsChart';
-import { DefaultOptions } from './api/contributions/[username]';
+import { OptionsService } from '@/services/OptionsService';
 
 export default function Home() {
     return (
@@ -12,7 +12,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <ContributionsChart options={DefaultOptions} />
+                <ContributionsChart options={OptionsService.getOptions()} />
             </main>
         </>
     );
