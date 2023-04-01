@@ -1,8 +1,10 @@
-import Head from 'next/head';
-import ContributionsChart from '@/components/ContributionsChart';
 import { OptionsService } from '@/services/OptionsService';
+import Head from 'next/head';
+import Image from 'next/image';
 
 export default function Home() {
+    const options = OptionsService.getOptions();
+
     return (
         <>
             <Head>
@@ -12,7 +14,12 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <ContributionsChart options={OptionsService.getOptions()} />
+                <Image
+                    src="/api/contributions/pumbas600"
+                    alt="pumbas600's contributions"
+                    width={options.width}
+                    height={options.height}
+                />
             </main>
         </>
     );

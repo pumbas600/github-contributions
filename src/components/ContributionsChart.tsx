@@ -1,59 +1,13 @@
 import { Options } from '@/models/Options';
+import Contribution from '@/types/interfaces/Contribution';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
-
-interface Contribution {
-    day: number;
-    count: number;
-}
 
 interface ContributionProps {
     options: Options;
+    contributions: Contribution[];
 }
 
-export default function ContributionsChart({ options }: ContributionProps) {
-    const contributions: Contribution[] = [
-        {
-            day: 1,
-            count: 0,
-        },
-        {
-            day: 2,
-            count: 1,
-        },
-        {
-            day: 3,
-            count: 2,
-        },
-        {
-            day: 4,
-            count: 5,
-        },
-        {
-            day: 5,
-            count: 8,
-        },
-        {
-            day: 6,
-            count: 12,
-        },
-        {
-            day: 7,
-            count: 6,
-        },
-        {
-            day: 8,
-            count: 4,
-        },
-        {
-            day: 9,
-            count: 3,
-        },
-        {
-            day: 10,
-            count: 5,
-        },
-    ];
-
+export default function ContributionsChart({ options, contributions }: ContributionProps) {
     const labelStyles = {
         fill: options.color,
         fontSize: 20,
@@ -85,7 +39,7 @@ export default function ContributionsChart({ options }: ContributionProps) {
                 </tspan>
             </text>
             <CartesianGrid strokeDasharray="3 3" stroke={options.color} strokeOpacity={0.3} />
-            <XAxis dataKey="day" label={{ value: 'Day', dy: 15, ...labelStyles }} {...axisStyles} />
+            <XAxis dataKey="date" label={{ value: 'Day', dy: 15, ...labelStyles }} {...axisStyles} />
             <YAxis
                 label={{
                     value: 'Contributions',

@@ -1,6 +1,7 @@
 import { cacheSvg, getCachedSvg } from '@/cache';
 import ContributionsChart from '@/components/ContributionsChart';
 import { QueryParamsModel } from '@/models/QueryParams';
+import { ContributionsService } from '@/services/ContributionsService';
 import { OptionsService } from '@/services/OptionsService';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToString } from 'react-dom/server';
@@ -13,7 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         let svg = getCachedSvg(username, options);
         if (!svg) {
-            const html = renderToString(<ContributionsChart options={options} />);
+            const contributions = await ContributionsService.getContributions(username);
+            console.log('Contributions!');
+            const html = renderToString(<ContributionsChart options={options} contributions={contributions} />);
 
             // Remove surrounding <div></div>
             const htmlWithoutDiv = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
@@ -46,6 +49,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(400).json({
                 errors: error.issues.map((issue) => issue.message),
             });
+        } else if (error instanceof Error) {
+            res.status(400).json({ error: error.message });
         }
     }
 }
