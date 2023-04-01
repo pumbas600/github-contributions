@@ -60,7 +60,9 @@ export default function ContributionsChart({ username, options, contributions }:
                 fill={options.color}
                 dot={{ fill: 'white', stroke: 'white' }}
             />
-            <Area type="monotone" dataKey="count" fill={options.color} opacity={0.3} strokeWidth={0} />
+            {options.area && (
+                <Area type="monotone" dataKey="count" fill={options.color} opacity={0.3} strokeWidth={0} />
+            )}
         </ComposedChart>
     );
 }
