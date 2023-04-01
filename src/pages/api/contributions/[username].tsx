@@ -16,7 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!svg) {
             const contributions = await ContributionsService.getContributions(username);
             console.log('Contributions!');
-            const html = renderToString(<ContributionsChart options={options} contributions={contributions} />);
+            const html = renderToString(
+                <ContributionsChart username={username} options={options} contributions={contributions} />,
+            );
 
             // Remove surrounding <div></div>
             const htmlWithoutDiv = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));

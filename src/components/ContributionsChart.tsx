@@ -3,11 +3,12 @@ import Contribution from '@/types/interfaces/Contribution';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 interface ContributionProps {
+    username: string;
     options: Options;
     contributions: Contribution[];
 }
 
-export default function ContributionsChart({ options, contributions }: ContributionProps) {
+export default function ContributionsChart({ username, options, contributions }: ContributionProps) {
     const labelStyles = {
         fill: options.color,
         fontSize: 20,
@@ -35,7 +36,7 @@ export default function ContributionsChart({ options, contributions }: Contribut
         >
             <text x={1200 / 2 + 30} y={32} fill={options.color} textAnchor="middle" dominantBaseline="central">
                 <tspan fontSize={32} fontWeight={800}>
-                    {`pumbas600's Contributions`}
+                    {`${username}'s Contributions`}
                 </tspan>
             </text>
             <CartesianGrid strokeDasharray="3 3" stroke={options.color} strokeOpacity={0.3} />
