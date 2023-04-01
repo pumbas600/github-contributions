@@ -20,8 +20,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             svg = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}"
-                        height="${options.height}" viewBox="0 0 ${options.width} ${options.height}">
-                    <style>svg { background-color: #0d1117; }</style>
+                     height="${options.height}" viewBox="0 0 ${options.width} ${options.height}">
+                    <style>
+                        svg { background-color: #0d1117; }
+                        .recharts-line > path {
+                            animation: draw 5s ease-in-out forwards;
+                            stroke-dasharray: 5000;
+                            stroke-dashoffset: 5000;
+                        }
+
+                        @keyframes draw {
+                            to { stroke-dashoffset: 0; }
+                        }
+
+                    </style>
                     ${htmlWithoutDiv}
                 </svg>`;
 
