@@ -9,16 +9,12 @@ import { ZodError } from 'zod';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
-        const { username, from, to, days, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
+        const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
         const options = OptionsService.getOptions(queryOptions);
 
         let svg = getCachedSvg(username, options);
         if (!svg) {
-            const contributions = await ContributionsService.getContributions(username, {
-                from,
-                to,
-                numberOfDays: days,
-            });
+            const contributions = await ContributionsService.getContributions(username, options.from, options.to);
             const html = renderToString(
                 <ContributionsChart username={username} options={options} contributions={contributions} />,
             );

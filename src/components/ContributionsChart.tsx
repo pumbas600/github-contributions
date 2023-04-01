@@ -35,7 +35,7 @@ export default function ContributionsChart({ username, options, contributions }:
                 backgroundColor: '#0d1117',
             }}
         >
-            <text x={1200 / 2 + 30} y={32} fill={options.color} textAnchor="middle" dominantBaseline="central">
+            <text x={options.width / 2 + 30} y={32} fill={options.color} textAnchor="middle" dominantBaseline="central">
                 <tspan fontSize={32} fontWeight={800}>
                     {`${username}'s Contributions`}
                 </tspan>
@@ -43,6 +43,7 @@ export default function ContributionsChart({ username, options, contributions }:
             <CartesianGrid strokeDasharray="3 3" stroke={options.color} strokeOpacity={0.3} />
             <XAxis dataKey="date" label={{ value: 'Day', dy: 15, ...labelStyles }} {...axisStyles} />
             <YAxis
+                tickCount={6}
                 label={{
                     value: 'Contributions',
                     angle: -90,
