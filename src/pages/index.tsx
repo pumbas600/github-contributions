@@ -14,8 +14,8 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <Image
-                    src="/api/contributions/pumbas600"
+                <img
+                    src={`/api/contributions/pumbas600`}
                     alt="pumbas600's contributions"
                     width={options.width}
                     height={options.height}
