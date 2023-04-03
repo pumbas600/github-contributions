@@ -25,12 +25,8 @@ export namespace ContributionsService {
 
     interface ContributionResponseError {
         errors: {
+            type: 'NOT_FOUND';
             path: string[];
-            extensions: {
-                code: string;
-                typeName: string;
-                argymentName: string;
-            };
             locations: {
                 line: number;
                 column: number;
@@ -42,6 +38,12 @@ export namespace ContributionsService {
     type ContributionResponse = ContributionResponseData | ContributionResponseError;
 
     const HEADERS = new Headers({ Authorization: `bearer ${process.env.GITHUB_TOKEN}` });
+
+    function isUserNotFound(res: ContributionResponseError): boolean {
+        return res.errors.some(
+            (error) => error.type === 'NOT_FOUND' && error.path.length === 1 && error.path[0] === 'user',
+        );
+    }
 
     export async function getContributions(username: string, from: Date, to: Date): Promise<Contribution[]> {
         const body = {
@@ -73,8 +75,8 @@ export namespace ContributionsService {
             console.error(json);
             throw new BadRequestError(`Failed to fetch contributions for ${username}: ${res.statusText}`);
         } else if ('errors' in json) {
-            if (json.errors.some((error) => error.extensions.argymentName === 'login')) {
-                throw new NotFoundError(`User ${username} not found`);
+            if (isUserNotFound(json)) {
+                throw new NotFoundError(`User '${username}' does not exist`);
             }
 
             console.error(json.errors);

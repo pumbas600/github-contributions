@@ -1,5 +1,6 @@
 import { cacheSvg, getCachedSvg } from '@/cache';
 import ContributionsChart from '@/components/ContributionsChart';
+import ApiError from '@/errors/ApiError';
 import { QueryParamsModel } from '@/models/QueryParams';
 import { ContributionsService } from '@/services/ContributionsService';
 import { OptionsService } from '@/services/OptionsService';
@@ -50,8 +51,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(400).json({
                 errors: error.issues.map((issue) => issue.message),
             });
+        } else if (error instanceof ApiError) {
+            error.handleResponse(res);
         } else if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
+            console.error(error);
+            res.status(501).json({
+                errors: [
+                    'There was an unexpected error processing your request. https://github.com/pumbas600/github-contributions/issues.',
+                ],
+            });
         }
     }
 }
