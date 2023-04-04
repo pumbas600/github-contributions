@@ -21,7 +21,7 @@ export namespace ErrorService {
         // These are internal server errors that we want to know about.
         console.error(error);
         res.status(501).json({
-            message: InternalServerError.DEFAULT_MESSAGE,
+            errors: [{ message: InternalServerError.DEFAULT_MESSAGE }],
         });
     }
 }

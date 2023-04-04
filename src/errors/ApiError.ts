@@ -11,6 +11,13 @@ export default class ApiError extends Error {
     }
 
     public handleResponse(res: NextApiResponse): void {
-        res.status(this.statusCode).json({ message: this.message, additionalInfo: this.additionalInfo });
+        res.status(this.statusCode).json({
+            errors: [
+                {
+                    message: this.message,
+                    additionalInfo: this.additionalInfo,
+                },
+            ],
+        });
     }
 }
