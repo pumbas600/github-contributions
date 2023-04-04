@@ -1,10 +1,7 @@
-import { OptionsService } from '@/services/OptionsService';
+import { Button, Container, Stack, TextField } from '@mui/material';
 import Head from 'next/head';
-import Image from 'next/image';
 
 export default function Home() {
-    const options = OptionsService.getOptions();
-
     return (
         <>
             <Head>
@@ -14,12 +11,12 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <img
-                    src={`/api/contributions/pumbas600`}
-                    alt="pumbas600's contributions"
-                    width={options.width}
-                    height={options.height}
-                />
+                <Container maxWidth="sm">
+                    <Stack gap={3}>
+                        <TextField label="GitHub Username" placeholder="E.g. pumbas600" fullWidth />
+                        <Button variant="contained">Generate</Button>
+                    </Stack>
+                </Container>
             </main>
         </>
     );
