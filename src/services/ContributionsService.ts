@@ -1,4 +1,4 @@
-import BadRequestError from '@/errors/BadRequestError';
+import InternalServerError from '@/errors/InternalServerError';
 import NotFoundError from '@/errors/NotFoundError';
 import Contribution from '@/types/interfaces/Contribution';
 
@@ -71,18 +71,13 @@ export namespace ContributionsService {
         });
 
         const json = (await res.json()) as ContributionResponse;
-        if (!res.ok) {
-            console.error(json);
-            throw new BadRequestError(`Failed to fetch contributions for ${username}: ${res.statusText}`);
-        } else if ('errors' in json) {
+        if ('errors' in json) {
             if (isUserNotFound(json)) {
                 throw new NotFoundError(`User '${username}' does not exist`);
             }
 
             console.error(json.errors);
-            throw new Error(
-                `There was an unhandled error while fetching contributions for ${username}. Please report it at https://github.com/pumbas600/github-contributions/issues.`,
-            );
+            throw new InternalServerError(`There was an unhandled error while fetching contributions for ${username}`);
         }
 
         const contributions: Contribution[] = [];
