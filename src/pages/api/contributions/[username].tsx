@@ -2,10 +2,10 @@ import { cacheSvg, getCachedSvg } from '@/cache';
 import ContributionsChart from '@/components/ContributionsChart';
 import { QueryParamsModel } from '@/models/QueryParams';
 import { ContributionsService } from '@/services/ContributionsService';
+import { ErrorService } from '@/services/ErrorService';
 import { OptionsService } from '@/services/OptionsService';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToString } from 'react-dom/server';
-import { ZodError } from 'zod';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
@@ -46,12 +46,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200).setHeader('Content-Type', 'image/svg+xml').send(svg);
     } catch (error) {
-        if (error instanceof ZodError) {
-            res.status(400).json({
-                errors: error.issues.map((issue) => issue.message),
-            });
-        } else if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
-        }
+        ErrorService.handleError(res, error);
     }
 }
