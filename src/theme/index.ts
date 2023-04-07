@@ -1,5 +1,10 @@
 import { createTheme } from '@mui/material';
 
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/700.css';
+
 export const theme = createTheme({
     palette: {
         primary: {
@@ -15,6 +20,20 @@ export const theme = createTheme({
             default: '#F2F2F7',
             paper: '#FFFFFF',
         },
+    },
+    typography: {
+        fontFamily: [
+            'Inter',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
     },
     components: {
         MuiButton: {
