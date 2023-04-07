@@ -3,11 +3,9 @@ import PillButton from '@/components/forms/PillButton';
 import Row from '@/components/forms/Row';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
-import Contribution from '@/types/interfaces/Contribution';
-import { OptionalKeys } from '@/types/utility';
 import { fromEntries, toEntries } from '@/utilities';
 import { ArrowForward } from '@mui/icons-material';
-import { Button, Container, InputProps, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
+import { Button, Container, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
 import Head from 'next/head';
 import { useState } from 'react';
 
@@ -69,11 +67,26 @@ export default function Home() {
         return !hasErrors;
     }
 
+    function generateApiUrl(username: string, options: Partial<Options>): string {
+        // Remove the hash from the colours
+        if (options.bg) options.bg = options.bg.replace('#', '');
+        if (options.color) options.color = options.color.replace('#', '');
+
+        const baseUrl = `/api/contributions/${username}`;
+        const url = new URL(baseUrl, window.location.origin);
+
+        for (const [key, value] of Object.entries(options)) {
+            url.searchParams.append(key, value.toString());
+        }
+
+        return url.toString();
+    }
+
     function handleGenerate(): void {
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
         if (optionsAreValid(optionsWithoutDefaults)) {
-            console.log(optionsWithoutDefaults);
+            console.log(generateApiUrl(username, optionsWithoutDefaults));
         }
     }
 
