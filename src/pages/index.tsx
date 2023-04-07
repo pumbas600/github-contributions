@@ -1,7 +1,9 @@
 import NumberField from '@/components/forms/NumberField';
+import PillButton from '@/components/forms/PillButton';
 import Row from '@/components/forms/Row';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
+import { ArrowForward } from '@mui/icons-material';
 import { Button, Container, Paper, Stack, TextField, styled } from '@mui/material';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -41,8 +43,10 @@ export default function Home() {
                                 <NumberField fullWidth label="Height (px)" />
                             </Row>
 
-                            <Button>Generate</Button>
-                            <Button variant="text">Reset to defaults</Button>
+                            <Stack gap={2} direction="row">
+                                <PillButton endIcon={<ArrowForward />}>Generate</PillButton>
+                                <Button variant="text">Reset to defaults</Button>
+                            </Stack>
                         </Stack>
                     </ContentPaper>
                 </Container>
