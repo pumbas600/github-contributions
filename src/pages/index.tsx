@@ -7,7 +7,7 @@ import Contribution from '@/types/interfaces/Contribution';
 import { OptionalKeys } from '@/types/utility';
 import { fromEntries, toEntries } from '@/utilities';
 import { ArrowForward } from '@mui/icons-material';
-import { Button, Container, Paper, Stack, TextField, styled } from '@mui/material';
+import { Button, Container, InputProps, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
 import Head from 'next/head';
 import { useState } from 'react';
 
@@ -15,9 +15,12 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(5, 12),
 }));
 
+type OptionErrors = Partial<Record<keyof Options, string>>;
+
 export default function Home() {
     const [username, setUsername] = useState('');
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
+    const [errors, setErrors] = useState<OptionErrors>({});
 
     const generateButtonIsDisabled = username.length == 0;
     const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
@@ -30,7 +33,18 @@ export default function Home() {
         key: keyof OptionsService.ContributionOptions,
     ): (e: React.ChangeEvent<HTMLInputElement>) => void {
         return (e) => {
+            setErrors((errors) => ({ ...errors, [key]: undefined }));
             setOptions((prev) => ({ ...prev, [key]: e.target.value }));
+        };
+    }
+
+    function getInputProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
+        return {
+            fullWidth: true,
+            error: !!errors[key],
+            helperText: errors[key],
+            value: options[key] ?? OptionsService.DefaultOptions[key],
+            onChange: handleOptionChange(key),
         };
     }
 
@@ -40,11 +54,31 @@ export default function Home() {
         );
     }
 
+    function optionsAreValid(optionsWithoutDefaults: Partial<Options>): boolean {
+        const errors: OptionErrors = {};
+        if (optionsWithoutDefaults.width && optionsWithoutDefaults.width <= 0) {
+            errors.width = 'Width must be greater than 0';
+        }
+        if (optionsWithoutDefaults.height && optionsWithoutDefaults.height <= 0) {
+            errors.height = 'Height must be greater than 0';
+        }
+
+        const hasErrors = Object.keys(errors).length != 0;
+
+        setErrors(errors);
+        return !hasErrors;
+    }
+
     function handleGenerate(): void {
-        console.log(options);
+        const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
+
+        if (optionsAreValid(optionsWithoutDefaults)) {
+            console.log(optionsWithoutDefaults);
+        }
     }
 
     function handleResetToDefaults(): void {
+        setErrors({});
         setOptions(OptionsService.DefaultOptions);
     }
 
@@ -61,41 +95,20 @@ export default function Home() {
                     <ContentPaper elevation={1}>
                         <Stack gap={3}>
                             <TextField
+                                required
+                                fullWidth
                                 label="GitHub Username"
                                 placeholder="E.g. pumbas600"
-                                fullWidth
                                 value={username}
                                 onChange={handleUsernameChange}
                             />
                             <Row>
-                                <TextField
-                                    fullWidth
-                                    type="color"
-                                    label="Primary Colour"
-                                    value={options.color ?? OptionsService.DefaultOptions.color}
-                                    onChange={handleOptionChange('color')}
-                                />
-                                <TextField
-                                    fullWidth
-                                    type="color"
-                                    label="Background Colour"
-                                    value={options.bg ?? OptionsService.DefaultOptions.bg}
-                                    onChange={handleOptionChange('bg')}
-                                />
+                                <TextField type="color" label="Primary Colour" {...getInputProps('color')} />
+                                <TextField type="color" label="Background Colour" {...getInputProps('bg')} />
                             </Row>
                             <Row>
-                                <NumberField
-                                    fullWidth
-                                    label="Width (px)"
-                                    value={options.width ?? OptionsService.DefaultOptions.width}
-                                    onChange={handleOptionChange('width')}
-                                />
-                                <NumberField
-                                    fullWidth
-                                    label="Height (px)"
-                                    value={options.height ?? OptionsService.DefaultOptions.height}
-                                    onChange={handleOptionChange('height')}
-                                />
+                                <NumberField label="Width (px)" {...getInputProps('width')} />
+                                <NumberField label="Height (px)" {...getInputProps('height')} />
                             </Row>
                             <Stack gap={2} direction="row-reverse">
                                 <PillButton
