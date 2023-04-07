@@ -3,6 +3,9 @@ import PillButton from '@/components/forms/PillButton';
 import Row from '@/components/forms/Row';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
+import Contribution from '@/types/interfaces/Contribution';
+import { OptionalKeys } from '@/types/utility';
+import { fromEntries, toEntries } from '@/utilities';
 import { ArrowForward } from '@mui/icons-material';
 import { Button, Container, Paper, Stack, TextField, styled } from '@mui/material';
 import Head from 'next/head';
@@ -13,7 +16,37 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Home() {
-    const [options, setOptions] = useState<Partial<Options>>({});
+    const [username, setUsername] = useState('');
+    const [options, setOptions] = useState(OptionsService.DefaultOptions);
+
+    const generateButtonIsDisabled = username.length == 0;
+    const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
+
+    function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>): void {
+        setUsername(e.target.value);
+    }
+
+    function handleOptionChange(
+        key: keyof OptionsService.ContributionOptions,
+    ): (e: React.ChangeEvent<HTMLInputElement>) => void {
+        return (e) => {
+            setOptions((prev) => ({ ...prev, [key]: e.target.value }));
+        };
+    }
+
+    function getOptionsWithoutDefaults(options: OptionsService.ContributionOptions): Partial<Options> {
+        return fromEntries<Partial<Options>>(
+            toEntries(options).filter(([key, value]) => value !== OptionsService.DefaultOptions[key]),
+        );
+    }
+
+    function handleGenerate(): void {
+        console.log(options);
+    }
+
+    function handleResetToDefaults(): void {
+        setOptions(OptionsService.DefaultOptions);
+    }
 
     return (
         <>
@@ -24,28 +57,59 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <Container maxWidth="md">
+                <Container maxWidth="md" sx={{ marginTop: 5 }}>
                     <ContentPaper elevation={1}>
                         <Stack gap={3}>
-                            <TextField label="GitHub Username" placeholder="E.g. pumbas600" fullWidth />
-
+                            <TextField
+                                label="GitHub Username"
+                                placeholder="E.g. pumbas600"
+                                fullWidth
+                                value={username}
+                                onChange={handleUsernameChange}
+                            />
                             <Row>
                                 <TextField
                                     fullWidth
                                     type="color"
                                     label="Primary Colour"
-                                    value={OptionsService.DefaultOptions.color}
+                                    value={options.color ?? OptionsService.DefaultOptions.color}
+                                    onChange={handleOptionChange('color')}
                                 />
-                                <TextField fullWidth type="color" label="Background Colour" />
+                                <TextField
+                                    fullWidth
+                                    type="color"
+                                    label="Background Colour"
+                                    value={options.bg ?? OptionsService.DefaultOptions.bg}
+                                    onChange={handleOptionChange('bg')}
+                                />
                             </Row>
                             <Row>
-                                <NumberField fullWidth label="Width (px)" />
-                                <NumberField fullWidth label="Height (px)" />
+                                <NumberField
+                                    fullWidth
+                                    label="Width (px)"
+                                    value={options.width ?? OptionsService.DefaultOptions.width}
+                                    onChange={handleOptionChange('width')}
+                                />
+                                <NumberField
+                                    fullWidth
+                                    label="Height (px)"
+                                    value={options.height ?? OptionsService.DefaultOptions.height}
+                                    onChange={handleOptionChange('height')}
+                                />
                             </Row>
-
-                            <Stack gap={2} direction="row">
-                                <PillButton endIcon={<ArrowForward />}>Generate</PillButton>
-                                <Button variant="text">Reset to defaults</Button>
+                            <Stack gap={2} direction="row-reverse">
+                                <PillButton
+                                    endIcon={<ArrowForward />}
+                                    onClick={handleGenerate}
+                                    disabled={generateButtonIsDisabled}
+                                >
+                                    Generate
+                                </PillButton>
+                                {resetButtonIsVisible && (
+                                    <Button variant="text" onClick={handleResetToDefaults}>
+                                        Reset to defaults
+                                    </Button>
+                                )}
                             </Stack>
                         </Stack>
                     </ContentPaper>
