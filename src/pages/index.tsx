@@ -38,11 +38,11 @@ export default function Home() {
                             </Row>
                             <Row>
                                 <NumberField fullWidth label="Width (px)" />
-                                <NumberField type="number" label="Height (px)" />
+                                <NumberField fullWidth label="Height (px)" />
                             </Row>
 
-                            <Button variant="contained">Generate</Button>
-                            <Button>Reset to defaults</Button>
+                            <Button>Generate</Button>
+                            <Button variant="text">Reset to defaults</Button>
                         </Stack>
                     </ContentPaper>
                 </Container>

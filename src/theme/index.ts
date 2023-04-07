@@ -37,9 +37,15 @@ export const theme = createTheme({
     },
     components: {
         MuiButton: {
+            defaultProps: {
+                variant: 'contained',
+            },
             styleOverrides: {
                 root: {
+                    paddingTop: '10px',
+                    paddingBottom: '10px',
                     textTransform: 'none',
+                    fontSize: '1rem',
                 },
             },
         },
