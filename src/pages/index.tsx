@@ -1,3 +1,4 @@
+import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import NumberField from '@/components/forms/NumberField';
 import PillButton from '@/components/forms/PillButton';
 import Row from '@/components/forms/Row';
@@ -7,7 +8,7 @@ import { fromEntries, toEntries } from '@/utilities';
 import { ArrowForward } from '@mui/icons-material';
 import { Button, Container, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
 import Head from 'next/head';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(5, 12),
@@ -27,13 +28,9 @@ export default function Home() {
         setUsername(e.target.value);
     }
 
-    function handleOptionChange(
-        key: keyof OptionsService.ContributionOptions,
-    ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-        return (e) => {
-            setErrors((errors) => ({ ...errors, [key]: undefined }));
-            setOptions((prev) => ({ ...prev, [key]: e.target.value }));
-        };
+    function handleOptionChange(key: keyof OptionsService.ContributionOptions, value: string): void {
+        setErrors((errors) => ({ ...errors, [key]: undefined }));
+        setOptions((prev) => ({ ...prev, [key]: value }));
     }
 
     function getInputProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
@@ -42,7 +39,19 @@ export default function Home() {
             error: !!errors[key],
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
-            onChange: handleOptionChange(key),
+            onChange: (e) => handleOptionChange(key, e.target.value),
+        };
+    }
+
+    function getColourFieldProps(
+        key: keyof Pick<OptionsService.ContributionOptions, 'color' | 'bgColor' | 'dotColor'>,
+    ): ColourFieldProps {
+        return {
+            fullWidth: true,
+            error: !!errors[key],
+            helperText: errors[key],
+            value: options[key] ?? OptionsService.DefaultOptions[key],
+            onChange: (value) => handleOptionChange(key, value),
         };
     }
 
@@ -68,15 +77,14 @@ export default function Home() {
     }
 
     function generateApiUrl(username: string, options: Partial<Options>): string {
-        // Remove the hash from the colours
-        if (options.bg) options.bg = options.bg.replace('#', '');
-        if (options.color) options.color = options.color.replace('#', '');
-
         const baseUrl = `/api/contributions/${username}`;
         const url = new URL(baseUrl, window.location.origin);
 
-        for (const [key, value] of Object.entries(options)) {
-            url.searchParams.append(key, value.toString());
+        for (const [key, value] of toEntries(options)) {
+            if (value === undefined) continue;
+
+            // Remove the hash from the colours
+            url.searchParams.append(key, value.toString().replace('#', ''));
         }
 
         return url.toString();
@@ -116,8 +124,9 @@ export default function Home() {
                                 onChange={handleUsernameChange}
                             />
                             <Row>
-                                <TextField type="color" label="Primary Colour" {...getInputProps('color')} />
-                                <TextField type="color" label="Background Colour" {...getInputProps('bg')} />
+                                <ColourField label="Primary Colour" {...getColourFieldProps('color')} />
+                                <ColourField label="Dot Colour" {...getColourFieldProps('dotColor')} />
+                                <ColourField label="Background Colour" {...getColourFieldProps('bgColor')} />
                             </Row>
                             <Row>
                                 <NumberField label="Width (px)" {...getInputProps('width')} />

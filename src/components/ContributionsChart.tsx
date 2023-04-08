@@ -32,7 +32,7 @@ export default function ContributionsChart({ username, options, contributions }:
                 left: 30,
             }}
             style={{
-                backgroundColor: '#0d1117',
+                backgroundColor: options.bgColor,
             }}
         >
             <text x={options.width / 2 + 30} y={32} fill={options.color} textAnchor="middle" dominantBaseline="central">
@@ -58,7 +58,7 @@ export default function ContributionsChart({ username, options, contributions }:
                 stroke={options.color}
                 strokeWidth={4}
                 fill={options.color}
-                dot={{ fill: 'white', stroke: 'white' }}
+                dot={{ fill: options.dotColor, stroke: options.dotColor }}
             />
             {options.area && (
                 <Area type="monotone" dataKey="count" fill={options.color} opacity={0.3} strokeWidth={0} />
