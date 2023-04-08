@@ -33,7 +33,7 @@ export default function Home() {
         setOptions((prev) => ({ ...prev, [key]: value }));
     }
 
-    function getInputProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
+    function getTextFieldProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
         return {
             fullWidth: true,
             error: !!errors[key],
@@ -44,7 +44,7 @@ export default function Home() {
     }
 
     function getColourFieldProps(
-        key: keyof Pick<OptionsService.ContributionOptions, 'color' | 'bgColor' | 'dotColor'>,
+        key: keyof Pick<OptionsService.ContributionOptions, 'colour' | 'bgColour' | 'dotColour'>,
     ): ColourFieldProps {
         return {
             fullWidth: true,
@@ -124,13 +124,13 @@ export default function Home() {
                                 onChange={handleUsernameChange}
                             />
                             <Row>
-                                <ColourField label="Primary Colour" {...getColourFieldProps('color')} />
-                                <ColourField label="Dot Colour" {...getColourFieldProps('dotColor')} />
-                                <ColourField label="Background Colour" {...getColourFieldProps('bgColor')} />
+                                <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
+                                <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                             </Row>
                             <Row>
-                                <NumberField label="Width (px)" {...getInputProps('width')} />
-                                <NumberField label="Height (px)" {...getInputProps('height')} />
+                                <NumberField label="Width (px)" {...getTextFieldProps('width')} />
+                                <NumberField label="Height (px)" {...getTextFieldProps('height')} />
                             </Row>
                             <Stack gap={2} direction="row-reverse">
                                 <PillButton

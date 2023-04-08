@@ -10,13 +10,13 @@ interface ContributionProps {
 
 export default function ContributionsChart({ username, options, contributions }: ContributionProps) {
     const labelStyles = {
-        fill: options.color,
+        fill: options.colour,
         fontSize: 20,
         fontWeight: 700,
     };
 
     const axisStyles = {
-        tick: { fill: options.color },
+        tick: { fill: options.colour },
         allowDecimals: false,
     };
 
@@ -32,15 +32,21 @@ export default function ContributionsChart({ username, options, contributions }:
                 left: 30,
             }}
             style={{
-                backgroundColor: options.bgColor,
+                backgroundColor: options.bgColour,
             }}
         >
-            <text x={options.width / 2 + 30} y={32} fill={options.color} textAnchor="middle" dominantBaseline="central">
+            <text
+                x={options.width / 2 + 30}
+                y={32}
+                fill={options.colour}
+                textAnchor="middle"
+                dominantBaseline="central"
+            >
                 <tspan fontSize={32} fontWeight={800}>
                     {`${username}'s Contributions`}
                 </tspan>
             </text>
-            <CartesianGrid strokeDasharray="3 3" stroke={options.color} strokeOpacity={0.3} />
+            <CartesianGrid strokeDasharray="3 3" stroke={options.colour} strokeOpacity={0.3} />
             <XAxis dataKey="date" label={{ value: 'Day', dy: 15, ...labelStyles }} {...axisStyles} />
             <YAxis
                 tickCount={6}
@@ -55,13 +61,13 @@ export default function ContributionsChart({ username, options, contributions }:
             <Line
                 type="monotone"
                 dataKey="count"
-                stroke={options.color}
+                stroke={options.colour}
                 strokeWidth={4}
-                fill={options.color}
-                dot={{ fill: options.dotColor, stroke: options.dotColor }}
+                fill={options.colour}
+                dot={{ fill: options.dotColour, stroke: options.dotColour }}
             />
             {options.area && (
-                <Area type="monotone" dataKey="count" fill={options.color} opacity={0.3} strokeWidth={0} />
+                <Area type="monotone" dataKey="count" fill={options.colour} opacity={0.3} strokeWidth={0} />
             )}
         </ComposedChart>
     );

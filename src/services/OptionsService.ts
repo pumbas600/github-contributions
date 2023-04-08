@@ -5,9 +5,9 @@ export namespace OptionsService {
     export type ContributionOptions = OptionalKeys<Options, 'from' | 'to'>;
 
     export const DefaultOptions: ContributionOptions = {
-        color: '#5BCDEC',
-        bgColor: '#0D1117',
-        dotColor: '#FFFFFF',
+        colour: '#5BCDEC',
+        bgColour: '#0D1117',
+        dotColour: '#FFFFFF',
         width: 1200,
         height: 450,
         days: 30,
