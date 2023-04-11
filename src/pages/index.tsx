@@ -6,7 +6,17 @@ import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
 import { ArrowForward } from '@mui/icons-material';
-import { Button, Container, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
+import {
+    Button,
+    Checkbox,
+    Container,
+    FormControlLabel,
+    Paper,
+    Stack,
+    TextField,
+    TextFieldProps,
+    styled,
+} from '@mui/material';
 import Head from 'next/head';
 import React, { useState } from 'react';
 
@@ -20,15 +30,19 @@ export default function Home() {
     const [username, setUsername] = useState('');
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
     const [errors, setErrors] = useState<OptionErrors>({});
+    const [transparentBackground, setTransparentBackground] = useState(false);
 
     const generateButtonIsDisabled = username.length == 0;
-    const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
+    const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0 || transparentBackground;
 
     function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>): void {
         setUsername(e.target.value);
     }
 
-    function handleOptionChange(key: keyof OptionsService.ContributionOptions, value: string): void {
+    function handleOptionChange<Key extends keyof OptionsService.ContributionOptions>(
+        key: Key,
+        value: OptionsService.ContributionOptions[Key],
+    ): void {
         setErrors((errors) => ({ ...errors, [key]: undefined }));
         setOptions((prev) => ({ ...prev, [key]: value }));
     }
@@ -84,10 +98,18 @@ export default function Home() {
             if (value === undefined) continue;
 
             // Remove the hash from the colours
-            url.searchParams.append(key, value.toString().replace('#', ''));
+            url.searchParams.set(key, value.toString().replace('#', ''));
+        }
+
+        if (transparentBackground) {
+            url.searchParams.set('bgColour', 'none');
         }
 
         return url.toString();
+    }
+
+    function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
+        setTransparentBackground(e.target.checked);
     }
 
     function handleGenerate(): void {
@@ -101,6 +123,7 @@ export default function Home() {
     function handleResetToDefaults(): void {
         setErrors({});
         setOptions(OptionsService.DefaultOptions);
+        setTransparentBackground(false);
     }
 
     return (
@@ -124,9 +147,34 @@ export default function Home() {
                                 onChange={handleUsernameChange}
                             />
                             <Row>
+                                <FormControlLabel
+                                    sx={{ width: '100%' }}
+                                    label="Use transparent background"
+                                    control={
+                                        <Checkbox
+                                            checked={transparentBackground}
+                                            onChange={handleChangeTransparentBackground}
+                                        />
+                                    }
+                                />
+                                <FormControlLabel
+                                    sx={{ width: '100%' }}
+                                    label="Shade area below the line"
+                                    control={
+                                        <Checkbox
+                                            checked={options.area}
+                                            onChange={(e) => handleOptionChange('area', e.target.checked)}
+                                        />
+                                    }
+                                />
+                            </Row>
+                            {!transparentBackground && (
+                                <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                            )}
+                            <NumberField label="Number of days included in the graph" {...getTextFieldProps('days')} />
+                            <Row>
                                 <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
                                 <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
-                                <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                             </Row>
                             <Row>
                                 <NumberField label="Width (px)" {...getTextFieldProps('width')} />
