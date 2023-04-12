@@ -32,12 +32,18 @@ export default function Home() {
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
     const [errors, setErrors] = useState<OptionErrors>({});
     const [transparentBackground, setTransparentBackground] = useState(false);
+    const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
     const generateButtonIsDisabled = username.length == 0;
     const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0 || transparentBackground;
 
     function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>): void {
-        setUsername(e.target.value);
+        const username = e.target.value;
+        setUsername(username);
+
+        if (username.length == 0) {
+            setGeneratedUrl(null);
+        }
     }
 
     function handleOptionChange<Key extends keyof OptionsService.ContributionOptions>(
@@ -91,7 +97,7 @@ export default function Home() {
         return !hasErrors;
     }
 
-    function generateApiUrl(username: string, options: Partial<Options>): string {
+    function generateApiUrl(username: string, options: Partial<Options>): void {
         const baseUrl = `/api/contributions/${username}`;
         const url = new URL(baseUrl, window.location.origin);
 
@@ -106,7 +112,8 @@ export default function Home() {
             url.searchParams.set('bgColour', 'none');
         }
 
-        return url.toString();
+        const generatedUrl = url.toString();
+        setGeneratedUrl(generatedUrl);
     }
 
     function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -117,7 +124,7 @@ export default function Home() {
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
         if (optionsAreValid(optionsWithoutDefaults)) {
-            console.log(generateApiUrl(username, optionsWithoutDefaults));
+            generateApiUrl(username, optionsWithoutDefaults);
         }
     }
 
@@ -125,6 +132,7 @@ export default function Home() {
         setErrors({});
         setOptions(OptionsService.DefaultOptions);
         setTransparentBackground(false);
+        generateApiUrl(username, {});
     }
 
     return (
@@ -195,7 +203,9 @@ export default function Home() {
                                     </Button>
                                 )}
                             </Stack>
-                            <CodeBlock code="![Test](http://localhost:3000/api/contributions/pumbas600)" />
+                            {generatedUrl && (
+                                <CodeBlock code={`![${username}'s GitHub Contributions](${generatedUrl})`} />
+                            )}
                         </Stack>
                     </ContentPaper>
                 </Container>
