@@ -1,3 +1,4 @@
+import CodeBlock from '@/components/CodeBlock';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import NumberField from '@/components/forms/NumberField';
 import PillButton from '@/components/forms/PillButton';
@@ -194,6 +195,7 @@ export default function Home() {
                                     </Button>
                                 )}
                             </Stack>
+                            <CodeBlock code="![Test](http://localhost:3000/api/contributions/pumbas600)" />
                         </Stack>
                     </ContentPaper>
                 </Container>

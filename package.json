@@ -11,6 +11,7 @@
     "dependencies": {
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
+        "@fontsource/fira-code": "^4.5.13",
         "@fontsource/inter": "^4.5.15",
         "@mui/icons-material": "^5.11.16",
         "@mui/material": "^5.11.16",
