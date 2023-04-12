@@ -36,6 +36,7 @@ export default function Home() {
 
     const generateButtonIsDisabled = username.length == 0;
     const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0 || transparentBackground;
+    const contributionImageAltText = `${username}'s GitHub Contributions`;
 
     function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const username = e.target.value;
@@ -204,7 +205,12 @@ export default function Home() {
                                 )}
                             </Stack>
                             {generatedUrl && (
-                                <CodeBlock code={`![${username}'s GitHub Contributions](${generatedUrl})`} />
+                                <>
+                                    <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
+                                    <CodeBlock
+                                        code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`}
+                                    />
+                                </>
                             )}
                         </Stack>
                     </ContentPaper>
