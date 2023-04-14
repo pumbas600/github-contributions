@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}"
                      height="${options.height}" viewBox="0 0 ${options.width} ${options.height}">
                     <style>
-                        svg { background-color: #0d1117; }
+                        svg { background-color: ${options.bgColour}; }
                         .recharts-line > path {
                             animation: draw 5s ease-in-out forwards;
                             stroke-dasharray: 5000;

@@ -2,7 +2,9 @@ import { z } from 'zod';
 import { BooleanModel, ColourModel } from './UtilModels';
 
 export const OptionsModel = z.object({
-    color: ColourModel.optional(),
+    colour: ColourModel.optional(),
+    bgColour: ColourModel.or(z.literal('transparent')).optional(),
+    dotColour: ColourModel.optional(),
     width: z.coerce.number().positive().optional(),
     height: z.coerce.number().positive().optional(),
     from: z.coerce.date().optional(),

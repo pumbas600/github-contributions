@@ -1,8 +1,13 @@
 import { Options } from '@/models/Options';
+import { OptionalKeys } from '@/types/utility';
 
 export namespace OptionsService {
-    export const DefaultOptions: Omit<Options, 'from' | 'to'> = {
-        color: '#5bcdec',
+    export type ContributionOptions = OptionalKeys<Options, 'from' | 'to'>;
+
+    export const DefaultOptions: ContributionOptions = {
+        colour: '#5BCDEC',
+        bgColour: '#0D1117',
+        dotColour: '#FFFFFF',
         width: 1200,
         height: 450,
         days: 30,
