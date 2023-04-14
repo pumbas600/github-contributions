@@ -1,4 +1,5 @@
 import CodeBlock from '@/components/CodeBlock';
+import Collapsible from '@/components/Collapsible';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import NumberField from '@/components/forms/NumberField';
 import PillButton from '@/components/forms/PillButton';
@@ -114,10 +115,6 @@ export default function Home() {
             url.searchParams.set(key, value.toString().replace('#', ''));
         }
 
-        if (transparentBackground) {
-            url.searchParams.set('bgColour', 'none');
-        }
-
         return url.toString();
     }
 
@@ -161,49 +158,55 @@ export default function Home() {
                                 value={username}
                                 onChange={handleUsernameChange}
                             />
-                            <Row>
-                                <FormControlLabel
-                                    sx={{ width: '100%' }}
-                                    label="Use transparent background"
-                                    control={
-                                        <Checkbox
-                                            checked={transparentBackground}
-                                            onChange={handleChangeTransparentBackground}
-                                        />
-                                    }
+                            <Collapsible title="Theme Configuration">
+                                <Row>
+                                    <FormControlLabel
+                                        sx={{ width: '100%' }}
+                                        label="Use transparent background"
+                                        control={
+                                            <Checkbox
+                                                checked={transparentBackground}
+                                                onChange={handleChangeTransparentBackground}
+                                            />
+                                        }
+                                    />
+                                    <FormControlLabel
+                                        sx={{ width: '100%' }}
+                                        label="Shade area below the line"
+                                        control={
+                                            <Checkbox
+                                                checked={options.area}
+                                                onChange={(e) => handleOptionChange('area', e.target.checked)}
+                                            />
+                                        }
+                                    />
+                                </Row>
+                                {!transparentBackground && (
+                                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                                )}
+                                <NumberField
+                                    label="Number of days included in the graph"
+                                    {...getTextFieldProps('days')}
                                 />
-                                <FormControlLabel
-                                    sx={{ width: '100%' }}
-                                    label="Shade area below the line"
-                                    control={
-                                        <Checkbox
-                                            checked={options.area}
-                                            onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                        />
-                                    }
-                                />
-                            </Row>
-                            {!transparentBackground && (
-                                <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
-                            )}
-                            <NumberField label="Number of days included in the graph" {...getTextFieldProps('days')} />
-                            <Row>
-                                <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
-                                <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
-                            </Row>
-                            <Row>
-                                <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                                <NumberField label="Height (px)" {...getTextFieldProps('height')} />
-                            </Row>
-                            {resetButtonIsVisible && (
-                                <Stack direction="row-reverse">
-                                    <Button variant="text" onClick={handleResetToDefaults}>
-                                        Reset to defaults
-                                    </Button>
-                                </Stack>
-                            )}
+                                <Row>
+                                    <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                    <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
+                                </Row>
+                                <Row>
+                                    <NumberField label="Width (px)" {...getTextFieldProps('width')} />
+                                    <NumberField label="Height (px)" {...getTextFieldProps('height')} />
+                                </Row>
+                                {resetButtonIsVisible && (
+                                    <Stack direction="row-reverse">
+                                        <Button variant="text" onClick={handleResetToDefaults}>
+                                            Reset to defaults
+                                        </Button>
+                                    </Stack>
+                                )}
+                            </Collapsible>
                             {generatedUrl && (
                                 <>
+                                    <img src={generatedUrl} alt={contributionImageAltText} />
                                     <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
                                     <CodeBlock
                                         code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`}
