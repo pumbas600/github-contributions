@@ -5,6 +5,7 @@ import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
 import PillButton from '@/components/forms/PillButton';
 import Row from '@/components/forms/Row';
+import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
@@ -33,8 +34,9 @@ export default function Home() {
     const [username, setUsername] = useState('');
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
     const [errors, setErrors] = useState<OptionErrors>({});
-    //const [transparentBackground, setTransparentBackground] = useState(false);
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+
+    const debouncedGeneratedUrl = useDebounce(generatedUrl, 1200);
 
     const transparentBackground = options.bgColour === 'transparent';
     const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
@@ -194,7 +196,9 @@ export default function Home() {
                             </Collapsible>
                             {generatedUrl && (
                                 <>
-                                    <img src={generatedUrl} alt={contributionImageAltText} />
+                                    {debouncedGeneratedUrl && (
+                                        <img src={debouncedGeneratedUrl} alt={contributionImageAltText} />
+                                    )}
                                     <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
                                     <CodeBlock
                                         code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`}
