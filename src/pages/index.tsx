@@ -1,6 +1,7 @@
 import CodeBlock from '@/components/CodeBlock';
 import Collapsible from '@/components/Collapsible';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
+import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
 import PillButton from '@/components/forms/PillButton';
 import Row from '@/components/forms/Row';
@@ -160,25 +161,15 @@ export default function Home() {
                             />
                             <Collapsible title="Theme Configuration">
                                 <Row>
-                                    <FormControlLabel
-                                        sx={{ width: '100%' }}
+                                    <LabelledCheckbox
                                         label="Use transparent background"
-                                        control={
-                                            <Checkbox
-                                                checked={transparentBackground}
-                                                onChange={handleChangeTransparentBackground}
-                                            />
-                                        }
+                                        checked={transparentBackground}
+                                        onChange={handleChangeTransparentBackground}
                                     />
-                                    <FormControlLabel
-                                        sx={{ width: '100%' }}
+                                    <LabelledCheckbox
                                         label="Shade area below the line"
-                                        control={
-                                            <Checkbox
-                                                checked={options.area}
-                                                onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                            />
-                                        }
+                                        checked={options.area}
+                                        onChange={(e) => handleOptionChange('area', e.target.checked)}
                                     />
                                 </Row>
                                 <Row>
