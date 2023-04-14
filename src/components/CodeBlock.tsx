@@ -67,7 +67,12 @@ export default function CodeBlock({ code }: CodeBlockProps) {
                 <Code>{code}</Code>
             </Pre>
             <Tooltip title="Copied" open={copied} arrow placement="left">
-                <CopyButtonContainer aria-label="Copy" onClick={handleClick} color={copied ? 'success' : undefined}>
+                <CopyButtonContainer
+                    aria-label="Copy"
+                    onClick={handleClick}
+                    color={copied ? 'success' : undefined}
+                    sx={copied ? { visibility: 'visible !important' } : {}}
+                >
                     {copied ? <Check /> : <ContentCopy />}
                 </CopyButtonContainer>
             </Tooltip>
