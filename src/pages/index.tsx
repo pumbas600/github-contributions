@@ -147,7 +147,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <Container maxWidth="md" sx={{ marginTop: 5 }}>
+                <Container maxWidth="md" sx={{ marginY: 5 }}>
                     <ContentPaper elevation={1}>
                         <Stack gap={3}>
                             <TextField
@@ -181,18 +181,15 @@ export default function Home() {
                                         }
                                     />
                                 </Row>
-                                {!transparentBackground && (
-                                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
-                                )}
-                                <NumberField
-                                    label="Number of days included in the graph"
-                                    {...getTextFieldProps('days')}
-                                />
                                 <Row>
                                     <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                    {!transparentBackground && (
+                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                                    )}
                                     <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
                                 </Row>
                                 <Row>
+                                    <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
                                     <NumberField label="Width (px)" {...getTextFieldProps('width')} />
                                     <NumberField label="Height (px)" {...getTextFieldProps('height')} />
                                 </Row>
