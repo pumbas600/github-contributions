@@ -31,11 +31,11 @@ export default function Home() {
     const [username, setUsername] = useState('');
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
     const [errors, setErrors] = useState<OptionErrors>({});
-    const [transparentBackground, setTransparentBackground] = useState(false);
+    //const [transparentBackground, setTransparentBackground] = useState(false);
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
-    const generateButtonIsDisabled = username.length == 0;
-    const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0 || transparentBackground;
+    const transparentBackground = options.bgColour === 'transparent';
+    const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
     const contributionImageAltText = `${username}'s GitHub Contributions`;
 
     function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -44,6 +44,8 @@ export default function Home() {
 
         if (username.length == 0) {
             setGeneratedUrl(null);
+        } else {
+            handleGenerate(options, username);
         }
     }
 
@@ -51,8 +53,11 @@ export default function Home() {
         key: Key,
         value: OptionsService.ContributionOptions[Key],
     ): void {
+        const newOptions = { ...options, [key]: value };
+
         setErrors((errors) => ({ ...errors, [key]: undefined }));
-        setOptions((prev) => ({ ...prev, [key]: value }));
+        setOptions(newOptions);
+        handleGenerate(newOptions, username);
     }
 
     function getTextFieldProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
@@ -98,7 +103,7 @@ export default function Home() {
         return !hasErrors;
     }
 
-    function generateApiUrl(username: string, options: Partial<Options>): void {
+    function generateApiUrl(username: string, options: Partial<Options>): string {
         const baseUrl = `/api/contributions/${username}`;
         const url = new URL(baseUrl, window.location.origin);
 
@@ -113,27 +118,27 @@ export default function Home() {
             url.searchParams.set('bgColour', 'none');
         }
 
-        const generatedUrl = url.toString();
-        setGeneratedUrl(generatedUrl);
+        return url.toString();
     }
 
     function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
-        setTransparentBackground(e.target.checked);
+        handleOptionChange('bgColour', e.target.checked ? 'transparent' : OptionsService.DefaultOptions.bgColour);
     }
 
-    function handleGenerate(): void {
+    function handleGenerate(options: OptionsService.ContributionOptions, username: string): void {
+        if (username.length == 0) return;
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
         if (optionsAreValid(optionsWithoutDefaults)) {
-            generateApiUrl(username, optionsWithoutDefaults);
+            const generatedUrl = generateApiUrl(username, optionsWithoutDefaults);
+            setGeneratedUrl(generatedUrl);
         }
     }
 
     function handleResetToDefaults(): void {
         setErrors({});
         setOptions(OptionsService.DefaultOptions);
-        setTransparentBackground(false);
-        generateApiUrl(username, {});
+        handleGenerate(OptionsService.DefaultOptions, username);
     }
 
     return (
@@ -190,20 +195,13 @@ export default function Home() {
                                 <NumberField label="Width (px)" {...getTextFieldProps('width')} />
                                 <NumberField label="Height (px)" {...getTextFieldProps('height')} />
                             </Row>
-                            <Stack gap={2} direction="row-reverse">
-                                <PillButton
-                                    endIcon={<ArrowForward />}
-                                    onClick={handleGenerate}
-                                    disabled={generateButtonIsDisabled}
-                                >
-                                    Generate
-                                </PillButton>
-                                {resetButtonIsVisible && (
+                            {resetButtonIsVisible && (
+                                <Stack direction="row-reverse">
                                     <Button variant="text" onClick={handleResetToDefaults}>
                                         Reset to defaults
                                     </Button>
-                                )}
-                            </Stack>
+                                </Stack>
+                            )}
                             {generatedUrl && (
                                 <>
                                     <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
