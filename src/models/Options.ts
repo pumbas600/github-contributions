@@ -3,7 +3,7 @@ import { BooleanModel, ColourModel } from './UtilModels';
 
 export const OptionsModel = z.object({
     colour: ColourModel.optional(),
-    bgColour: ColourModel.optional(),
+    bgColour: ColourModel.or(z.literal('transparent')).optional(),
     dotColour: ColourModel.optional(),
     width: z.coerce.number().positive().optional(),
     height: z.coerce.number().positive().optional(),
