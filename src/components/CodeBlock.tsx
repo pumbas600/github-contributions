@@ -1,7 +1,7 @@
-import { IconButton, styled } from '@mui/material';
-import '@fontsource/fira-code';
+import { Box, IconButton, Tooltip, styled } from '@mui/material';
 import { Check, ContentCopy } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
+import '@fontsource/fira-code';
 
 interface CodeBlockProps {
     code: string;
@@ -14,6 +14,7 @@ const Pre = styled('pre')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
     borderRadius: theme.shape.borderRadius,
     position: 'relative',
+    margin: 0,
 }));
 
 const Code = styled('code')({
@@ -21,7 +22,7 @@ const Code = styled('code')({
     fontSize: '0.9rem',
 });
 
-const CopyButtonContainer = styled('span')(({ theme }) => ({
+const CopyButtonContainer = styled(IconButton)(({ theme }) => ({
     position: 'absolute',
     right: 4,
     top: 5,
@@ -31,8 +32,19 @@ const CopyButtonContainer = styled('span')(({ theme }) => ({
     borderColor: 'transparent',
     '&:hover': {
         borderColor: theme.palette.divider,
+        backgroundColor: theme.palette.background.paper,
     },
 }));
+
+const CodeContainer = styled(Box)({
+    position: 'relative',
+    '& > button': {
+        visibility: 'hidden',
+    },
+    '&:hover > button': {
+        visibility: 'visible',
+    },
+});
 
 export default function CodeBlock({ code }: CodeBlockProps) {
     const [copied, setCopied] = useState(false);
@@ -50,13 +62,15 @@ export default function CodeBlock({ code }: CodeBlockProps) {
     };
 
     return (
-        <Pre>
-            <CopyButtonContainer>
-                <IconButton aria-label="Copy" onClick={handleClick} color={copied ? 'success' : undefined}>
+        <CodeContainer>
+            <Pre>
+                <Code>{code}</Code>
+            </Pre>
+            <Tooltip title="Copied" open={copied} arrow placement="left">
+                <CopyButtonContainer aria-label="Copy" onClick={handleClick} color={copied ? 'success' : undefined}>
                     {copied ? <Check /> : <ContentCopy />}
-                </IconButton>
-            </CopyButtonContainer>
-            <Code>{code}</Code>
-        </Pre>
+                </CopyButtonContainer>
+            </Tooltip>
+        </CodeContainer>
     );
 }
