@@ -20,6 +20,12 @@ export namespace ContributionsService {
                     };
                 };
             };
+            rateLimit: {
+                limit: number;
+                cost: number;
+                remaining: number;
+                resetAt: string;
+            };
         };
     }
 
@@ -60,6 +66,12 @@ export namespace ContributionsService {
                             }
                         }
                     }
+                }
+                rateLimit {
+                    limit
+                    cost
+                    remaining
+                    resetAt
                 }
             }`,
         };
