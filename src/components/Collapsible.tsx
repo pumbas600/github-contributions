@@ -24,13 +24,19 @@ export default function Collapsible({ title, children }: CollapsibleProps) {
     return (
         <Stack gap={1}>
             <Stack direction="row" alignItems="center" gap={1}>
-                <Stack direction="row" alignItems="center" gap={0} onClick={toggleIsOpen} color="GrayText">
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={0}
+                    onClick={toggleIsOpen}
+                    color={(theme) => theme.typography.body1.color}
+                >
                     <Typography whiteSpace="nowrap">{title}</Typography>
                     {isOpen ? <KeyboardArrowDown /> : <KeyboardArrowRight />}
                 </Stack>
                 <Divider />
             </Stack>
-            {isOpen && <Stack gap={3}>{children}</Stack>}
+            {isOpen && <>{children}</>}
         </Stack>
     );
 }
