@@ -31,7 +31,7 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
 
     [theme.breakpoints.down('md')]: {
         borderRadius: 0,
-        padding: theme.spacing(3, 4),
+        padding: theme.spacing(3, 3),
     },
 }));
 
@@ -169,42 +169,42 @@ export default function Home() {
                         />
                         <Collapsible title="Theme Options">
                             <Grid container columnSpacing={2} rowSpacing={3} columns={{ xs: 1, md: 3 }}>
-                                <Grid item xs={1.5}>
+                                <Grid xs={1.5}>
                                     <LabelledCheckbox
                                         label="Use transparent background"
                                         checked={transparentBackground}
                                         onChange={handleChangeTransparentBackground}
                                     />
                                 </Grid>
-                                <Grid item xs={1.5}>
+                                <Grid xs={1.5}>
                                     <LabelledCheckbox
                                         label="Shade area below the line"
                                         checked={options.area}
                                         onChange={(e) => handleOptionChange('area', e.target.checked)}
                                     />
                                 </Grid>
-                                <Grid item xs={transparentBackground ? 1.5 : 1}>
+                                <Grid xs={transparentBackground ? 1.5 : 1}>
                                     <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
                                 </Grid>
                                 {!transparentBackground && (
-                                    <Grid item xs={1}>
+                                    <Grid xs={1}>
                                         <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />{' '}
                                     </Grid>
                                 )}
-                                <Grid item xs={transparentBackground ? 1.5 : 1}>
+                                <Grid xs={transparentBackground ? 1.5 : 1}>
                                     <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid xs={1}>
                                     <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid xs={1}>
                                     <NumberField label="Width (px)" {...getTextFieldProps('width')} />
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid xs={1}>
                                     <NumberField label="Height (px)" {...getTextFieldProps('height')} />
                                 </Grid>
                                 {resetButtonIsVisible && (
-                                    <Grid item xs={1} md={3}>
+                                    <Grid xs={1} md={3}>
                                         <Stack direction="row-reverse">
                                             <Button variant="text" onClick={handleResetToDefaults}>
                                                 Reset to defaults
