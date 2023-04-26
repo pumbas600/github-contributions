@@ -42,7 +42,7 @@ export const theme = createTheme({
             },
             styleOverrides: {
                 root: {
-                    padding: '10px 32px',
+                    padding: '8px 20px',
                     textTransform: 'none',
                     fontSize: '1rem',
                 },

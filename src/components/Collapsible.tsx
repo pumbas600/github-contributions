@@ -1,5 +1,5 @@
-import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
-import { Box, Stack, Typography, styled } from '@mui/material';
+import { ArrowDownward, ArrowForward } from '@mui/icons-material';
+import { Box, Button, Stack, styled } from '@mui/material';
 import { useState } from 'react';
 
 interface CollapsibleProps {
@@ -23,19 +23,15 @@ export default function Collapsible({ title, children }: CollapsibleProps) {
 
     return (
         <Stack gap={1}>
-            <Stack direction="row" alignItems="center" gap={1}>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    gap={0}
-                    onClick={toggleIsOpen}
-                    color={(theme) => theme.typography.body1.color}
-                >
-                    <Typography whiteSpace="nowrap">{title}</Typography>
-                    {isOpen ? <KeyboardArrowDown /> : <KeyboardArrowRight />}
-                </Stack>
-                <Divider />
-            </Stack>
+            <Button
+                fullWidth
+                onClick={toggleIsOpen}
+                variant="text"
+                endIcon={isOpen ? <ArrowForward /> : <ArrowDownward />}
+                sx={{ justifyContent: 'space-between' }}
+            >
+                {title}
+            </Button>
             {isOpen && <>{children}</>}
         </Stack>
     );

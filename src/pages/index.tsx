@@ -31,6 +31,7 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
 
     [theme.breakpoints.down('md')]: {
         borderRadius: 0,
+        gap: theme.spacing(2),
         padding: theme.spacing(3, 3),
     },
 }));
@@ -74,6 +75,7 @@ export default function Home() {
     function getTextFieldProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
         return {
             fullWidth: true,
+            size: 'small',
             error: !!errors[key],
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
@@ -86,6 +88,7 @@ export default function Home() {
     ): ColourFieldProps {
         return {
             fullWidth: true,
+            size: 'small',
             error: !!errors[key],
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
@@ -159,61 +162,71 @@ export default function Home() {
             <main>
                 <ResponsiveContainer maxWidth="md">
                     <ContentPaper elevation={1}>
-                        <TextField
-                            required
-                            fullWidth
-                            label="GitHub Username"
-                            placeholder="E.g. pumbas600"
-                            value={username}
-                            onChange={handleUsernameChange}
-                        />
-                        <Collapsible title="Theme Options">
-                            <Grid container columnSpacing={2} rowSpacing={3} columns={{ xs: 1, md: 3 }}>
-                                <Grid xs={1.5}>
-                                    <LabelledCheckbox
-                                        label="Use transparent background"
-                                        checked={transparentBackground}
-                                        onChange={handleChangeTransparentBackground}
-                                    />
-                                </Grid>
-                                <Grid xs={1.5}>
-                                    <LabelledCheckbox
-                                        label="Shade area below the line"
-                                        checked={options.area}
-                                        onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                    />
-                                </Grid>
-                                <Grid xs={transparentBackground ? 1.5 : 1}>
-                                    <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
-                                </Grid>
-                                {!transparentBackground && (
+                        <Stack gap={1}>
+                            <TextField
+                                required
+                                fullWidth
+                                label="GitHub Username"
+                                placeholder="E.g. pumbas600"
+                                value={username}
+                                onChange={handleUsernameChange}
+                            />
+                            <Collapsible title="Theme Options">
+                                <Grid
+                                    container
+                                    columnSpacing={2}
+                                    rowSpacing={{ xs: 2, md: 3 }}
+                                    columns={{ xs: 1, md: 3 }}
+                                >
+                                    <Grid xs={1.5}>
+                                        <LabelledCheckbox
+                                            label="Use transparent background"
+                                            checked={transparentBackground}
+                                            onChange={handleChangeTransparentBackground}
+                                        />
+                                    </Grid>
+                                    <Grid xs={1.5}>
+                                        <LabelledCheckbox
+                                            label="Shade area below the line"
+                                            checked={options.area}
+                                            onChange={(e) => handleOptionChange('area', e.target.checked)}
+                                        />
+                                    </Grid>
+                                    <Grid xs={transparentBackground ? 1.5 : 1}>
+                                        <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                    </Grid>
+                                    {!transparentBackground && (
+                                        <Grid xs={1}>
+                                            <ColourField
+                                                label="Background Colour"
+                                                {...getColourFieldProps('bgColour')}
+                                            />{' '}
+                                        </Grid>
+                                    )}
+                                    <Grid xs={transparentBackground ? 1.5 : 1}>
+                                        <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
+                                    </Grid>
                                     <Grid xs={1}>
-                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />{' '}
+                                        <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
                                     </Grid>
-                                )}
-                                <Grid xs={transparentBackground ? 1.5 : 1}>
-                                    <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
-                                </Grid>
-                                <Grid xs={1}>
-                                    <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
-                                </Grid>
-                                <Grid xs={1}>
-                                    <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                                </Grid>
-                                <Grid xs={1}>
-                                    <NumberField label="Height (px)" {...getTextFieldProps('height')} />
-                                </Grid>
-                                {resetButtonIsVisible && (
-                                    <Grid xs={1} md={3}>
-                                        <Stack direction="row-reverse">
-                                            <Button variant="text" onClick={handleResetToDefaults}>
-                                                Reset to defaults
-                                            </Button>
-                                        </Stack>
+                                    <Grid xs={1}>
+                                        <NumberField label="Width (px)" {...getTextFieldProps('width')} />
                                     </Grid>
-                                )}
-                            </Grid>
-                        </Collapsible>
+                                    <Grid xs={1}>
+                                        <NumberField label="Height (px)" {...getTextFieldProps('height')} />
+                                    </Grid>
+                                    {resetButtonIsVisible && (
+                                        <Grid xs={1} md={3}>
+                                            <Stack direction="row-reverse">
+                                                <Button variant="text" size="small" onClick={handleResetToDefaults}>
+                                                    Reset to defaults
+                                                </Button>
+                                            </Stack>
+                                        </Grid>
+                                    )}
+                                </Grid>
+                            </Collapsible>
+                        </Stack>
 
                         {generatedUrl && (
                             <>
