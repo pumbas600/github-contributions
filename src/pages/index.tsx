@@ -3,29 +3,37 @@ import Collapsible from '@/components/Collapsible';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
-import PillButton from '@/components/forms/PillButton';
-import Row from '@/components/forms/Row';
 import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
-import { ArrowForward } from '@mui/icons-material';
-import {
-    Button,
-    Checkbox,
-    Container,
-    FormControlLabel,
-    Paper,
-    Stack,
-    TextField,
-    TextFieldProps,
-    styled,
-} from '@mui/material';
+import { Button, Container, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
 import React, { useState } from 'react';
 
+const ResponsiveContainer = styled(Container)(({ theme }) => ({
+    padding: 0,
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5),
+
+    [theme.breakpoints.down('md')]: {
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+    },
+}));
+
 const ContentPaper = styled(Paper)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(3),
     padding: theme.spacing(5, 12),
+
+    [theme.breakpoints.down('md')]: {
+        borderRadius: 0,
+        gap: theme.spacing(2),
+        padding: theme.spacing(3, 3),
+    },
 }));
 
 type OptionErrors = Partial<Record<keyof Options, string>>;
@@ -67,6 +75,7 @@ export default function Home() {
     function getTextFieldProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
         return {
             fullWidth: true,
+            size: 'small',
             error: !!errors[key],
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
@@ -79,6 +88,7 @@ export default function Home() {
     ): ColourFieldProps {
         return {
             fullWidth: true,
+            size: 'small',
             error: !!errors[key],
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
@@ -150,9 +160,9 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <Container maxWidth="md" sx={{ marginY: 5 }}>
+                <ResponsiveContainer maxWidth="md">
                     <ContentPaper elevation={1}>
-                        <Stack gap={3}>
+                        <Stack gap={1}>
                             <TextField
                                 required
                                 fullWidth
@@ -161,53 +171,74 @@ export default function Home() {
                                 value={username}
                                 onChange={handleUsernameChange}
                             />
-                            <Collapsible title="Theme Configuration">
-                                <Row>
-                                    <LabelledCheckbox
-                                        label="Use transparent background"
-                                        checked={transparentBackground}
-                                        onChange={handleChangeTransparentBackground}
-                                    />
-                                    <LabelledCheckbox
-                                        label="Shade area below the line"
-                                        checked={options.area}
-                                        onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                    />
-                                </Row>
-                                <Row>
-                                    <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                            <Collapsible title="Theme Options">
+                                <Grid
+                                    container
+                                    columnSpacing={2}
+                                    rowSpacing={{ xs: 2, md: 3 }}
+                                    columns={{ xs: 1, md: 3 }}
+                                >
+                                    <Grid xs={1.5}>
+                                        <LabelledCheckbox
+                                            label="Use transparent background"
+                                            checked={transparentBackground}
+                                            onChange={handleChangeTransparentBackground}
+                                        />
+                                    </Grid>
+                                    <Grid xs={1.5}>
+                                        <LabelledCheckbox
+                                            label="Shade area below the line"
+                                            checked={options.area}
+                                            onChange={(e) => handleOptionChange('area', e.target.checked)}
+                                        />
+                                    </Grid>
+                                    <Grid xs={transparentBackground ? 1.5 : 1}>
+                                        <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                    </Grid>
                                     {!transparentBackground && (
-                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                                        <Grid xs={1}>
+                                            <ColourField
+                                                label="Background Colour"
+                                                {...getColourFieldProps('bgColour')}
+                                            />{' '}
+                                        </Grid>
                                     )}
-                                    <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
-                                </Row>
-                                <Row>
-                                    <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
-                                    <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                                    <NumberField label="Height (px)" {...getTextFieldProps('height')} />
-                                </Row>
-                                {resetButtonIsVisible && (
-                                    <Stack direction="row-reverse">
-                                        <Button variant="text" onClick={handleResetToDefaults}>
-                                            Reset to defaults
-                                        </Button>
-                                    </Stack>
-                                )}
+                                    <Grid xs={transparentBackground ? 1.5 : 1}>
+                                        <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
+                                    </Grid>
+                                    <Grid xs={1}>
+                                        <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
+                                    </Grid>
+                                    <Grid xs={1}>
+                                        <NumberField label="Width (px)" {...getTextFieldProps('width')} />
+                                    </Grid>
+                                    <Grid xs={1}>
+                                        <NumberField label="Height (px)" {...getTextFieldProps('height')} />
+                                    </Grid>
+                                    {resetButtonIsVisible && (
+                                        <Grid xs={1} md={3}>
+                                            <Stack direction="row-reverse">
+                                                <Button variant="text" size="small" onClick={handleResetToDefaults}>
+                                                    Reset to defaults
+                                                </Button>
+                                            </Stack>
+                                        </Grid>
+                                    )}
+                                </Grid>
                             </Collapsible>
-                            {generatedUrl && (
-                                <>
-                                    {debouncedGeneratedUrl && (
-                                        <img src={debouncedGeneratedUrl} alt={contributionImageAltText} />
-                                    )}
-                                    <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
-                                    <CodeBlock
-                                        code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`}
-                                    />
-                                </>
-                            )}
                         </Stack>
+
+                        {generatedUrl && (
+                            <>
+                                {debouncedGeneratedUrl && (
+                                    <img src={debouncedGeneratedUrl} alt={contributionImageAltText} />
+                                )}
+                                <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
+                                <CodeBlock code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`} />
+                            </>
+                        )}
                     </ContentPaper>
-                </Container>
+                </ResponsiveContainer>
             </main>
         </>
     );
