@@ -12,7 +12,7 @@ export default function ContributionsChart({ username, options, contributions }:
     const labelStyles = {
         fill: options.colour,
         fontSize: 20,
-        fontWeight: 700,
+        fontWeight: 600,
     };
 
     const axisStyles = {
@@ -27,9 +27,9 @@ export default function ContributionsChart({ username, options, contributions }:
             data={contributions}
             margin={{
                 top: 80,
-                right: 20,
-                bottom: 30,
-                left: 30,
+                right: 30,
+                bottom: 40,
+                left: 40,
             }}
             style={{
                 backgroundColor: options.bgColour,
@@ -42,18 +42,18 @@ export default function ContributionsChart({ username, options, contributions }:
                 textAnchor="middle"
                 dominantBaseline="central"
             >
-                <tspan fontSize={32} fontWeight={800}>
+                <tspan fontSize={32} fontWeight={600}>
                     {`${username}'s Contributions`}
                 </tspan>
             </text>
             <CartesianGrid strokeDasharray="3 3" stroke={options.colour} strokeOpacity={0.3} />
-            <XAxis dataKey="date" label={{ value: 'Day', dy: 15, ...labelStyles }} {...axisStyles} />
+            <XAxis dataKey="date" label={{ value: 'Day', dy: 30, ...labelStyles }} {...axisStyles} />
             <YAxis
                 tickCount={6}
                 label={{
                     value: 'Contributions',
                     angle: -90,
-                    dx: -15,
+                    dx: -30,
                     ...labelStyles,
                 }}
                 {...axisStyles}

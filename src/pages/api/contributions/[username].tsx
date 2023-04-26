@@ -26,7 +26,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}"
                      height="${options.height}" viewBox="0 0 ${options.width} ${options.height}">
                     <style>
-                        svg { background-color: ${options.bgColour}; }
+                        svg {
+                            background-color: ${options.bgColour};
+                            font-family: Segoe UI,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Arial;
+                        }
                         .recharts-line > path {
                             animation: draw 5s ease-in-out forwards;
                             stroke-dasharray: 5000;
