@@ -12,12 +12,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
         const options = OptionsService.getOptions(queryOptions);
 
-        let svg = getCachedSvg(username, options);
+        let svg = null; // getCachedSvg(username, options);
         if (!svg) {
             const contributions = await ContributionsService.getContributions(username, options.from, options.to);
+
+            const start = Date.now();
             const html = renderToString(
                 <ContributionsChart username={username} options={options} contributions={contributions} />,
             );
+            console.log(`Rendered chart in ${Date.now() - start}ms`);
 
             // Remove surrounding <div></div>
             const htmlWithoutDiv = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));

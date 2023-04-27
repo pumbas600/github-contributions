@@ -3,6 +3,8 @@ import NotFoundError from '@/errors/NotFoundError';
 import Contribution from '@/types/interfaces/Contribution';
 
 export namespace ContributionsService {
+    const WARN_RATE_LIMIT_BOUNDARY = 100;
+
     interface ContributionDay {
         contributionCount: number;
         date: string;
@@ -51,8 +53,8 @@ export namespace ContributionsService {
         );
     }
 
-    export async function getContributions(username: string, from: Date, to: Date): Promise<Contribution[]> {
-        const body = {
+    function generateGraphQLBody(username: string, from: Date, to: Date): Record<string, string> {
+        return {
             query: `query { 
                 user(login: "${username}") {
                     contributionsCollection(from: "${from.toISOString()}" to: "${to.toISOString()}") {
@@ -75,12 +77,18 @@ export namespace ContributionsService {
                 }
             }`,
         };
+    }
 
+    export async function getContributions(username: string, from: Date, to: Date): Promise<Contribution[]> {
+        const body = generateGraphQLBody(username, from, to);
+
+        let start = Date.now();
         const res = await fetch('https://api.github.com/graphql', {
             method: 'POST',
             body: JSON.stringify(body),
             headers: HEADERS,
         });
+        console.log(`Fetching contributions took ${Date.now() - start}ms`);
 
         const json = (await res.json()) as ContributionResponse;
         if ('errors' in json) {
@@ -92,8 +100,13 @@ export namespace ContributionsService {
             throw new InternalServerError(`There was an unhandled error while fetching contributions for ${username}`);
         }
 
+        if (json.data.rateLimit.remaining < WARN_RATE_LIMIT_BOUNDARY) {
+            console.warn(`Rate limit is low: ${json.data.rateLimit.remaining}/${json.data.rateLimit.limit}`);
+        }
+
         const contributions: Contribution[] = [];
 
+        start = Date.now();
         json.data.user.contributionsCollection.contributionCalendar.weeks.forEach((week) => {
             week.contributionDays.forEach((contributionDay) => {
                 const contributionDate = new Date(contributionDay.date).getDate();
@@ -103,6 +116,7 @@ export namespace ContributionsService {
                 });
             });
         });
+        console.log(`Parsing contributions took ${Date.now() - start}ms`);
 
         return contributions;
     }
