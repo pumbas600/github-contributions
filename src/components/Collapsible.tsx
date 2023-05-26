@@ -1,18 +1,12 @@
-import { ArrowDownward, ArrowForward } from '@mui/icons-material';
-import { Box, Button, Stack, styled } from '@mui/material';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import ArrowUpward from '@mui/icons-material/ArrowUpward';
+import { Button, Stack } from '@mui/material';
 import { useState } from 'react';
 
 interface CollapsibleProps {
     title: string;
     children?: React.ReactNode;
 }
-
-const Divider = styled(Box)(({ theme }) => ({
-    width: '100%',
-    height: 0,
-    borderBottom: '1px solid',
-    borderColor: theme.palette.divider,
-}));
 
 export default function Collapsible({ title, children }: CollapsibleProps) {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +21,7 @@ export default function Collapsible({ title, children }: CollapsibleProps) {
                 fullWidth
                 onClick={toggleIsOpen}
                 variant="text"
-                endIcon={isOpen ? <ArrowForward /> : <ArrowDownward />}
+                endIcon={isOpen ? <ArrowUpward /> : <ArrowDownward />}
                 sx={{ justifyContent: 'space-between' }}
             >
                 {title}
