@@ -1,40 +1,42 @@
-![A chart](https://github-contributions-chi.vercel.app/api/contributions/pumbas600)
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600)
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GitHub Contributions
 
-## Getting Started
+This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README. As an example, here's the markdown for displaying my contributions (Seen above):
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```md
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This can also be used in HTML images:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```html
+<img src="https://github.pumbas.net/api/contributions/pumbas600" alt="pumbas600's Contributions"/>
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+It works through a simple API that generates an SVG which can be used as an image in markdown. It utilises the amazing chart library [recharts](https://www.npmjs.com/package/recharts) to generate the graph.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Customisation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+There is also support for a number of options which allow you to style the graph to your hearts content. Each option can be configured through the use of query parameters in the url.
 
-## Learn More
+> **Note**
+> All colours are hexcodes without the starting '#'. E.g. `#4BB5FC` → `4BB5FC`.
 
-To learn more about Next.js, take a look at the following resources:
+Query Parameter | Description             | Type    | Default Value
+----------------|-------------------------|---------|-----------------
+`colour`        | The colour of the line and text. A partially transparent version of this colour is used for the shaded area and grid | Hexcode | `#4BB5FC`
+`bgColour`      | The background colour of the graph | Hexcode or `transparent` | `transparent`
+`dotColour`     | The colour of the dots for each day's contributions | Hexcode | `#E5E5E5`
+`days`          | The past number of days to include in your contributions graph | Positive number | `30`
+`area`          | Whether to shade the area under the curve | `true` or `false` | `true`
+`width`         | The width of the SVG in pixels  | Positive number | `1200`
+`height`        | The height of the SVG in pixels | Positive number | `450`
 
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+An example using some of these looks like:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```md
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
