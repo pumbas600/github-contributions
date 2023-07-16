@@ -2,16 +2,16 @@
 
 # GitHub Contributions
 
-This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README. As an example, here's the markdown for displaying my contributions (Seen above):
+This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README. To get started, simply paste this into your README and change `YOUR_GITHUB_USERNAME` to be your username.
 
 ```md
-![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600)
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME)
 ```
 
 This can also be used in HTML images:
 
 ```html
-<img src="https://github.pumbas.net/api/contributions/pumbas600" alt="pumbas600's Contributions"/>
+<img src="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME" alt="YOUR_GITHUB_USERNAME's Contributions"/>
 ```
 
 It works through a simple API that generates an SVG which can be used as an image in markdown. It utilises the amazing chart library [recharts](https://www.npmjs.com/package/recharts) to generate the graph.
@@ -36,7 +36,7 @@ Query Parameter | Description             | Type    | Default Value
 An example using some of these looks like:
 
 ```md
-![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
 ```
 
 ![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
