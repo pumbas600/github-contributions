@@ -1,0 +1,27 @@
+name: 'Bug report'
+description: 'If you have found a bug, please report it here.'
+labels: ['bug']
+body:
+    - type: input
+      id: api-url
+      attributes:
+          label: 'API Url'
+          description: 'What was the url used to access the API?'
+          placeholder: 'E.g: https://github.pumbas.net/api/contributions/pumbas600?days=45'
+      validations:
+          required: true
+    - type: textarea
+      id: problem
+      attributes:
+          label: 'Problem'
+          description: 'Please describe the problem. If you received any errors from the API, please include them here.'
+      validations:
+          required: true
+    - type: textarea
+      id: solution
+      attributes:
+          label: 'Proposed Solution'
+          description: |
+              'If you have a specific idea about how you would like the solution developed, please describe it here.'
+      validations:
+          required: false
