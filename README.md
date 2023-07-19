@@ -40,3 +40,47 @@ An example using some of these looks like:
 ```
 
 ![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
+
+## Responsive Design
+
+You can create responsive design utilising the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags with different `source`s.
+
+### Respecting User's Themes
+
+GitHub has added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which allows you to change the image you display based on the user's theme:
+
+```html
+<picture>
+    <!-- Dark mode image -->
+    <source
+        srcset="https://github.pumbas.net/api/contributions/pumbas600"
+        media="(prefers-color-scheme: dark)"
+    />
+    <!-- Default, light mode image -->
+    <img 
+        src="https://github.pumbas.net/api/contributions/pumbas600?colour=002aff"
+        alt="pumbas600's Contributions"
+    />
+</picture>
+```
+
+### Supporting Mobile
+
+<picture>
+    <source
+        srcset="https://github.pumbas.net/api/contributions/pumbas600?days=15&width=700"
+        media="(max-width: 700px) and (prefers-color-scheme: dark)"
+    />
+    <source
+        srcset="https://github.pumbas.net/api/contributions/pumbas600?colour=002aff&days=15&width=700"
+        media="(max-width: 700px) and (prefers-color-scheme: light)"
+    />
+    <source
+        srcset="https://github.pumbas.net/api/contributions/pumbas600"
+        media="(prefers-color-scheme: dark)"
+    />
+    <img 
+        src="https://github.pumbas.net/api/contributions/pumbas600?colour=002aff"
+        alt="pumbas600's Contributions"
+    />
+</picture>
