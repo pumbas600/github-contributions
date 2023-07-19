@@ -1,13 +1,5 @@
 <picture>
     <source
-        srcset="https://github.pumbas.net/api/contributions/pumbas600?days=15&width=700"
-        media="(max-width: 700px) and (prefers-color-scheme: dark)"
-    />
-    <source
-        srcset="https://github.pumbas.net/api/contributions/pumbas600?colour=002aff&days=15&width=700"
-        media="(max-width: 700px) and (prefers-color-scheme: light)"
-    />
-    <source
         srcset="https://github.pumbas.net/api/contributions/pumbas600"
         media="(prefers-color-scheme: dark)"
     />
@@ -58,13 +50,9 @@ An example using some of these looks like:
 
 ![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
 
-## Responsive Design
+## Respecting User's Themes
 
-You can create responsive design utilising the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags with different `source`s.
-
-### Respecting User's Themes
-
-GitHub has added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which allows you to change the image you display based on the user's theme:
+GitHub has added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
 
 ```html
 <picture>
@@ -80,26 +68,3 @@ GitHub has added support for the [`prefers-color-scheme` media query](https://gi
     />
 </picture>
 ```
-
-### Supporting Mobile
-
-On mobile, the image can be a little too wide and so it becomes hard to see the chart. Instead, it's useful to limit the number of days shown and decrease the width of the generated chart on mobile.
-
-```html
-<picture>
-    <!-- Mobile image -->
-    <source
-        srcset="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?days=15&width=700"
-        media="(max-width: 700px)"
-    />
-    <!-- Default, desktop image -->
-    <img 
-        src="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME"
-        alt="pumbas600's Contributions"
-    />
-</picture>
-```
-
-### Combining Both
-
-You can combine media queries by adding `and` between them. To support both light and dark themes on desktop and mobile you will require 4 total urls.
