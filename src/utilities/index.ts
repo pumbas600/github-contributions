@@ -9,3 +9,11 @@ export function fromEntries<ObjectType extends object>(
 ): ObjectType {
     return Object.fromEntries(entries) as ObjectType;
 }
+
+export function required<T>(value: T | undefined, valueName: string): T {
+    if (value === undefined) {
+        throw new Error(`${valueName} is required but was undefined`);
+    }
+
+    return value;
+}

@@ -2,6 +2,7 @@ import ContributionsChart from '@/components/ContributionsChart';
 import { QueryParamsModel } from '@/models/QueryParams';
 import { ContributionsService } from '@/services/ContributionsService';
 import { ErrorService } from '@/services/ErrorService';
+import { MetricsService } from '@/services/MetricsService';
 import { OptionsService } from '@/services/OptionsService';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToString } from 'react-dom/server';
@@ -13,14 +14,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
         const options = OptionsService.getOptions(queryOptions);
 
-        const contributions = await ContributionsService.getContributions(username, options.from, options.to);
+        const [contributions, fetchingMs] = await ContributionsService.getContributions(
+            username,
+            options.from,
+            options.to,
+        );
 
         const start = Date.now();
         const html = renderToString(
             <ContributionsChart username={username} options={options} contributions={contributions} />,
         );
 
-        console.log(`Rendered chart in ${Date.now() - start}ms`);
+        const chartRenderingMs = Date.now() - start;
 
         // Remove surrounding <div></div>
         const htmlWithoutDiv = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
@@ -46,6 +51,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 </style>
                 ${htmlWithoutDiv}
             </svg>`;
+
+        MetricsService.logContributionsRequest({ username, fetchingMs, chartRenderingMs });
 
         res.status(200)
             .setHeader('Content-Type', 'image/svg+xml')
