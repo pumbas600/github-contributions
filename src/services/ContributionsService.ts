@@ -7,7 +7,7 @@ import { ContributionResponse, ContributionResponseError } from '@/types/interfa
 export namespace ContributionsService {
     const WARN_RATE_LIMIT_BOUNDARY = 100;
 
-    const HEADERS = new Headers({ Authorization: `bearer ${Config.Github.Token}` });
+    const HEADERS = new Headers({ Authorization: `bearer ${Config.github.token}` });
 
     function isUserNotFound(res: ContributionResponseError): boolean {
         return res.errors.some(
