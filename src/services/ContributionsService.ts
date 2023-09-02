@@ -1,4 +1,4 @@
-import { Config } from '@/config';
+import Config from '@/config';
 import InternalServerError from '@/errors/InternalServerError';
 import NotFoundError from '@/errors/NotFoundError';
 import Contribution from '@/types/interfaces/Contribution';

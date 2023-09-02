@@ -1,6 +1,6 @@
 import { required } from '@/utilities';
 
-export const Config = {
+const Config = {
     github: {
         token: required(process.env.GITHUB_TOKEN, 'GITHUB_TOKEN'),
     },
@@ -14,3 +14,5 @@ export const Config = {
         masurementId: required(process.env.FIREBASE_MEASUREMENT_ID, 'FIREBASE_MEASUREMENT_ID'),
     },
 } as const;
+
+export default Config;
