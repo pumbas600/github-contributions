@@ -1,49 +1,10 @@
 import InternalServerError from '@/errors/InternalServerError';
 import NotFoundError from '@/errors/NotFoundError';
 import Contribution from '@/types/interfaces/Contribution';
+import { ContributionResponse, ContributionResponseError } from '@/types/interfaces/ContributionResponses';
 
 export namespace ContributionsService {
     const WARN_RATE_LIMIT_BOUNDARY = 100;
-
-    interface ContributionDay {
-        contributionCount: number;
-        date: string;
-    }
-
-    interface ContributionResponseData {
-        data: {
-            user: {
-                contributionsCollection: {
-                    contributionCalendar: {
-                        totalContributions: number;
-                        weeks: {
-                            contributionDays: ContributionDay[];
-                        }[];
-                    };
-                };
-            };
-            rateLimit: {
-                limit: number;
-                cost: number;
-                remaining: number;
-                resetAt: string;
-            };
-        };
-    }
-
-    interface ContributionResponseError {
-        errors: {
-            type: 'NOT_FOUND';
-            path: string[];
-            locations: {
-                line: number;
-                column: number;
-            }[];
-            message: string;
-        }[];
-    }
-
-    type ContributionResponse = ContributionResponseData | ContributionResponseError;
 
     const HEADERS = new Headers({ Authorization: `bearer ${process.env.GITHUB_TOKEN}` });
 
@@ -88,6 +49,7 @@ export namespace ContributionsService {
             body: JSON.stringify(body),
             headers: HEADERS,
         });
+
         console.log(`Fetching contributions took ${Date.now() - start}ms`);
 
         const json = (await res.json()) as ContributionResponse;
@@ -106,7 +68,6 @@ export namespace ContributionsService {
 
         const contributions: Contribution[] = [];
 
-        start = Date.now();
         json.data.user.contributionsCollection.contributionCalendar.weeks.forEach((week) => {
             week.contributionDays.forEach((contributionDay) => {
                 const contributionDate = new Date(contributionDay.date).getDate();
@@ -116,7 +77,6 @@ export namespace ContributionsService {
                 });
             });
         });
-        console.log(`Parsing contributions took ${Date.now() - start}ms`);
 
         return contributions;
     }
