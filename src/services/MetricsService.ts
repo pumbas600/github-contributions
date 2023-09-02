@@ -15,6 +15,6 @@ export namespace MetricsService {
         };
 
         const docRef = await addDoc(githubContributionMetrics, metric);
-        console.log(`Logged contributions request for user '${metric.username}' with id: ${docRef.id}`);
+        console.log(`Logged contributions request for user '${metric.username}' with id: '${docRef.id}'.`);
     }
 }
