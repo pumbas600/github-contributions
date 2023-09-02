@@ -41,7 +41,7 @@ export namespace ContributionsService {
         };
     }
 
-    export async function getContributions(username: string, from: Date, to: Date): Promise<Contribution[]> {
+    export async function getContributions(username: string, from: Date, to: Date): Promise<[Contribution[], number]> {
         const body = generateGraphQLBody(username, from, to);
 
         let start = Date.now();
@@ -51,7 +51,7 @@ export namespace ContributionsService {
             headers: HEADERS,
         });
 
-        console.log(`Fetching contributions took ${Date.now() - start}ms`);
+        const fetchingMs = Date.now() - start;
 
         const json = (await res.json()) as ContributionResponse;
         if ('errors' in json) {
@@ -79,6 +79,6 @@ export namespace ContributionsService {
             });
         });
 
-        return contributions;
+        return [contributions, fetchingMs];
     }
 }
