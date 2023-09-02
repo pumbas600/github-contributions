@@ -1,3 +1,4 @@
+import { Config } from '@/config';
 import InternalServerError from '@/errors/InternalServerError';
 import NotFoundError from '@/errors/NotFoundError';
 import Contribution from '@/types/interfaces/Contribution';
@@ -6,7 +7,7 @@ import { ContributionResponse, ContributionResponseError } from '@/types/interfa
 export namespace ContributionsService {
     const WARN_RATE_LIMIT_BOUNDARY = 100;
 
-    const HEADERS = new Headers({ Authorization: `bearer ${process.env.GITHUB_TOKEN}` });
+    const HEADERS = new Headers({ Authorization: `bearer ${Config.Github.Token}` });
 
     function isUserNotFound(res: ContributionResponseError): boolean {
         return res.errors.some(
