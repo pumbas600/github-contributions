@@ -20,4 +20,5 @@ async function logCacheHit(request: NextRequest): Promise<void> {
 
 export const config = {
     matcher: '/api/contributions/:username*',
+    unstable_allowDynamic: ['/node_modules/@firebase/firestore/**'],
 };
