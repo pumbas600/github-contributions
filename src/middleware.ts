@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function middleware(request: NextRequest): Promise<NextResponse> {
     const response = NextResponse.next();
 
+    console.log(response.redirected);
     if (response.status === 304) {
         await logCacheHit(request);
     }
