@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 ${htmlWithoutDiv}
             </svg>`;
 
-        MetricsService.logContributionsRequest({ username, fetchingMs, chartRenderingMs });
+        await MetricsService.logContributionsRequest({ username, fetchingMs, chartRenderingMs });
 
         // Only allow vercel to cache the response.
         // See: https://vercel.com/docs/edge-network/caching#cdn-cache-control

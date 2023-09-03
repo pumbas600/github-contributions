@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest): NextResponse {
+export async function middleware(request: NextRequest): Promise<NextResponse> {
     const response = NextResponse.next();
 
     if (response.status === 304) {
-        logCacheHit(request);
+        await logCacheHit(request);
     }
 
     return response;
@@ -15,7 +15,7 @@ async function logCacheHit(request: NextRequest): Promise<void> {
     const { MetricsService } = await import('@/services/MetricsService');
 
     const username = request.nextUrl.pathname.substring('/api/contributions/'.length);
-    MetricsService.logCachedContributionsRequest(username);
+    await MetricsService.logCachedContributionsRequest(username);
 }
 
 export const config = {
