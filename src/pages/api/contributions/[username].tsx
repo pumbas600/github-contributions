@@ -54,9 +54,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         MetricsService.logContributionsRequest({ username, fetchingMs, chartRenderingMs });
 
+        // Only allow vercel to cache the response.
+        // See: https://vercel.com/docs/edge-network/caching#cdn-cache-control
         res.status(200)
             .setHeader('Content-Type', 'image/svg+xml')
-            .setHeader('Cache-Control', `public, s-maxage=${CACHE_RESPONSE_SECONDS}`)
+            .setHeader('Vercel-CDN-Cache-Control', `public, s-maxage=${CACHE_RESPONSE_SECONDS}`)
             .send(svg);
     } catch (error) {
         ErrorService.handleError(res, error);
