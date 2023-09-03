@@ -1,39 +1,32 @@
 import { db } from '@/firebase';
-import ContributionMetric, {
-    CachedContributionMetric,
-    UncachedContributionMetric,
-} from '@/types/interfaces/ContributionMetric';
+import { ContributionRequestMetric, ContributionResponseMetric } from '@/types/interfaces/ContributionMetric';
 import { addDoc, collection } from 'firebase/firestore';
 
 export namespace MetricsService {
-    const githubContributionMetrics = collection(db, 'github_contribution_metrics');
+    const contributionRequestMetrics = collection(db, 'contribution_request_metrics');
+    const contributionResponseMetrics = collection(db, 'contribution_response_metrics');
 
-    export async function logContributionsRequest(
-        partialMetric: Omit<UncachedContributionMetric, 'date' | 'environment' | 'cacheHit'>,
+    export async function logContributionResponse(
+        partialMetric: Omit<ContributionResponseMetric, 'date' | 'environment'>,
     ): Promise<void> {
-        const metric: UncachedContributionMetric = {
+        const metric: ContributionResponseMetric = {
             ...partialMetric,
-            cacheHit: false,
             date: new Date(),
             environment: process.env.NODE_ENV,
         };
 
-        logMetric(metric);
+        const docRef = await addDoc(contributionResponseMetrics, metric);
+        console.log(`Logged contribution response for user '${metric.username}' with id: '${docRef.id}'.`);
     }
 
-    export async function logCachedContributionsRequest(username: string): Promise<void> {
-        const metric: CachedContributionMetric = {
+    export async function logContributionRequest(username: string): Promise<void> {
+        const metric: ContributionRequestMetric = {
             username,
-            cacheHit: true,
             date: new Date(),
             environment: process.env.NODE_ENV,
         };
 
-        logMetric(metric);
-    }
-
-    async function logMetric(metric: ContributionMetric) {
-        const docRef = await addDoc(githubContributionMetrics, metric);
-        console.log(`Logged contributions request for user '${metric.username}' with id: '${docRef.id}'.`);
+        const docRef = await addDoc(contributionRequestMetrics, metric);
+        console.log(`Logged contribution request for user '${metric.username}' with id: '${docRef.id}'.`);
     }
 }
