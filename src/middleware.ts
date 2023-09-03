@@ -1,9 +1,10 @@
-import { MetricsService } from '@/services/MetricsService';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
     const username = request.nextUrl.pathname.substring('/api/contributions/'.length);
-    await MetricsService.logContributionRequest(username);
+
+    await fetch(new URL(`${request.nextUrl.origin}/api/metrics/${username}`).href);
+
     return NextResponse.next();
 }
 
