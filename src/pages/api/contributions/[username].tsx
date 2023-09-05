@@ -7,8 +7,6 @@ import { OptionsService } from '@/services/OptionsService';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToString } from 'react-dom/server';
 
-const CACHE_RESPONSE_SECONDS = 60 * 5; // 5 minutes
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
@@ -56,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200)
             .setHeader('Content-Type', 'image/svg+xml')
-            .setHeader('Cache-Control', `public, s-maxage=${CACHE_RESPONSE_SECONDS}`)
+            .setHeader('Cache-Control', `public, s-maxage=${options.cache}`)
             .send(svg);
     } catch (error) {
         ErrorService.handleError(res, error);

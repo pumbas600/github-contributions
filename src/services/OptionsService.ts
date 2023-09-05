@@ -12,6 +12,7 @@ export namespace OptionsService {
         height: 450,
         days: 30,
         area: true,
+        cache: 60 * 5, // 5 Minutes
     };
 
     const ONE_DAY = 1000 * 60 * 60 * 24;
