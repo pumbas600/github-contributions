@@ -2,7 +2,7 @@
 # pulls latest changes, then restarts the process instance
 # process is managed via PM2
 
-processName="github_contributions"
+processName="github-contributions"
 
 # exit when any command fails
 set -e
@@ -25,4 +25,4 @@ echo "Killing old instance"
 pm2 delete $processName --silent || true 
 
 echo "Starting new instance"
-pm2 start . --name $processName --silent
+pm2 start "npm run start" --name $processName --silent
