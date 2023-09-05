@@ -41,6 +41,7 @@ Query Parameter | Description             | Type    | Default Value
 `area`          | Whether to shade the area under the curve | `true` or `false` | `true`
 `width`         | The width of the SVG in pixels  | Positive number | `1200`
 `height`        | The height of the SVG in pixels | Positive number | `450`
+`cache`         | The time in seconds a contribution graph can be cached for. A value of 0 can be used to disable caching of the response | Positive number | `300` (5 Minutes)
 
 An example using some of these looks like:
 
