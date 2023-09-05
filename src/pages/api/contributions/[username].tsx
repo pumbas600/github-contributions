@@ -7,7 +7,7 @@ import { OptionsService } from '@/services/OptionsService';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToString } from 'react-dom/server';
 
-const CACHE_RESPONSE_SECONDS = 3600; // 1 hour
+const CACHE_RESPONSE_SECONDS = 60 * 5; // 5 minutes
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
