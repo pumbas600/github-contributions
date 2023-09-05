@@ -11,7 +11,7 @@ export const OptionsModel = z.object({
     to: z.coerce.date().optional(),
     days: z.coerce.number().positive().optional(),
     area: BooleanModel.optional(),
-    cache: z.number().positive().optional(),
+    cache: z.coerce.number().min(0).optional(),
 });
 
 export type Options = Required<z.infer<typeof OptionsModel>>;
