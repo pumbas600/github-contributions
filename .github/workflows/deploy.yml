@@ -17,6 +17,6 @@ jobs:
                   username: ${{ secrets.USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
-                      cd services/github_contributions
+                      cd services/github-contributions
                       chmod +x scripts/deploy.sh
                       ./scripts/deploy.sh
