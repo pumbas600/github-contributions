@@ -7,10 +7,22 @@ import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
-import { Box, Button, Container, Paper, Stack, TextField, TextFieldProps, Typography, styled } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Container,
+    Paper,
+    Stack,
+    TextField,
+    TextFieldProps,
+    Typography,
+    styled,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
-import React, { ChangeEvent, useState } from 'react';
+import Link from 'next/link';
+import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
     padding: 0,
@@ -45,6 +57,7 @@ export default function Home() {
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
     const debouncedGeneratedUrl = useDebounce(generatedUrl);
+    const showRenderedChart = debouncedGeneratedUrl !== null && errors.username === undefined;
 
     const isBackgroundTransparent = options.bgColour === 'transparent';
     const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
@@ -150,6 +163,10 @@ export default function Home() {
         handleGenerate(OptionsService.DefaultOptions, username);
     }
 
+    function handleApiError(): void {
+        setErrors((errors) => ({ ...errors, username: 'Username not found' }));
+    }
+
     return (
         <>
             <Head>
@@ -161,7 +178,7 @@ export default function Home() {
             <main>
                 <ResponsiveContainer maxWidth="md">
                     <ContentPaper elevation={1}>
-                        <Stack gap={2}>
+                        <Stack gap={3}>
                             <Box>
                                 <Typography variant="h5">GitHub Contributions Graph Generator</Typography>
                                 <Typography>Enter your username to get started</Typography>
@@ -176,11 +193,12 @@ export default function Home() {
                                 error={errors.username !== undefined}
                                 helperText={errors.username}
                             />
-
-                            {debouncedGeneratedUrl ? (
-                                <ChartImg src={debouncedGeneratedUrl} alt={contributionImageAltText} />
-                            ) : (
-                                <Box>Enter a username to generate a preview!</Box>
+                            {showRenderedChart && (
+                                <ChartImg
+                                    src={debouncedGeneratedUrl}
+                                    alt={contributionImageAltText}
+                                    onError={handleApiError}
+                                />
                             )}
                             <Grid container columnSpacing={3} rowSpacing={{ xs: 3, md: 4 }} columns={{ xs: 1, md: 3 }}>
                                 <Grid xs={1.5}>
@@ -233,6 +251,10 @@ export default function Home() {
                                 <CodeBlock code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`} />
                             </>
                         )}
+                        <Alert severity="info">
+                            For more information, refer to the documentation on{' '}
+                            <Link href="https://github.com/pumbas600/github-contributions">GitHub</Link>.
+                        </Alert>
                     </ContentPaper>
                 </ResponsiveContainer>
             </main>
