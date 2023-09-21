@@ -1,5 +1,5 @@
 import CodeBlock from '@/components/CodeBlock';
-import Collapsible from '@/components/Collapsible';
+import ChartImg from '@/components/forms/ChartImg';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
@@ -76,7 +76,6 @@ export default function Home() {
     function getTextFieldProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
         return {
             fullWidth: true,
-            size: 'small',
             error: !!errors[key],
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
@@ -89,7 +88,6 @@ export default function Home() {
     ): ColourFieldProps {
         return {
             fullWidth: true,
-            size: 'small',
             error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
@@ -133,7 +131,7 @@ export default function Home() {
     }
 
     function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
-        handleOptionChange('bgColour', e.target.checked ? 'transparent' : OptionsService.DefaultNonTransparentBgColour);
+        handleOptionChange('bgColour', e.target.checked ? OptionsService.DefaultNonTransparentBgColour : 'transparent');
     }
 
     function handleGenerate(options: OptionsService.ContributionOptions, username: string): void {
@@ -165,8 +163,8 @@ export default function Home() {
                     <ContentPaper elevation={1}>
                         <Stack gap={2}>
                             <Box>
-                                <Typography variant="h6">GitHub Contributions Graph Generator</Typography>
-                                <Typography>Enter your username to get started.</Typography>
+                                <Typography variant="h5">GitHub Contributions Graph Generator</Typography>
+                                <Typography>Enter your username to get started</Typography>
                             </Box>
                             <TextField
                                 required
@@ -180,15 +178,15 @@ export default function Home() {
                             />
 
                             {debouncedGeneratedUrl ? (
-                                <img src={debouncedGeneratedUrl} alt={contributionImageAltText} />
+                                <ChartImg src={debouncedGeneratedUrl} alt={contributionImageAltText} />
                             ) : (
                                 <Box>Enter a username to generate a preview!</Box>
                             )}
-                            <Grid container columnSpacing={2} rowSpacing={{ xs: 2, md: 3 }} columns={{ xs: 1, md: 3 }}>
+                            <Grid container columnSpacing={3} rowSpacing={{ xs: 3, md: 4 }} columns={{ xs: 1, md: 3 }}>
                                 <Grid xs={1.5}>
                                     <LabelledCheckbox
-                                        label="Use transparent background"
-                                        checked={isBackgroundTransparent}
+                                        label="Use coloured background"
+                                        checked={!isBackgroundTransparent}
                                         onChange={handleChangeTransparentBackground}
                                     />
                                 </Grid>
@@ -200,18 +198,18 @@ export default function Home() {
                                     />
                                 </Grid>
                                 <Grid xs={isBackgroundTransparent ? 1.5 : 1}>
-                                    <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                    <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
                                 </Grid>
                                 {!isBackgroundTransparent && (
                                     <Grid xs={1}>
-                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />{' '}
+                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                                     </Grid>
                                 )}
                                 <Grid xs={isBackgroundTransparent ? 1.5 : 1}>
-                                    <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
+                                    <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
                                 </Grid>
                                 <Grid xs={1}>
-                                    <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
+                                    <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
                                 </Grid>
                                 <Grid xs={1}>
                                     <NumberField label="Width (px)" {...getTextFieldProps('width')} />
