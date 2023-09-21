@@ -8,13 +8,7 @@ import '@fontsource/inter/700.css';
 export const theme = createTheme({
     palette: {
         primary: {
-            main: '#30B0C7',
-            light: '#C0E7EE',
-            contrastText: '#FFFFFF',
-        },
-        secondary: {
-            main: '#FF9500',
-            light: 'FFDFB2',
+            main: '#3287f5',
         },
         background: {
             default: '#F2F2F7',
@@ -36,15 +30,26 @@ export const theme = createTheme({
         ].join(','),
     },
     components: {
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    boxShadow:
+                        '0px 4px 6px -1px rgba(0,0,0,0.15), 0px 3px 10px 1px rgba(0,0,0,0.12), 0px 1px 3px 0px rgba(0,0,0,0.10)',
+                },
+            },
+        },
         MuiButton: {
             defaultProps: {
                 variant: 'contained',
             },
             styleOverrides: {
                 root: {
-                    padding: '8px 20px',
+                    paddingInline: '0.75rem',
                     textTransform: 'none',
                     fontSize: '1rem',
+                },
+                contained: {
+                    boxShadow: 'rgba(0, 0, 0, 0.12) 0px 4px 3px -2px, rgba(0, 0, 0, 0.10) 0px 1px 5px 0px',
                 },
             },
         },
