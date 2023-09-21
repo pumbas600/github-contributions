@@ -7,10 +7,10 @@ import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
-import { Button, Container, Paper, Stack, TextField, TextFieldProps, styled } from '@mui/material';
+import { Box, Button, Container, Paper, Stack, TextField, TextFieldProps, Typography, styled } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
     padding: 0,
@@ -36,26 +36,27 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
     },
 }));
 
-type OptionErrors = Partial<Record<keyof Options, string>>;
+type OptionErrors = Partial<Record<keyof Options | 'username', string>>;
 
 export default function Home() {
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState<string>('');
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
     const [errors, setErrors] = useState<OptionErrors>({});
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
-    const debouncedGeneratedUrl = useDebounce(generatedUrl, 1200);
+    const debouncedGeneratedUrl = useDebounce(generatedUrl);
 
-    const transparentBackground = options.bgColour === 'transparent';
-    const resetButtonIsVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
+    const isBackgroundTransparent = options.bgColour === 'transparent';
+    const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
     const contributionImageAltText = `${username}'s GitHub Contributions`;
 
-    function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
         const username = e.target.value;
         setUsername(username);
 
         if (username.length == 0) {
             setGeneratedUrl(null);
+            setErrors((errors) => ({ ...errors, username: 'Username is required' }));
         } else {
             handleGenerate(options, username);
         }
@@ -89,7 +90,7 @@ export default function Home() {
         return {
             fullWidth: true,
             size: 'small',
-            error: !!errors[key],
+            error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? OptionsService.DefaultOptions[key],
             onChange: (value) => handleOptionChange(key, value),
@@ -132,7 +133,7 @@ export default function Home() {
     }
 
     function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
-        handleOptionChange('bgColour', e.target.checked ? 'transparent' : OptionsService.DefaultOptions.bgColour);
+        handleOptionChange('bgColour', e.target.checked ? 'transparent' : OptionsService.DefaultNonTransparentBgColour);
     }
 
     function handleGenerate(options: OptionsService.ContributionOptions, username: string): void {
@@ -162,7 +163,11 @@ export default function Home() {
             <main>
                 <ResponsiveContainer maxWidth="md">
                     <ContentPaper elevation={1}>
-                        <Stack gap={1}>
+                        <Stack gap={2}>
+                            <Box>
+                                <Typography variant="h6">GitHub Contributions Graph Generator</Typography>
+                                <Typography>Enter your username to get started.</Typography>
+                            </Box>
                             <TextField
                                 required
                                 fullWidth
@@ -170,69 +175,62 @@ export default function Home() {
                                 placeholder="E.g. pumbas600"
                                 value={username}
                                 onChange={handleUsernameChange}
+                                error={errors.username !== undefined}
+                                helperText={errors.username}
                             />
-                            <Collapsible title="Theme Options">
-                                <Grid
-                                    container
-                                    columnSpacing={2}
-                                    rowSpacing={{ xs: 2, md: 3 }}
-                                    columns={{ xs: 1, md: 3 }}
-                                >
-                                    <Grid xs={1.5}>
-                                        <LabelledCheckbox
-                                            label="Use transparent background"
-                                            checked={transparentBackground}
-                                            onChange={handleChangeTransparentBackground}
-                                        />
-                                    </Grid>
-                                    <Grid xs={1.5}>
-                                        <LabelledCheckbox
-                                            label="Shade area below the line"
-                                            checked={options.area}
-                                            onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                        />
-                                    </Grid>
-                                    <Grid xs={transparentBackground ? 1.5 : 1}>
-                                        <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
-                                    </Grid>
-                                    {!transparentBackground && (
-                                        <Grid xs={1}>
-                                            <ColourField
-                                                label="Background Colour"
-                                                {...getColourFieldProps('bgColour')}
-                                            />{' '}
-                                        </Grid>
-                                    )}
-                                    <Grid xs={transparentBackground ? 1.5 : 1}>
-                                        <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
-                                    </Grid>
-                                    <Grid xs={1}>
-                                        <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
-                                    </Grid>
-                                    <Grid xs={1}>
-                                        <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                                    </Grid>
-                                    <Grid xs={1}>
-                                        <NumberField label="Height (px)" {...getTextFieldProps('height')} />
-                                    </Grid>
-                                    {resetButtonIsVisible && (
-                                        <Grid xs={1} md={3}>
-                                            <Stack direction="row-reverse">
-                                                <Button variant="text" size="small" onClick={handleResetToDefaults}>
-                                                    Reset to defaults
-                                                </Button>
-                                            </Stack>
-                                        </Grid>
-                                    )}
+
+                            {debouncedGeneratedUrl ? (
+                                <img src={debouncedGeneratedUrl} alt={contributionImageAltText} />
+                            ) : (
+                                <Box>Enter a username to generate a preview!</Box>
+                            )}
+                            <Grid container columnSpacing={2} rowSpacing={{ xs: 2, md: 3 }} columns={{ xs: 1, md: 3 }}>
+                                <Grid xs={1.5}>
+                                    <LabelledCheckbox
+                                        label="Use transparent background"
+                                        checked={isBackgroundTransparent}
+                                        onChange={handleChangeTransparentBackground}
+                                    />
                                 </Grid>
-                            </Collapsible>
+                                <Grid xs={1.5}>
+                                    <LabelledCheckbox
+                                        label="Shade area below the line"
+                                        checked={options.area}
+                                        onChange={(e) => handleOptionChange('area', e.target.checked)}
+                                    />
+                                </Grid>
+                                <Grid xs={isBackgroundTransparent ? 1.5 : 1}>
+                                    <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                                </Grid>
+                                {!isBackgroundTransparent && (
+                                    <Grid xs={1}>
+                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />{' '}
+                                    </Grid>
+                                )}
+                                <Grid xs={isBackgroundTransparent ? 1.5 : 1}>
+                                    <ColourField label="Dot Colour" {...getColourFieldProps('dotColour')} />
+                                </Grid>
+                                <Grid xs={1}>
+                                    <NumberField label="Duration (Days)" {...getTextFieldProps('days')} />
+                                </Grid>
+                                <Grid xs={1}>
+                                    <NumberField label="Width (px)" {...getTextFieldProps('width')} />
+                                </Grid>
+                                <Grid xs={1}>
+                                    <NumberField label="Height (px)" {...getTextFieldProps('height')} />
+                                </Grid>
+                                {isResetButtonVisible && (
+                                    <Grid xs={1} md={3}>
+                                        <Stack direction="row-reverse">
+                                            <Button onClick={handleResetToDefaults}>Reset to defaults</Button>
+                                        </Stack>
+                                    </Grid>
+                                )}
+                            </Grid>
                         </Stack>
 
                         {generatedUrl && (
                             <>
-                                {debouncedGeneratedUrl && (
-                                    <img src={debouncedGeneratedUrl} alt={contributionImageAltText} />
-                                )}
                                 <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />
                                 <CodeBlock code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`} />
                             </>
