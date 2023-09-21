@@ -3,7 +3,9 @@ import ChartImg from '@/components/forms/ChartImg';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
+import Header from '@/components/header';
 import Title from '@/components/typography/Title';
+import { GitHubRepoUrl } from '@/data/links';
 import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
@@ -23,7 +25,7 @@ import {
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
     padding: 0,
@@ -178,7 +180,7 @@ export default function Home() {
             </Head>
             <main>
                 <ResponsiveContainer maxWidth="md">
-                    <Title />
+                    <Header />
                     <ContentPaper elevation={1}>
                         <Stack gap={3}>
                             <Typography variant="h6">Enter your username to get started</Typography>
@@ -251,8 +253,8 @@ export default function Home() {
                             </>
                         )}
                         <Alert severity="info">
-                            For more information, refer to the documentation on{' '}
-                            <Link href="https://github.com/pumbas600/github-contributions">GitHub</Link>.
+                            For more information, refer to the documentation on <Link href={GitHubRepoUrl}>GitHub</Link>
+                            .
                         </Alert>
                     </ContentPaper>
                 </ResponsiveContainer>
