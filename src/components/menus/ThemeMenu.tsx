@@ -1,5 +1,6 @@
-import { Box, Button, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { useState, MouseEvent } from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 
@@ -41,6 +42,12 @@ export default function ThemeMenu() {
                         <LightModeIcon color="primary" />
                     </ListItemIcon>
                     <ListItemText>Light</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText>System</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
