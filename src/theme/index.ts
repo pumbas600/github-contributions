@@ -7,9 +7,6 @@ import '@fontsource/inter/700.css';
 
 export const theme = createTheme({
     palette: {
-        primary: {
-            main: '#3287f5',
-        },
         background: {
             default: '#F2F2F7',
             paper: '#FFFFFF',
