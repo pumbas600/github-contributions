@@ -3,6 +3,7 @@ import ChartImg from '@/components/forms/ChartImg';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
+import Title from '@/components/typography/Title';
 import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
@@ -177,12 +178,10 @@ export default function Home() {
             </Head>
             <main>
                 <ResponsiveContainer maxWidth="md">
+                    <Title />
                     <ContentPaper elevation={1}>
                         <Stack gap={3}>
-                            <Box>
-                                <Typography variant="h5">GitHub Contributions Graph Generator</Typography>
-                                <Typography>Enter your username to get started</Typography>
-                            </Box>
+                            <Typography variant="h6">Enter your username to get started</Typography>
                             <TextField
                                 required
                                 fullWidth
