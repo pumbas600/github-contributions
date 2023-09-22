@@ -4,6 +4,7 @@ import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
 import Header from '@/components/header';
+import StyledLink from '@/components/typography/StyledLink';
 import { GitHubRepoUrl } from '@/data/Links';
 import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
@@ -252,8 +253,8 @@ export default function Home() {
                             </>
                         )}
                         <Alert severity="info">
-                            For more information, refer to the documentation on <Link href={GitHubRepoUrl}>GitHub</Link>
-                            .
+                            For more information, refer to the documentation on{' '}
+                            <StyledLink href={GitHubRepoUrl}>GitHub</StyledLink>.
                         </Alert>
                     </ContentPaper>
                 </ResponsiveContainer>
