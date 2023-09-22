@@ -8,11 +8,13 @@ export type ResolvedTheme = 'light' | 'dark';
 
 interface ThemeContextData {
     setTheme(theme: SelectableTheme): void;
+    selectedTheme: SelectableTheme;
     theme: ResolvedTheme;
 }
 
 const ThemeContext = createContext<ThemeContextData>({
     setTheme: () => {},
+    selectedTheme: 'light',
     theme: 'light',
 });
 
@@ -34,7 +36,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     }, [resolvedTheme]);
 
     return (
-        <ThemeContext.Provider value={{ setTheme: setSelectedTheme, theme: resolvedTheme }}>
+        <ThemeContext.Provider value={{ setTheme: setSelectedTheme, selectedTheme, theme: resolvedTheme }}>
             <ThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 {children}
