@@ -1,9 +1,10 @@
 import useLocalStorage from '@/hooks/useLocalStorage';
-import { useMediaQuery } from '@mui/material';
+import { buildTheme } from '@/theme';
+import { CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
 import { ReactNode, createContext, useContext, useMemo } from 'react';
 
-type SelectableTheme = 'light' | 'dark' | 'system';
-type ResolvedTheme = 'light' | 'dark';
+export type SelectableTheme = 'light' | 'dark' | 'system';
+export type ResolvedTheme = 'light' | 'dark';
 
 interface ThemeContextData {
     setTheme(theme: SelectableTheme): void;
@@ -15,7 +16,7 @@ const ThemeContext = createContext<ThemeContextData>({
     theme: 'light',
 });
 
-export const useThemeContext = useContext(ThemeContext);
+export const useThemeContext = () => useContext(ThemeContext);
 
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
     const [selectedTheme, setSelectedTheme] = useLocalStorage<SelectableTheme>('theme', 'light');
@@ -28,9 +29,16 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         return selectedTheme;
     }, [selectedTheme, prefersDarkMode]);
 
+    const muiTheme = useMemo(() => {
+        return buildTheme(resolvedTheme);
+    }, [resolvedTheme]);
+
     return (
         <ThemeContext.Provider value={{ setTheme: setSelectedTheme, theme: resolvedTheme }}>
-            {children}
+            <ThemeProvider theme={muiTheme}>
+                <CssBaseline />
+                {children}
+            </ThemeProvider>
         </ThemeContext.Provider>
     );
 }
