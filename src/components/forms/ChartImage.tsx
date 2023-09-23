@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Paper, Stack, Typography, styled } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export interface ChartImageProps {

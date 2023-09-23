@@ -1,4 +1,4 @@
-import { Box, IconButton, Paper, Tooltip, styled } from '@mui/material';
+import { Box, IconButton, Tooltip, styled } from '@mui/material';
 import Check from '@mui/icons-material/Check';
 import ContentCopy from '@mui/icons-material/ContentCopy';
 import { useEffect, useState } from 'react';
@@ -23,7 +23,9 @@ const Code = styled('code')({
     fontSize: '0.9rem',
 });
 
-const CopyButton = styled(IconButton)<{ isCopied: boolean }>(({ theme, isCopied }) => ({
+const CopyButton = styled(IconButton, {
+    shouldForwardProp: (prop) => prop !== 'isCopied',
+})<{ isCopied: boolean }>(({ theme, isCopied }) => ({
     position: 'absolute',
     right: 8,
     top: 10,
