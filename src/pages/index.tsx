@@ -10,7 +10,6 @@ import StyledLink from '@/components/typography/StyledLink';
 import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
 import useDebounce from '@/hooks/useDebounce';
-import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
 import {

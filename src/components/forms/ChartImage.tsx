@@ -6,6 +6,11 @@ export interface ChartImageProps {
     alt: string;
 }
 
+interface LoadingState {
+    isLoading: boolean;
+    isError: boolean;
+}
+
 /**
  * Restrict the max height of the image in case the user specifies a large height or
  * the chart width is small, which would allow the chart's height to be very large as
@@ -29,17 +34,14 @@ const LoadingContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function ChartImage({ src, alt }: ChartImageProps) {
-    const [isError, setIsError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [{ isLoading, isError }, setLoadingState] = useState<LoadingState>({ isLoading: true, isError: false });
 
     const handleOnError = () => {
-        setIsError(true);
-        setIsLoading(false);
+        setLoadingState({ isLoading: false, isError: true });
     };
 
     useEffect(() => {
-        setIsError(false);
-        setIsLoading(true);
+        setLoadingState({ isLoading: true, isError: false });
     }, [src]);
 
     return (
@@ -49,7 +51,7 @@ export default function ChartImage({ src, alt }: ChartImageProps) {
                     src={src}
                     alt={alt}
                     onError={handleOnError}
-                    onLoad={() => setIsLoading(false)}
+                    onLoad={() => setLoadingState({ isLoading: false, isError: false })}
                     width="100%"
                     height="100%"
                 />
