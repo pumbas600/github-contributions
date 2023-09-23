@@ -27,7 +27,7 @@ import {
     useTheme,
 } from '@mui/material';
 import Head from 'next/head';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
     marginTop: theme.spacing(5),
@@ -42,13 +42,21 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
 type OptionErrors = Partial<Record<keyof Options | 'username', string>>;
 
 export default function Home() {
+    const theme = useTheme();
+
     const [username, setUsername] = useState<string>('');
     const [options, setOptions] = useState(OptionsService.DefaultOptions);
+    const [previousBgColour, setPreviousBgColour] = useState<string | null>(null);
     const [errors, setErrors] = useState<OptionErrors>({});
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
-    const theme = useTheme();
     const debouncedGeneratedUrl = useDebounce(generatedUrl);
+
+    useEffect(() => {
+        if (options.bgColour !== 'transparent') {
+            setPreviousBgColour(options.bgColour);
+        }
+    }, [options.bgColour]);
 
     const showRenderedChart = debouncedGeneratedUrl !== null && errors.username === undefined;
     const isBackgroundTransparent = options.bgColour === 'transparent';
@@ -136,7 +144,10 @@ export default function Home() {
     }
 
     function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
-        handleOptionChange('bgColour', e.target.checked ? theme.palette.background.paper : 'transparent');
+        handleOptionChange(
+            'bgColour',
+            e.target.checked ? previousBgColour ?? theme.palette.background.paper : 'transparent',
+        );
     }
 
     function handleGenerate(options: OptionsService.ContributionOptions, username: string): void {
@@ -175,8 +186,8 @@ export default function Home() {
                             <Box>
                                 <Subtitle>Enter your username to get started</Subtitle>
                                 <Typography variant="body2">
-                                    This playground is coloured after the GitHub default light and dark themes in order
-                                    to accurately create how the charts will look in GitHub READMEs.
+                                    This playground is styled after the GitHub default light and dark themes in order to
+                                    accurately recreate how the charts will look in GitHub READMEs.
                                 </Typography>
                             </Box>
                             <TextField
