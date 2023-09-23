@@ -50,11 +50,20 @@ export default function ChartImage({ src, alt }: ChartImageProps) {
 
     useEffect(() => {
         setLoadingState({ isLoading: true, isError: false });
+
+        // Sometimes it gets stuck in the loading state, so we'll make sure to clear the loading state after 1 second
+        const timeout = setTimeout(() => setLoadingState((state) => ({ ...state, isLoading: false })), 1000);
+        return () => clearTimeout(timeout);
     }, [src]);
 
     return (
         <ChartContainer>
-            {!isError && (
+            {isError ? (
+                <Alert severity="error" sx={{ width: '100%' }}>
+                    <AlertTitle>Not found</AlertTitle>
+                    The given username cannot not be found. Please make sure it matches your GitHub username.
+                </Alert>
+            ) : (
                 <Img
                     src={src}
                     alt={alt}
@@ -62,12 +71,6 @@ export default function ChartImage({ src, alt }: ChartImageProps) {
                     onError={handleOnError}
                     onLoad={() => setLoadingState({ isLoading: false, isError: false })}
                 />
-            )}
-            {isError && (
-                <Alert severity="error" sx={{ width: '100%' }}>
-                    <AlertTitle>Not found</AlertTitle>
-                    The given username cannot not be found. Please make sure it matches your GitHub username.
-                </Alert>
             )}
             {isLoading && (
                 <LoadingContainer>
