@@ -1,10 +1,10 @@
 <picture>
     <source
-        srcset="https://github.pumbas.net/api/contributions/pumbas600"
+        srcset="https://github.pumbas.net/api/contributions/pumbas600?bgColour=161B22"
         media="(prefers-color-scheme: dark)"
     />
     <img 
-        src="https://github.pumbas.net/api/contributions/pumbas600?colour=002aff"
+        src="https://github.pumbas.net/api/contributions/pumbas600?colour=002AFF&bgColour=F6F8FA"
         alt="pumbas600's Contributions"
     />
 </picture>
