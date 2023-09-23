@@ -33,6 +33,14 @@ const LoadingContainer = styled(Stack)(({ theme }) => ({
     width: '100%',
 }));
 
+const Img = styled('img', {
+    shouldForwardProp: (prop) => prop !== 'isLoading',
+})<{ isLoading: boolean }>(({ isLoading }) => ({
+    width: '100%',
+    height: '100%',
+    filter: isLoading ? 'blur(1.5px)' : 'none',
+}));
+
 export default function ChartImage({ src, alt }: ChartImageProps) {
     const [{ isLoading, isError }, setLoadingState] = useState<LoadingState>({ isLoading: true, isError: false });
 
@@ -47,13 +55,12 @@ export default function ChartImage({ src, alt }: ChartImageProps) {
     return (
         <ChartContainer>
             {!isError && (
-                <img
+                <Img
                     src={src}
                     alt={alt}
+                    isLoading={isLoading}
                     onError={handleOnError}
                     onLoad={() => setLoadingState({ isLoading: false, isError: false })}
-                    width="100%"
-                    height="100%"
                 />
             )}
             {isError && (

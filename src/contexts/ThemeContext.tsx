@@ -26,7 +26,7 @@ export interface ThemeContextProviderProps {
 }
 
 export function ThemeContextProvider({ children }: ThemeContextProviderProps) {
-    const [selectedTheme, setSelectedTheme] = useState<SelectableTheme>('light');
+    const [selectedTheme, setSelectedTheme] = useState<SelectableTheme>('system');
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
     useEffect(() => {
