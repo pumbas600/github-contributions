@@ -1,4 +1,5 @@
-import CodeBlock from '@/components/CodeBlock';
+import CodeBlock from '@/components/cards/CodeBlock';
+import PlaygroundCard from '@/components/cards/PlaygroundCard';
 import ChartImg from '@/components/forms/ChartImage';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
@@ -23,19 +24,6 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(3),
-    },
-}));
-
-const ContentCard = styled(Card)(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(3),
-    padding: theme.spacing(4, 8),
-
-    [theme.breakpoints.down('md')]: {
-        borderRadius: 0,
-        gap: theme.spacing(2),
-        padding: theme.spacing(3, 3),
     },
 }));
 
@@ -169,7 +157,7 @@ export default function Home() {
             <main>
                 <ResponsiveContainer maxWidth="md">
                     <Header />
-                    <ContentCard elevation={0}>
+                    <PlaygroundCard>
                         <Stack gap={3}>
                             <Typography variant="h6">Enter your username to get started</Typography>
                             <TextField
@@ -245,7 +233,7 @@ export default function Home() {
                             For more information, refer to the documentation on{' '}
                             <StyledLink href={GitHubRepoUrl}>GitHub</StyledLink>.
                         </Alert>
-                    </ContentCard>
+                    </PlaygroundCard>
                 </ResponsiveContainer>
             </main>
         </>
