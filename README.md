@@ -11,7 +11,7 @@
 
 # GitHub Contributions
 
-This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README. To get started, simply paste this into your README and change `YOUR_GITHUB_USERNAME` to be your username.
+This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README. To get started, simply paste this into your README and change `YOUR_GITHUB_USERNAME` to be your username (case-insensitive).
 
 ```md
 ![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME)
@@ -46,10 +46,10 @@ Query Parameter | Description             | Type    | Default Value
 An example using some of these looks like:
 
 ```md
-![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=DF9149&bgColour=161B22&dotColour=D04E4E)
 ```
 
-![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=5BCDEC&bgColour=0D1117&dotColour=FFFFFF)
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=DF9149&bgColour=161B22&dotColour=D04E4E)
 
 ## Respecting User's Themes
 
@@ -59,12 +59,12 @@ GitHub has added support for the [`prefers-color-scheme` media query](https://gi
 <picture>
     <!-- Dark mode image -->
     <source
-        srcset="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME"
+        srcset="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22"
         media="(prefers-color-scheme: dark)"
     />
     <!-- Default, light mode image -->
     <img 
-        src="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002aff"
+        src="https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA"
         alt="YOUR_GITHUB_USERNAME's Contributions"
     />
 </picture>
