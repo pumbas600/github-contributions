@@ -12,13 +12,15 @@ export interface ChartImageProps {
  * the chart width is small, which would allow the chart's height to be very large as
  * it attempts to fill the width and therefore, scale vertically to match.
  */
-const ChartContainer = styled(Box)(({ theme }) => ({
+const ChartContainer = styled(Box)({
     position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
-    maxHeight: '400px',
-    minHeight: '100px',
-}));
+    '& > img': {
+        maxHeight: '400px',
+        minHeight: '100px',
+    },
+});
 
 const LoadingContainer = styled(Stack)(({ theme }) => ({
     position: 'absolute',
