@@ -1,4 +1,4 @@
-import { Box, IconButton, Tooltip, styled } from '@mui/material';
+import { Box, IconButton, Paper, Tooltip, styled } from '@mui/material';
 import Check from '@mui/icons-material/Check';
 import ContentCopy from '@mui/icons-material/ContentCopy';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ const Pre = styled('pre')(({ theme }) => ({
     padding: theme.spacing(2),
     lineHeight: '1.4rem',
     overflow: 'auto',
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.github.background.codeBlock,
     borderRadius: theme.shape.borderRadius,
     position: 'relative',
     margin: 0,
@@ -23,17 +23,21 @@ const Code = styled('code')({
     fontSize: '0.9rem',
 });
 
-const CopyButtonContainer = styled(IconButton)(({ theme }) => ({
+const CopyButton = styled(IconButton)<{ isCopied: boolean }>(({ theme, isCopied }) => ({
     position: 'absolute',
-    right: 4,
-    top: 5,
-    backgroundColor: theme.palette.background.paper,
+    right: 8,
+    top: 10,
+    backgroundColor: theme.palette.github.background.codeBlock,
     borderRadius: theme.shape.borderRadius,
     border: `1px solid`,
-    borderColor: 'transparent',
+    borderColor: isCopied ? theme.palette.success.main : theme.palette.divider,
+    color: isCopied ? theme.palette.success.main : undefined,
     '&:hover': {
-        borderColor: theme.palette.divider,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.github.background.codeBlock,
+    },
+    '& > svg': {
+        width: '0.9em',
+        height: '0.9em',
     },
 }));
 
@@ -48,18 +52,18 @@ const CodeContainer = styled(Box)({
 });
 
 export default function CodeBlock({ code }: CodeBlockProps) {
-    const [copied, setCopied] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
 
     useEffect(() => {
-        if (copied) {
-            const timeout = setTimeout(() => setCopied(false), 2000);
+        if (isCopied) {
+            const timeout = setTimeout(() => setIsCopied(false), 2000);
             return () => clearTimeout(timeout);
         }
-    }, [copied]);
+    }, [isCopied]);
 
     const handleClick = () => {
         navigator.clipboard.writeText(code);
-        setCopied(true);
+        setIsCopied(true);
     };
 
     return (
@@ -67,15 +71,16 @@ export default function CodeBlock({ code }: CodeBlockProps) {
             <Pre>
                 <Code>{code}</Code>
             </Pre>
-            <Tooltip title="Copied" open={copied} arrow placement="left">
-                <CopyButtonContainer
+            <Tooltip title="Copied" open={isCopied} arrow placement="left">
+                <CopyButton
+                    size="small"
+                    isCopied={isCopied}
                     aria-label="Copy"
                     onClick={handleClick}
-                    color={copied ? 'success' : undefined}
-                    sx={copied ? { visibility: 'visible !important' } : {}}
+                    sx={isCopied ? { visibility: 'visible !important' } : {}}
                 >
-                    {copied ? <Check /> : <ContentCopy />}
-                </CopyButtonContainer>
+                    {isCopied ? <Check /> : <ContentCopy />}
+                </CopyButton>
             </Tooltip>
         </CodeContainer>
     );

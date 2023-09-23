@@ -10,7 +10,7 @@ import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
-import { Alert, Button, Container, Paper, Stack, TextField, TextFieldProps, Typography, styled } from '@mui/material';
+import { Alert, Button, Card, Container, Stack, TextField, TextFieldProps, Typography, styled } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
 import React, { ChangeEvent, useState } from 'react';
@@ -26,11 +26,11 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-const ContentPaper = styled(Paper)(({ theme }) => ({
+const ContentCard = styled(Card)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(3),
-    padding: theme.spacing(5, 12),
+    padding: theme.spacing(4, 8),
 
     [theme.breakpoints.down('md')]: {
         borderRadius: 0,
@@ -169,7 +169,7 @@ export default function Home() {
             <main>
                 <ResponsiveContainer maxWidth="md">
                     <Header />
-                    <ContentPaper elevation={1}>
+                    <ContentCard elevation={0}>
                         <Stack gap={3}>
                             <Typography variant="h6">Enter your username to get started</Typography>
                             <TextField
@@ -244,7 +244,7 @@ export default function Home() {
                             For more information, refer to the documentation on{' '}
                             <StyledLink href={GitHubRepoUrl}>GitHub</StyledLink>.
                         </Alert>
-                    </ContentPaper>
+                    </ContentCard>
                 </ResponsiveContainer>
             </main>
         </>

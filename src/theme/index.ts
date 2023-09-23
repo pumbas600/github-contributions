@@ -1,4 +1,4 @@
-import { Theme, createTheme } from '@mui/material';
+import { PaletteOptions, Theme, createTheme } from '@mui/material';
 import { ResolvedTheme } from '@/contexts/ThemeContext';
 
 import '@fontsource/inter/300.css';
@@ -6,19 +6,47 @@ import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/700.css';
 
+interface GitHubPalette {
+    github: {
+        background: {
+            codeBlock: string;
+        };
+    };
+}
+
+declare module '@mui/material' {
+    interface PaletteOptions extends GitHubPalette {}
+    interface Palette extends GitHubPalette {}
+}
+
 export function buildTheme(theme: ResolvedTheme): Theme {
-    return createTheme({
-        palette: {
-            mode: theme,
-            ...(theme === 'light'
-                ? {
+    const palette: PaletteOptions = {
+        mode: theme,
+        ...(theme === 'light'
+            ? {
+                  divider: '#d0d7de',
+                  background: {
+                      default: '#FFFFFF',
+                      paper: '#FFFFFF',
+                  },
+                  github: {
                       background: {
-                          default: '#F2F2F7',
-                          paper: '#FFFFFF',
+                          codeBlock: '#f6f8fa',
                       },
-                  }
-                : {}),
-        },
+                  },
+              }
+            : {
+                  divider: '',
+                  github: {
+                      background: {
+                          codeBlock: '#0d1117',
+                      },
+                  },
+              }),
+    };
+
+    return createTheme({
+        palette,
         typography: {
             fontFamily: [
                 'Inter',
@@ -39,6 +67,14 @@ export function buildTheme(theme: ResolvedTheme): Theme {
                     elevation1: {
                         boxShadow:
                             '0px 4px 6px -1px rgba(0,0,0,0.15), 0px 3px 10px 1px rgba(0,0,0,0.12), 0px 1px 3px 0px rgba(0,0,0,0.10)',
+                    },
+                },
+            },
+            MuiCard: {
+                styleOverrides: {
+                    root: {
+                        border: `1px solid ${palette.divider}`,
+                        borderRadius: '0.375rem',
                     },
                 },
             },
