@@ -74,7 +74,7 @@ export default function Home() {
         debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
     const isBackgroundTransparent = options.bgColour === 'transparent';
     const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
-    const contributionImageAltText = `${username}'s GitHub Contributions`;
+    const contributionImageAltText = `${username}’s GitHub Contributions`;
 
     function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
         const username = e.target.value;
@@ -251,8 +251,8 @@ export default function Home() {
                             )}
                         </Stack>
                         <Alert severity="info">
-                            For more information, refer to the documentation on{' '}
-                            <StyledLink href={GitHubRepoUrl}>GitHub</StyledLink>.
+                            For more information, refer to{' '}
+                            <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on GitHub.
                         </Alert>
                     </PlaygroundCard>
                 </ResponsiveContainer>
