@@ -1,31 +1,20 @@
 import CodeBlock from '@/components/cards/CodeBlock';
 import PlaygroundCard from '@/components/cards/PlaygroundCard';
 import ChartImg from '@/components/forms/ChartImage';
-import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
-import FormRow from '@/components/forms/FormRow';
-import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
-import NumberField from '@/components/forms/NumberField';
+import PlaygroundOptions, {
+    DefaultOptions,
+    StringifiedOptions,
+    getOptionsWithoutDefaults,
+} from '@/components/forms/playground/PlaygroundOptions';
 import Header from '@/components/header';
 import StyledLink from '@/components/typography/StyledLink';
 import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
 import useDebounce from '@/hooks/useDebounce';
 import { OptionsService } from '@/services/OptionsService';
-import { fromEntries, toEntries } from '@/utilities';
-import {
-    Alert,
-    Box,
-    Button,
-    Container,
-    Stack,
-    TextField,
-    TextFieldProps,
-    Typography,
-    styled,
-    useTheme,
-} from '@mui/material';
+import { Alert, Box, Container, Stack, TextField, Typography, styled } from '@mui/material';
 import Head from 'next/head';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
     marginTop: theme.spacing(5),
@@ -39,41 +28,16 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
 
 type OptionErrors = Partial<Record<keyof OptionsService.ContributionOptions, string>>;
 
-// Stingify all options except booleans as that is what is returned from the inputs.
-type StringifiedOptions = {
-    [Key in keyof OptionsService.ContributionOptions]: OptionsService.ContributionOptions[Key] extends boolean
-        ? boolean
-        : string;
-};
-
-const DefaultOptions = Object.entries(OptionsService.DefaultOptions).reduce<object>((acc, [key, value]) => {
-    if (typeof value === 'boolean') {
-        return { ...acc, [key]: value };
-    }
-    return { ...acc, [key]: value.toString() };
-}, {}) as StringifiedOptions;
-
 export default function Home() {
-    const theme = useTheme();
-
     const [username, setUsername] = useState<string>('');
     const [options, setOptions] = useState(DefaultOptions);
-    const [previousBgColour, setPreviousBgColour] = useState<string | null>(null);
     const [errors, setErrors] = useState<OptionErrors>({});
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
     const debouncedGeneratedUrl = useDebounce(generatedUrl);
 
-    useEffect(() => {
-        if (options.bgColour !== 'transparent') {
-            setPreviousBgColour(options.bgColour);
-        }
-    }, [options.bgColour]);
-
     const showRenderedChart =
         debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
-    const isBackgroundTransparent = options.bgColour === 'transparent';
-    const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
     const contributionImageAltText = `${username}’s GitHub Contributions`;
 
     function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
@@ -87,43 +51,25 @@ export default function Home() {
         }
     }
 
-    function handleOptionChange<Key extends keyof StringifiedOptions>(key: Key, value: StringifiedOptions[Key]): void {
-        const newOptions = { ...options, [key]: value };
+    function generateApiUrl(username: string, options: Partial<StringifiedOptions>): string {
+        const baseUrl = `/api/contributions/${username}`;
+        const url = new URL(baseUrl, window.location.origin);
 
-        setErrors((errors) => ({ ...errors, [key]: undefined }));
-        setOptions(newOptions);
-        handleGenerate(newOptions, username);
+        for (const [key, value] of Object.entries(options)) {
+            if (value === undefined) continue;
+
+            let stringValue = value.toString();
+            if (stringValue.startsWith('#')) {
+                // Remove the hash from the colours
+                stringValue = stringValue.replace('#', '').toUpperCase();
+            }
+            url.searchParams.set(key, stringValue);
+        }
+
+        return url.toString();
     }
 
-    function getTextFieldProps(key: keyof StringifiedOptions): TextFieldProps {
-        return {
-            fullWidth: true,
-            error: !!errors[key],
-            helperText: errors[key],
-            value: options[key] ?? DefaultOptions[key],
-            onChange: (e) => handleOptionChange(key, e.target.value),
-        };
-    }
-
-    function getColourFieldProps(
-        key: keyof Pick<StringifiedOptions, 'colour' | 'bgColour' | 'dotColour'>,
-    ): ColourFieldProps {
-        return {
-            fullWidth: true,
-            error: errors[key] !== undefined,
-            helperText: errors[key],
-            value: options[key] ?? DefaultOptions[key],
-            onChange: (value) => handleOptionChange(key, value),
-        };
-    }
-
-    function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<StringifiedOptions> {
-        return fromEntries<Partial<StringifiedOptions>>(
-            toEntries(options).filter(([key, value]) => value !== DefaultOptions[key]),
-        );
-    }
-
-    function optionsAreValid(optionsWithoutDefaults: Partial<StringifiedOptions>): boolean {
+    const validateOptions = (optionsWithoutDefaults: Partial<StringifiedOptions>): boolean => {
         const errors: OptionErrors = {};
 
         const width = Number(optionsWithoutDefaults.width);
@@ -144,48 +90,22 @@ export default function Home() {
 
         setErrors(errors);
         return !hasErrors;
-    }
-
-    function generateApiUrl(username: string, options: Partial<StringifiedOptions>): string {
-        const baseUrl = `/api/contributions/${username}`;
-        const url = new URL(baseUrl, window.location.origin);
-
-        for (const [key, value] of toEntries(options)) {
-            if (value === undefined) continue;
-
-            let stringValue = value.toString();
-            if (stringValue.startsWith('#')) {
-                // Remove the hash from the colours
-                stringValue = stringValue.replace('#', '').toUpperCase();
-            }
-            url.searchParams.set(key, stringValue);
-        }
-
-        return url.toString();
-    }
-
-    function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
-        handleOptionChange(
-            'bgColour',
-            e.target.checked ? previousBgColour ?? theme.palette.background.paper : 'transparent',
-        );
-    }
+    };
 
     function handleGenerate(options: StringifiedOptions, username: string): void {
         if (username.length === 0) return;
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
-        if (optionsAreValid(optionsWithoutDefaults)) {
+        if (validateOptions(optionsWithoutDefaults)) {
             const generatedUrl = generateApiUrl(username, optionsWithoutDefaults);
             setGeneratedUrl(generatedUrl);
         }
     }
 
-    function handleResetToDefaults(): void {
-        setErrors({});
-        setOptions(DefaultOptions);
-        handleGenerate(DefaultOptions, username);
-    }
+    const handleOptionsChange = (options: StringifiedOptions): void => {
+        setOptions(options);
+        handleGenerate(options, username);
+    };
 
     return (
         <>
@@ -220,35 +140,7 @@ export default function Home() {
                                 <ChartImg src={debouncedGeneratedUrl} alt={contributionImageAltText} />
                             )}
                             {generatedUrl && <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />}
-                            <FormRow rowGap={0.5}>
-                                <LabelledCheckbox
-                                    label="Use coloured background"
-                                    checked={!isBackgroundTransparent}
-                                    onChange={handleChangeTransparentBackground}
-                                />
-                                <LabelledCheckbox
-                                    label="Shade area below the line"
-                                    checked={options.area}
-                                    onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                />
-                            </FormRow>
-                            <FormRow rowGap={3}>
-                                <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
-                                {!isBackgroundTransparent && (
-                                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
-                                )}
-                                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
-                            </FormRow>
-                            <FormRow rowGap={3}>
-                                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
-                                <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                                <NumberField label="Height (px)" {...getTextFieldProps('height')} />
-                            </FormRow>
-                            {isResetButtonVisible && (
-                                <FormRow direction="row-reverse">
-                                    <Button onClick={handleResetToDefaults}>Reset to defaults</Button>
-                                </FormRow>
-                            )}
+                            <PlaygroundOptions errors={errors} options={options} onChange={handleOptionsChange} />
                         </Stack>
                         <Alert severity="info">
                             For more information, refer to{' '}
