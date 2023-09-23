@@ -153,8 +153,12 @@ export default function Home() {
         for (const [key, value] of toEntries(options)) {
             if (value === undefined) continue;
 
-            // Remove the hash from the colours
-            url.searchParams.set(key, value.toString().replace('#', ''));
+            let stringValue = value.toString();
+            if (stringValue.startsWith('#')) {
+                // Remove the hash from the colours
+                stringValue = stringValue.replace('#', '').toUpperCase();
+            }
+            url.searchParams.set(key, stringValue);
         }
 
         return url.toString();
