@@ -11,13 +11,14 @@ const SpacedHeader = styled('header')(({ theme }) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: theme.spacing(3),
+    gap: theme.spacing(1),
 }));
 
 export default function Header() {
     return (
         <SpacedHeader>
             <Title />
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" gap={0.5}>
                 <Link href={GitHubRepoUrl}>
                     <IconButton title="View the source code">
                         <GitHubIcon />

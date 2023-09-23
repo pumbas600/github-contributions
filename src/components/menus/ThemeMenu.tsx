@@ -55,6 +55,7 @@ export default function ThemeMenu() {
                 MenuListProps={{
                     'aria-labelledby': 'theme-button',
                 }}
+                disableScrollLock={true}
             >
                 {Object.entries(ThemeIcons).map(([themeValue, Icon]) => (
                     <ThemeMenuItem

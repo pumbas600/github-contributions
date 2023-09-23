@@ -1,9 +1,5 @@
 import { Typography } from '@mui/material';
 
 export default function Title() {
-    return (
-        <Typography variant="h4" fontWeight="bold">
-            GitHub Contributions Playground
-        </Typography>
-    );
+    return <Typography sx={{ typography: { md: 'h4', xs: 'h5' } }}>GitHub Contributions Playground</Typography>;
 }

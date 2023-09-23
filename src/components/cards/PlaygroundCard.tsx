@@ -14,7 +14,7 @@ const PaddedCard = styled(Card)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         borderRadius: 0,
         gap: theme.spacing(2),
-        padding: theme.spacing(3, 3),
+        padding: 0,
         borderWidth: '0',
     },
 }));

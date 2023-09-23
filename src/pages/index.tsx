@@ -17,7 +17,6 @@ import Head from 'next/head';
 import React, { ChangeEvent, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
-    padding: 0,
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
 
@@ -159,7 +158,9 @@ export default function Home() {
                     <Header />
                     <PlaygroundCard>
                         <Stack gap={3}>
-                            <Typography variant="h6">Enter your username to get started</Typography>
+                            <Typography sx={{ typography: { md: 'h6', xs: 'subtitle1' } }}>
+                                Enter your username to get started
+                            </Typography>
                             <TextField
                                 spellCheck={false}
                                 required
