@@ -53,7 +53,7 @@ export function ThemeContextProvider({ children }: ThemeContextProviderProps) {
     return (
         <ThemeContext.Provider value={{ setTheme, selectedTheme, theme: resolvedTheme }}>
             <ThemeProvider theme={muiTheme}>
-                <CssBaseline />
+                <CssBaseline enableColorScheme />
                 {children}
             </ThemeProvider>
         </ThemeContext.Provider>
