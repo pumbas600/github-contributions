@@ -11,7 +11,11 @@
 
 # GitHub Contributions
 
-This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README. To get started, simply paste this into your README and change `YOUR_GITHUB_USERNAME` to be your username (case-insensitive).
+### [View GitHub Contributions Playground](https://github.pumbas.net)
+
+This is a simple project that lets you to render your recent GitHub contributions as a graph that can be embedded in your README.  To get started, have a look at the [Github Contributions Playground](https://github.pumbas.net) to quickly create and view your contributions graph.
+
+All examples in this README can be simply pasted into your README with `YOUR_GITHUB_USERNAME` changed to be your username (case-insensitive).
 
 ```md
 ![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME)
