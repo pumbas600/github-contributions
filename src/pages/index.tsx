@@ -11,7 +11,18 @@ import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
-import { Alert, Button, Card, Container, Stack, TextField, TextFieldProps, Typography, styled } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Card,
+    Container,
+    Stack,
+    TextField,
+    TextFieldProps,
+    Typography,
+    styled,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
 import React, { ChangeEvent, useState } from 'react';
@@ -158,9 +169,15 @@ export default function Home() {
                     <Header />
                     <PlaygroundCard>
                         <Stack gap={3}>
-                            <Typography sx={{ typography: { md: 'h6', xs: 'subtitle1' } }}>
-                                Enter your username to get started
-                            </Typography>
+                            <Box>
+                                <Typography sx={{ typography: { md: 'h6', xs: 'subtitle1' } }}>
+                                    Enter your username to get started
+                                </Typography>
+                                <Typography variant="body2">
+                                    This playground is coloured after the GitHub default light and dark themes, allowing
+                                    you to see how the chart will look in your README!
+                                </Typography>
+                            </Box>
                             <TextField
                                 spellCheck={false}
                                 required

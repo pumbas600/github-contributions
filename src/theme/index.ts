@@ -41,6 +41,12 @@ export function buildTheme(theme: ResolvedTheme): Theme {
                 '"Segoe UI Emoji"',
                 '"Segoe UI Symbol"',
             ].join(','),
+            h4: {
+                fontWeight: 500,
+            },
+            subtitle1: {
+                fontWeight: 500,
+            },
         },
         components: {
             MuiPaper: {
