@@ -66,6 +66,16 @@ export function buildTheme(theme: ResolvedTheme): Theme {
                     },
                 },
             },
+            MuiAlert: {
+                styleOverrides: {
+                    standardError: {
+                        backgroundColor: theme === 'dark' ? '#2b0a0c' : undefined,
+                    },
+                    standardInfo: {
+                        backgroundColor: theme === 'dark' ? '#0b181e' : undefined,
+                    },
+                },
+            },
             MuiButton: {
                 defaultProps: {
                     variant: 'contained',

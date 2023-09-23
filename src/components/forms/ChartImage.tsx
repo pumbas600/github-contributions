@@ -58,7 +58,7 @@ export default function ChartImage({ src, alt }: ChartImageProps) {
             )}
             {isError && (
                 <Alert severity="error" sx={{ width: '100%' }}>
-                    <AlertTitle>Not Found</AlertTitle>
+                    <AlertTitle>Not found</AlertTitle>
                     The given username cannot not be found. Please make sure it matches your GitHub username.
                 </Alert>
             )}

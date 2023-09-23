@@ -207,7 +207,7 @@ export default function Home() {
                                 spellCheck={false}
                                 required
                                 fullWidth
-                                label="GitHub Username"
+                                label="GitHub username"
                                 placeholder="E.g. pumbas600"
                                 value={username}
                                 onChange={handleUsernameChange}
