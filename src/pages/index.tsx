@@ -38,7 +38,7 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-type OptionErrors = Partial<Record<keyof Options | 'username', string>>;
+type OptionErrors = Partial<Record<keyof OptionsService.ContributionOptions, string>>;
 
 // Stingify all options except booleans as that is what is returned from the inputs.
 type StringifiedOptions = {
@@ -71,7 +71,8 @@ export default function Home() {
         }
     }, [options.bgColour]);
 
-    const showRenderedChart = debouncedGeneratedUrl !== null && Object.keys(errors).length === 0;
+    const showRenderedChart =
+        debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
     const isBackgroundTransparent = options.bgColour === 'transparent';
     const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
     const contributionImageAltText = `${username}'s GitHub Contributions`;
@@ -82,7 +83,6 @@ export default function Home() {
 
         if (username.length == 0) {
             setGeneratedUrl(null);
-            setErrors((errors) => ({ ...errors, username: 'Username is required' }));
         } else {
             handleGenerate(options, username);
         }
@@ -212,8 +212,6 @@ export default function Home() {
                                 placeholder="E.g. pumbas600"
                                 value={username}
                                 onChange={handleUsernameChange}
-                                error={errors.username !== undefined}
-                                helperText={errors.username}
                             />
                             {showRenderedChart && (
                                 <ChartImg src={debouncedGeneratedUrl} alt={contributionImageAltText} />
