@@ -6,19 +6,6 @@ import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/700.css';
 
-interface GitHubPalette {
-    github: {
-        background: {
-            codeBlock: string;
-        };
-    };
-}
-
-declare module '@mui/material' {
-    interface PaletteOptions extends GitHubPalette {}
-    interface Palette extends GitHubPalette {}
-}
-
 export function buildTheme(theme: ResolvedTheme): Theme {
     const palette: PaletteOptions = {
         mode: theme,
@@ -27,20 +14,14 @@ export function buildTheme(theme: ResolvedTheme): Theme {
                   divider: '#d0d7de',
                   background: {
                       default: '#FFFFFF',
-                      paper: '#FFFFFF',
-                  },
-                  github: {
-                      background: {
-                          codeBlock: '#f6f8fa',
-                      },
+                      paper: '#f6f8fa',
                   },
               }
             : {
-                  divider: '',
-                  github: {
-                      background: {
-                          codeBlock: '#0d1117',
-                      },
+                  divider: '#30363d',
+                  background: {
+                      default: '#0d1117',
+                      paper: '#161b22',
                   },
               }),
     };
@@ -73,6 +54,7 @@ export function buildTheme(theme: ResolvedTheme): Theme {
             MuiCard: {
                 styleOverrides: {
                     root: {
+                        backgroundColor: palette.background?.default,
                         border: `1px solid ${palette.divider}`,
                         borderRadius: '0.375rem',
                     },

@@ -12,7 +12,7 @@ const Pre = styled('pre')(({ theme }) => ({
     padding: theme.spacing(2),
     lineHeight: '1.4rem',
     overflow: 'auto',
-    backgroundColor: theme.palette.github.background.codeBlock,
+    backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius,
     position: 'relative',
     margin: 0,
@@ -27,13 +27,14 @@ const CopyButton = styled(IconButton)<{ isCopied: boolean }>(({ theme, isCopied 
     position: 'absolute',
     right: 8,
     top: 10,
-    backgroundColor: theme.palette.github.background.codeBlock,
+    backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius,
     border: `1px solid`,
     borderColor: isCopied ? theme.palette.success.main : theme.palette.divider,
     color: isCopied ? theme.palette.success.main : undefined,
     '&:hover': {
-        backgroundColor: theme.palette.github.background.codeBlock,
+        // Prevent default hover color
+        backgroundColor: theme.palette.background.paper,
     },
     '& > svg': {
         width: '0.9em',

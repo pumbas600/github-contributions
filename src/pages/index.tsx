@@ -173,6 +173,7 @@ export default function Home() {
                         <Stack gap={3}>
                             <Typography variant="h6">Enter your username to get started</Typography>
                             <TextField
+                                spellCheck={false}
                                 required
                                 fullWidth
                                 label="GitHub Username"
