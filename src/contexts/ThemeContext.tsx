@@ -1,7 +1,6 @@
-import useLocalStorage from '@/hooks/useLocalStorage';
 import { buildTheme } from '@/theme';
 import { CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
-import { ReactNode, createContext, useContext, useMemo } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type SelectableTheme = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
@@ -20,9 +19,20 @@ const ThemeContext = createContext<ThemeContextData>({
 
 export const useThemeContext = () => useContext(ThemeContext);
 
-export function ThemeContextProvider({ children }: { children: ReactNode }) {
-    const [selectedTheme, setSelectedTheme] = useLocalStorage<SelectableTheme>('theme', 'light');
+const THEME_KEY = 'github.contributions.theme';
+
+export interface ThemeContextProviderProps {
+    children?: ReactNode;
+}
+
+export function ThemeContextProvider({ children }: ThemeContextProviderProps) {
+    const [selectedTheme, setSelectedTheme] = useState<SelectableTheme>('light');
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    useEffect(() => {
+        const theme = localStorage.getItem(THEME_KEY) as SelectableTheme | null;
+        setSelectedTheme((currentTheme) => theme ?? currentTheme);
+    }, []);
 
     const resolvedTheme = useMemo<ResolvedTheme>(() => {
         if (selectedTheme === 'system') {
@@ -35,8 +45,13 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         return buildTheme(resolvedTheme);
     }, [resolvedTheme]);
 
+    const setTheme = (theme: SelectableTheme): void => {
+        localStorage.setItem(THEME_KEY, theme);
+        setSelectedTheme(theme);
+    };
+
     return (
-        <ThemeContext.Provider value={{ setTheme: setSelectedTheme, selectedTheme, theme: resolvedTheme }}>
+        <ThemeContext.Provider value={{ setTheme, selectedTheme, theme: resolvedTheme }}>
             <ThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 {children}

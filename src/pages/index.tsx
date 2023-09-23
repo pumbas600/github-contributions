@@ -10,21 +10,9 @@ import useDebounce from '@/hooks/useDebounce';
 import { Options } from '@/models/Options';
 import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
-import {
-    Alert,
-    Box,
-    Button,
-    Container,
-    Paper,
-    Stack,
-    TextField,
-    TextFieldProps,
-    Typography,
-    styled,
-} from '@mui/material';
+import { Alert, Button, Container, Paper, Stack, TextField, TextFieldProps, Typography, styled } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
-import Link from 'next/link';
 import React, { ChangeEvent, useState } from 'react';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
