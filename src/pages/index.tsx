@@ -1,5 +1,5 @@
 import CodeBlock from '@/components/CodeBlock';
-import ChartImg from '@/components/forms/ChartImg';
+import ChartImg from '@/components/forms/ChartImage';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
