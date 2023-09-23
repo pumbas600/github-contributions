@@ -23,6 +23,7 @@ import {
     TextFieldProps,
     Typography,
     styled,
+    useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
@@ -46,9 +47,10 @@ export default function Home() {
     const [errors, setErrors] = useState<OptionErrors>({});
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
 
+    const theme = useTheme();
     const debouncedGeneratedUrl = useDebounce(generatedUrl);
-    const showRenderedChart = debouncedGeneratedUrl !== null && errors.username === undefined;
 
+    const showRenderedChart = debouncedGeneratedUrl !== null && errors.username === undefined;
     const isBackgroundTransparent = options.bgColour === 'transparent';
     const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
     const contributionImageAltText = `${username}'s GitHub Contributions`;
@@ -134,7 +136,7 @@ export default function Home() {
     }
 
     function handleChangeTransparentBackground(e: React.ChangeEvent<HTMLInputElement>): void {
-        handleOptionChange('bgColour', e.target.checked ? OptionsService.DefaultNonTransparentBgColour : 'transparent');
+        handleOptionChange('bgColour', e.target.checked ? theme.palette.background.paper : 'transparent');
     }
 
     function handleGenerate(options: OptionsService.ContributionOptions, username: string): void {

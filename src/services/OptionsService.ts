@@ -15,8 +15,6 @@ export namespace OptionsService {
         cache: 60 * 5, // 5 Minutes
     };
 
-    export const DefaultNonTransparentBgColour = '#FFFFFF';
-
     const ONE_DAY = 1000 * 60 * 60 * 24;
 
     export function getOptions(options: Partial<Options> = {}): Options {
