@@ -2,6 +2,7 @@ import CodeBlock from '@/components/cards/CodeBlock';
 import PlaygroundCard from '@/components/cards/PlaygroundCard';
 import ChartImg from '@/components/forms/ChartImage';
 import ColourField, { ColourFieldProps } from '@/components/forms/ColourField';
+import FormRow from '@/components/forms/FormRow';
 import LabelledCheckbox from '@/components/forms/LabelledCheckbox';
 import NumberField from '@/components/forms/NumberField';
 import Header from '@/components/header';
@@ -25,7 +26,6 @@ import {
     styled,
     useTheme,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
 import Head from 'next/head';
 import React, { ChangeEvent, useState } from 'react';
 
@@ -198,54 +198,36 @@ export default function Home() {
                                 />
                             )}
                             {generatedUrl && <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />}
-                            <Grid container columnSpacing={3} rowSpacing={{ xs: 3, md: 4 }} columns={{ xs: 1, md: 3 }}>
-                                <Grid xs={1.5}>
-                                    <LabelledCheckbox
-                                        label="Use coloured background"
-                                        checked={!isBackgroundTransparent}
-                                        onChange={handleChangeTransparentBackground}
-                                    />
-                                </Grid>
-                                <Grid xs={1.5}>
-                                    <LabelledCheckbox
-                                        label="Shade area below the line"
-                                        checked={options.area}
-                                        onChange={(e) => handleOptionChange('area', e.target.checked)}
-                                    />
-                                </Grid>
-                                <Grid xs={isBackgroundTransparent ? 1.5 : 1}>
-                                    <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
-                                </Grid>
+                            <FormRow rowGap={0.5}>
+                                <LabelledCheckbox
+                                    label="Use coloured background"
+                                    checked={!isBackgroundTransparent}
+                                    onChange={handleChangeTransparentBackground}
+                                />
+                                <LabelledCheckbox
+                                    label="Shade area below the line"
+                                    checked={options.area}
+                                    onChange={(e) => handleOptionChange('area', e.target.checked)}
+                                />
+                            </FormRow>
+                            <FormRow rowGap={3}>
+                                <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
                                 {!isBackgroundTransparent && (
-                                    <Grid xs={1}>
-                                        <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
-                                    </Grid>
+                                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                                 )}
-                                <Grid xs={isBackgroundTransparent ? 1.5 : 1}>
-                                    <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
-                                </Grid>
-                                <Grid xs={1}>
-                                    <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
-                                </Grid>
-                                <Grid xs={1}>
-                                    <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                                </Grid>
-                                <Grid xs={1}>
-                                    <NumberField label="Height (px)" {...getTextFieldProps('height')} />
-                                </Grid>
-                                {isResetButtonVisible && (
-                                    <Grid xs={1} md={3}>
-                                        <Stack direction="row-reverse">
-                                            <Button onClick={handleResetToDefaults}>Reset to defaults</Button>
-                                        </Stack>
-                                    </Grid>
-                                )}
-                            </Grid>
+                                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
+                            </FormRow>
+                            <FormRow rowGap={3}>
+                                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
+                                <NumberField label="Width (px)" {...getTextFieldProps('width')} />
+                                <NumberField label="Height (px)" {...getTextFieldProps('height')} />
+                            </FormRow>
+                            {isResetButtonVisible && (
+                                <FormRow direction="row-reverse">
+                                    <Button onClick={handleResetToDefaults}>Reset to defaults</Button>
+                                </FormRow>
+                            )}
                         </Stack>
-
-                        {generatedUrl && (
-                            <CodeBlock code={`<img src="${generatedUrl}" alt="${contributionImageAltText}" />`} />
-                        )}
                         <Alert severity="info">
                             For more information, refer to the documentation on{' '}
                             <StyledLink href={GitHubRepoUrl}>GitHub</StyledLink>.
