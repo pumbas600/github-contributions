@@ -58,6 +58,7 @@ export default function ThemeMenu() {
             >
                 {Object.entries(ThemeIcons).map(([themeValue, Icon]) => (
                     <ThemeMenuItem
+                        key={themeValue}
                         currentTheme={selectedTheme}
                         themeValue={themeValue as SelectableTheme}
                         Icon={Icon}
