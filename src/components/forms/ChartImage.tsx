@@ -1,10 +1,9 @@
-import { Box, CircularProgress, Stack, Typography, styled } from '@mui/material';
+import { Alert, AlertTitle, Box, CircularProgress, Stack, Typography, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export interface ChartImageProps {
     src: string;
     alt: string;
-    onError?: () => void;
 }
 
 /**
@@ -29,16 +28,39 @@ const LoadingContainer = styled(Stack)(({ theme }) => ({
     width: '100%',
 }));
 
-export default function ChartImage({ src, alt, onError }: ChartImageProps) {
+export default function ChartImage({ src, alt }: ChartImageProps) {
+    const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    const handleOnError = () => {
+        setIsError(true);
+        setIsLoading(false);
+    };
+
     useEffect(() => {
+        setIsError(false);
         setIsLoading(true);
     }, [src]);
 
     return (
         <ChartContainer>
-            <img src={src} alt={alt} onError={onError} onLoad={() => setIsLoading(false)} width="100%" height="100%" />
+            {!isError && (
+                <img
+                    src={src}
+                    alt={alt}
+                    onError={handleOnError}
+                    onLoad={() => setIsLoading(false)}
+                    width="100%"
+                    height="100%"
+                    placeholder="Hi"
+                />
+            )}
+            {isError && (
+                <Alert severity="error" sx={{ width: '100%' }}>
+                    <AlertTitle>Error</AlertTitle>
+                    The given username cannot not be found. Please make sure it matches your GitHub username.
+                </Alert>
+            )}
             {isLoading && (
                 <LoadingContainer>
                     <CircularProgress />

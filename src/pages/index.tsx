@@ -184,10 +184,6 @@ export default function Home() {
         handleGenerate(DefaultOptions, username);
     }
 
-    function handleApiError(): void {
-        setErrors((errors) => ({ ...errors, username: 'Username not found' }));
-    }
-
     return (
         <>
             <Head>
@@ -220,11 +216,7 @@ export default function Home() {
                                 helperText={errors.username}
                             />
                             {showRenderedChart && (
-                                <ChartImg
-                                    src={debouncedGeneratedUrl}
-                                    alt={contributionImageAltText}
-                                    onError={handleApiError}
-                                />
+                                <ChartImg src={debouncedGeneratedUrl} alt={contributionImageAltText} />
                             )}
                             {generatedUrl && <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />}
                             <FormRow rowGap={0.5}>
