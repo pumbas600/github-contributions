@@ -17,7 +17,6 @@ import {
     Alert,
     Box,
     Button,
-    Card,
     Container,
     Stack,
     TextField,
@@ -102,7 +101,7 @@ export default function Home() {
             fullWidth: true,
             error: !!errors[key],
             helperText: errors[key],
-            value: options[key] ?? OptionsService.DefaultOptions[key],
+            value: options[key] ?? DefaultOptions[key],
             onChange: (e) => handleOptionChange(key, e.target.value),
         };
     }
@@ -114,14 +113,14 @@ export default function Home() {
             fullWidth: true,
             error: errors[key] !== undefined,
             helperText: errors[key],
-            value: options[key] ?? OptionsService.DefaultOptions[key],
+            value: options[key] ?? DefaultOptions[key],
             onChange: (value) => handleOptionChange(key, value),
         };
     }
 
     function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<StringifiedOptions> {
         return fromEntries<Partial<StringifiedOptions>>(
-            toEntries(options).filter(([key, value]) => value !== OptionsService.DefaultOptions[key]?.toString()),
+            toEntries(options).filter(([key, value]) => value !== DefaultOptions[key]),
         );
     }
 
