@@ -41,11 +41,25 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
 
 type OptionErrors = Partial<Record<keyof Options | 'username', string>>;
 
+// Stingify all options except booleans as that is what is returned from the inputs.
+type StringifiedOptions = {
+    [Key in keyof OptionsService.ContributionOptions]: OptionsService.ContributionOptions[Key] extends boolean
+        ? boolean
+        : string;
+};
+
+const DefaultOptions = Object.entries(OptionsService.DefaultOptions).reduce<object>((acc, [key, value]) => {
+    if (typeof value === 'boolean') {
+        return { ...acc, [key]: value };
+    }
+    return { ...acc, [key]: value.toString() };
+}, {}) as StringifiedOptions;
+
 export default function Home() {
     const theme = useTheme();
 
     const [username, setUsername] = useState<string>('');
-    const [options, setOptions] = useState(OptionsService.DefaultOptions);
+    const [options, setOptions] = useState(DefaultOptions);
     const [previousBgColour, setPreviousBgColour] = useState<string | null>(null);
     const [errors, setErrors] = useState<OptionErrors>({});
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
@@ -58,7 +72,7 @@ export default function Home() {
         }
     }, [options.bgColour]);
 
-    const showRenderedChart = debouncedGeneratedUrl !== null && errors.username === undefined;
+    const showRenderedChart = debouncedGeneratedUrl !== null && Object.keys(errors).length === 0;
     const isBackgroundTransparent = options.bgColour === 'transparent';
     const isResetButtonVisible = Object.keys(getOptionsWithoutDefaults(options)).length != 0;
     const contributionImageAltText = `${username}'s GitHub Contributions`;
@@ -75,10 +89,7 @@ export default function Home() {
         }
     }
 
-    function handleOptionChange<Key extends keyof OptionsService.ContributionOptions>(
-        key: Key,
-        value: OptionsService.ContributionOptions[Key],
-    ): void {
+    function handleOptionChange<Key extends keyof StringifiedOptions>(key: Key, value: StringifiedOptions[Key]): void {
         const newOptions = { ...options, [key]: value };
 
         setErrors((errors) => ({ ...errors, [key]: undefined }));
@@ -86,7 +97,7 @@ export default function Home() {
         handleGenerate(newOptions, username);
     }
 
-    function getTextFieldProps(key: keyof OptionsService.ContributionOptions): TextFieldProps {
+    function getTextFieldProps(key: keyof StringifiedOptions): TextFieldProps {
         return {
             fullWidth: true,
             error: !!errors[key],
@@ -97,7 +108,7 @@ export default function Home() {
     }
 
     function getColourFieldProps(
-        key: keyof Pick<OptionsService.ContributionOptions, 'colour' | 'bgColour' | 'dotColour'>,
+        key: keyof Pick<StringifiedOptions, 'colour' | 'bgColour' | 'dotColour'>,
     ): ColourFieldProps {
         return {
             fullWidth: true,
@@ -108,18 +119,18 @@ export default function Home() {
         };
     }
 
-    function getOptionsWithoutDefaults(options: OptionsService.ContributionOptions): Partial<Options> {
-        return fromEntries<Partial<Options>>(
-            toEntries(options).filter(([key, value]) => value !== OptionsService.DefaultOptions[key]),
+    function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<StringifiedOptions> {
+        return fromEntries<Partial<StringifiedOptions>>(
+            toEntries(options).filter(([key, value]) => value !== OptionsService.DefaultOptions[key]?.toString()),
         );
     }
 
-    function optionsAreValid(optionsWithoutDefaults: Partial<Options>): boolean {
+    function optionsAreValid(optionsWithoutDefaults: Partial<StringifiedOptions>): boolean {
         const errors: OptionErrors = {};
-        if (optionsWithoutDefaults.width && optionsWithoutDefaults.width <= 0) {
+        if (optionsWithoutDefaults.width && Number(optionsWithoutDefaults.width) <= 0) {
             errors.width = 'Width must be greater than 0';
         }
-        if (optionsWithoutDefaults.height && optionsWithoutDefaults.height <= 0) {
+        if (optionsWithoutDefaults.height && Number(optionsWithoutDefaults.height) <= 0) {
             errors.height = 'Height must be greater than 0';
         }
 
@@ -129,7 +140,7 @@ export default function Home() {
         return !hasErrors;
     }
 
-    function generateApiUrl(username: string, options: Partial<Options>): string {
+    function generateApiUrl(username: string, options: Partial<StringifiedOptions>): string {
         const baseUrl = `/api/contributions/${username}`;
         const url = new URL(baseUrl, window.location.origin);
 
@@ -150,8 +161,8 @@ export default function Home() {
         );
     }
 
-    function handleGenerate(options: OptionsService.ContributionOptions, username: string): void {
-        if (username.length == 0) return;
+    function handleGenerate(options: StringifiedOptions, username: string): void {
+        if (username.length === 0) return;
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
         if (optionsAreValid(optionsWithoutDefaults)) {
@@ -162,8 +173,8 @@ export default function Home() {
 
     function handleResetToDefaults(): void {
         setErrors({});
-        setOptions(OptionsService.DefaultOptions);
-        handleGenerate(OptionsService.DefaultOptions, username);
+        setOptions(DefaultOptions);
+        handleGenerate(DefaultOptions, username);
     }
 
     function handleApiError(): void {
