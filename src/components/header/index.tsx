@@ -19,7 +19,7 @@ export default function Header() {
             <Title />
             <Stack direction="row" gap={1}>
                 <Link href={GitHubRepoUrl}>
-                    <IconButton aria-label="View the source code">
+                    <IconButton title="View the source code">
                         <GitHubIcon />
                     </IconButton>
                 </Link>
