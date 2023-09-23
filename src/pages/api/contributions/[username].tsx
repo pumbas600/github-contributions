@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
         const options = OptionsService.getOptions(queryOptions);
 
-        const [contributions, fetchingMs] = await ContributionsService.getContributions(
+        const { contributions, fetchingMs } = await ContributionsService.getContributions(
             username,
             options.from,
             options.to,

@@ -9,8 +9,14 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@emotion/react": "^11.10.6",
+        "@emotion/styled": "^11.10.6",
+        "@fontsource/fira-code": "^4.5.13",
+        "@fontsource/inter": "^4.5.15",
+        "@mui/icons-material": "^5.11.16",
+        "@mui/material": "^5.11.16",
         "firebase": "^10.3.1",
-        "next": "13.2.4",
+        "next": "^13.2.4",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "recharts": "^2.5.0",

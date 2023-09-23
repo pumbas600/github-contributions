@@ -9,6 +9,11 @@ export namespace ContributionsService {
 
     const HEADERS = new Headers({ Authorization: `bearer ${Config.github.token}` });
 
+    type GetContributionsReponse = {
+        contributions: Contribution[];
+        fetchingMs: number;
+    };
+
     function isUserNotFound(res: ContributionResponseError): boolean {
         return res.errors.some(
             (error) => error.type === 'NOT_FOUND' && error.path.length === 1 && error.path[0] === 'user',
@@ -41,7 +46,7 @@ export namespace ContributionsService {
         };
     }
 
-    export async function getContributions(username: string, from: Date, to: Date): Promise<[Contribution[], number]> {
+    export async function getContributions(username: string, from: Date, to: Date): Promise<GetContributionsReponse> {
         const body = generateGraphQLBody(username, from, to);
 
         let start = Date.now();
@@ -79,6 +84,6 @@ export namespace ContributionsService {
             });
         });
 
-        return [contributions, fetchingMs];
+        return { contributions, fetchingMs };
     }
 }
