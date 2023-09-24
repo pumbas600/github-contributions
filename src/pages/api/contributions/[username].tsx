@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200)
             .setHeader('Content-Type', 'image/svg+xml')
-            .setHeader('Cache-Control', `public, s-maxage=${options.cache}`)
+            .setHeader('Cache-Control', `public, s-maxage=${OptionsService.CACHE_TIME_SECONDS}`)
             .send(svg);
     } catch (error) {
         ErrorService.handleError(res, error);

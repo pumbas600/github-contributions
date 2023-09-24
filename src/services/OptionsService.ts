@@ -3,6 +3,8 @@ import { Options } from '@/models/Options';
 export namespace OptionsService {
     export type ContributionOptions = Omit<Options, 'from' | 'to'>;
 
+    export const CACHE_TIME_SECONDS = 60 * 10; // 10 Minutes
+
     export const DefaultOptions: ContributionOptions = {
         colour: '#4BB5FC',
         bgColour: 'transparent',
@@ -10,7 +12,6 @@ export namespace OptionsService {
         width: 1200,
         height: 450,
         days: 30,
-        cache: 60 * 5, // 5 Minutes
     };
 
     const ONE_DAY = 1000 * 60 * 60 * 24;

@@ -10,7 +10,6 @@ export const OptionsModel = z.object({
     from: z.coerce.date().optional(),
     to: z.coerce.date().optional(),
     days: z.coerce.number().positive().optional(),
-    cache: z.coerce.number().min(0).optional(),
 });
 
 export type Options = Required<z.infer<typeof OptionsModel>>;
