@@ -1,4 +1,4 @@
-import { Options } from '@/models/Options';
+import { Options, OptionsWithDimensions } from '@/models/Options';
 import DateRange from '@/types/interfaces/DateRange';
 
 export namespace OptionsService {
@@ -8,15 +8,14 @@ export namespace OptionsService {
         colour: '#4BB5FC',
         bgColour: 'transparent',
         dotColour: '#E5E5E5',
-        width: 1200,
-        height: 450,
         days: 30,
     };
 
-    const ONE_DAY = 1000 * 60 * 60 * 24;
+    export function getOptions(options: Partial<Options> = {}): OptionsWithDimensions {
+        const mergedOptions = { ...DefaultOptions, ...options };
 
-    export function getOptions(options: Partial<Options> = {}): Options {
-        return { ...DefaultOptions, ...options };
+        const width = mergedOptions.days * 35 + 100;
+        return { ...mergedOptions, width, height: 450 };
     }
 
     export function getDateRange(options: Options): DateRange {

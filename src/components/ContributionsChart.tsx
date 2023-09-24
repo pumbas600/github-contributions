@@ -1,10 +1,10 @@
-import { Options } from '@/models/Options';
+import { OptionsWithDimensions } from '@/models/Options';
 import Contribution from '@/types/interfaces/Contribution';
-import { Area, CartesianGrid, ComposedChart, Line, LineChart, XAxis, YAxis } from 'recharts';
+import { Area, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from 'recharts';
 
 interface ContributionProps {
     username: string;
-    options: Options;
+    options: OptionsWithDimensions;
     contributions: Contribution[];
 }
 

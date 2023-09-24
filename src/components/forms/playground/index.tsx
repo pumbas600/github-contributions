@@ -30,16 +30,7 @@ export default function Playground() {
     const validateOptions = (optionsWithoutDefaults: Partial<StringifiedOptions>): boolean => {
         const errors: OptionErrors = {};
 
-        const width = Number(optionsWithoutDefaults.width);
-        const height = Number(optionsWithoutDefaults.height);
         const days = Number(optionsWithoutDefaults.days);
-
-        if (optionsWithoutDefaults.width !== undefined && (isNaN(width) || width <= 0)) {
-            errors.width = 'Width must be greater than 0';
-        }
-        if ((optionsWithoutDefaults.height !== undefined && isNaN(height)) || height <= 0) {
-            errors.height = 'Height must be greater than 0';
-        }
         if (optionsWithoutDefaults.days !== undefined && (isNaN(days) || days <= 0)) {
             errors.days = 'Days must be greater than 0';
         }
