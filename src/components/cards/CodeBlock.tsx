@@ -9,7 +9,9 @@ interface CodeBlockProps {
 }
 
 const Pre = styled('pre')(({ theme }) => ({
-    padding: theme.spacing(2),
+    paddingBlock: theme.spacing(2),
+    paddingInlineStart: theme.spacing(2),
+    paddingInlineEnd: theme.spacing(6),
     lineHeight: '1.4rem',
     overflow: 'auto',
     backgroundColor: theme.palette.background.paper,
