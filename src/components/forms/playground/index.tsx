@@ -13,6 +13,7 @@ import PlaygroundOptions, {
 import { ChangeEvent, useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import ChartImage from '../ChartImage';
+import GeneratedValues from '@/components/cards/GeneratedValues';
 
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
@@ -113,7 +114,7 @@ export default function Playground() {
                     onChange={handleUsernameChange}
                 />
                 {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
-                {generatedUrl && <CodeBlock code={`![${contributionImageAltText}](${generatedUrl})`} />}
+                {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
                 <PlaygroundOptions errors={errors} options={options} onChange={handleOptionsChange} />
             </Stack>
             <Alert severity="info">

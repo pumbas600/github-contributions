@@ -19,6 +19,7 @@ type GeneratedTabs = ValuesOf<typeof GeneratedTabs>;
 
 function ariaProps(tab: GeneratedTabs): TabProps {
     return {
+        value: tab,
         id: `generated-tab-${tab}`,
         'aria-controls': `generated-tabpanel-${tab}`,
     };
