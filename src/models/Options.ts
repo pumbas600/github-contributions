@@ -7,8 +7,6 @@ export const OptionsModel = z.object({
     dotColour: ColourModel.optional(),
     width: z.coerce.number().positive().optional(),
     height: z.coerce.number().positive().optional(),
-    from: z.coerce.date().optional(),
-    to: z.coerce.date().optional(),
     days: z.coerce.number().positive().optional(),
 });
 

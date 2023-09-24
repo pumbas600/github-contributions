@@ -11,12 +11,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
         const options = OptionsService.getOptions(queryOptions);
+        const dateRange = OptionsService.getDateRange(options);
 
-        const { contributions, fetchingMs } = await ContributionsService.getContributions(
-            username,
-            options.from,
-            options.to,
-        );
+        const { contributions, fetchingMs } = await ContributionsService.getContributions(username, dateRange);
 
         const start = Date.now();
         const html = renderToString(

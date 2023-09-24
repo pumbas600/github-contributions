@@ -6,10 +6,10 @@ import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
 import ColourField, { ColourFieldProps } from '../ColourField';
 import NumberField from '../NumberField';
+import { Options } from '@/models/Options';
 
-export type OptionErrors = Partial<Record<keyof OptionsService.ContributionOptions, string>>;
-
-export type StringifiedOptions = Record<keyof OptionsService.ContributionOptions, string>;
+export type StringifiedOptions = Record<keyof Options, string>;
+export type OptionErrors = Partial<StringifiedOptions>;
 
 export interface PlaygroundOptionsProps {
     errors: OptionErrors;

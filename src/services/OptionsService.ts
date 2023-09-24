@@ -1,11 +1,10 @@
 import { Options } from '@/models/Options';
+import DateRange from '@/types/interfaces/DateRange';
 
 export namespace OptionsService {
-    export type ContributionOptions = Omit<Options, 'from' | 'to'>;
-
     export const CACHE_TIME_SECONDS = 60 * 10; // 10 Minutes
 
-    export const DefaultOptions: ContributionOptions = {
+    export const DefaultOptions: Options = {
         colour: '#4BB5FC',
         bgColour: 'transparent',
         dotColour: '#E5E5E5',
@@ -17,17 +16,12 @@ export namespace OptionsService {
     const ONE_DAY = 1000 * 60 * 60 * 24;
 
     export function getOptions(options: Partial<Options> = {}): Options {
-        const mergedOptions = { ...DefaultOptions, ...options };
-        mergedOptions.to ??= new Date();
-        mergedOptions.from ??= new Date(mergedOptions.to.getTime() - mergedOptions.days * ONE_DAY);
+        return { ...DefaultOptions, ...options };
+    }
 
-        if (mergedOptions.from.getTime() > mergedOptions.to.getTime()) {
-            throw new Error(
-                `The "from" date ${mergedOptions.from.toDateString()} must be before the "to" date ${mergedOptions.to.toDateString()}`,
-            );
-        }
-
-        // For some reason it thinks that 'to' and 'from' are possibly undefined.
-        return mergedOptions as Options;
+    export function getDateRange(options: Options): DateRange {
+        const today = new Date();
+        const from = new Date(today.getFullYear(), today.getMonth(), today.getDate() - options.days);
+        return { from, to: today };
     }
 }
