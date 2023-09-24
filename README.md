@@ -42,7 +42,6 @@ Query Parameter | Description             | Type    | Default Value
 `bgColour`      | The background colour of the graph | Hexcode or `transparent` | `transparent`
 `dotColour`     | The colour of the dots for each day's contributions | Hexcode | `#E5E5E5`
 `days`          | The past number of days to include in your contributions graph | Positive number | `30`
-`area`          | Whether to shade the area under the curve | `true` or `false` | `true`
 `width`         | The width of the SVG in pixels  | Positive number | `1200`
 `height`        | The height of the SVG in pixels | Positive number | `450`
 `cache`         | The time in seconds a contribution graph can be cached for. A value of 0 can be used to disable caching of the response | Positive number | `300` (5 Minutes)

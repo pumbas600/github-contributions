@@ -26,7 +26,7 @@ export default function ContributionsChart({ username, options, contributions }:
             height={options.height}
             data={contributions}
             margin={{
-                top: 80,
+                top: 90,
                 right: 30,
                 bottom: 40,
                 left: 40,
@@ -37,7 +37,7 @@ export default function ContributionsChart({ username, options, contributions }:
         >
             <text
                 x={options.width / 2 + 30}
-                y={32}
+                y={40}
                 fill={options.colour}
                 textAnchor="middle"
                 dominantBaseline="central"
@@ -66,9 +66,7 @@ export default function ContributionsChart({ username, options, contributions }:
                 fill={options.colour}
                 dot={{ fill: options.dotColour, stroke: options.dotColour }}
             />
-            {options.area && (
-                <Area type="monotone" dataKey="count" fill={options.colour} opacity={0.3} strokeWidth={0} />
-            )}
+            {<Area type="monotone" dataKey="count" fill={options.colour} opacity={0.3} strokeWidth={0} />}
         </ComposedChart>
     );
 }

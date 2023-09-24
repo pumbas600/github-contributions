@@ -9,12 +9,7 @@ import NumberField from '../NumberField';
 
 export type OptionErrors = Partial<Record<keyof OptionsService.ContributionOptions, string>>;
 
-// Stingify all options except booleans as that is what is returned from the inputs.
-export type StringifiedOptions = {
-    [Key in keyof OptionsService.ContributionOptions]: OptionsService.ContributionOptions[Key] extends boolean
-        ? boolean
-        : string;
-};
+export type StringifiedOptions = Record<keyof OptionsService.ContributionOptions, string>;
 
 export interface PlaygroundOptionsProps {
     errors: OptionErrors;
@@ -29,12 +24,7 @@ export interface PlaygroundOptionsProps {
 }
 
 export const DefaultOptions = fromEntries<StringifiedOptions>(
-    toEntries(OptionsService.DefaultOptions).map(([key, value]) => {
-        if (typeof value === 'boolean') {
-            return [key, value];
-        }
-        return [key, value?.toString()];
-    }),
+    toEntries(OptionsService.DefaultOptions).map(([key, value]) => [key, value?.toString()]),
 );
 
 export function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<StringifiedOptions> {
@@ -103,11 +93,6 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
                     label="Use coloured background"
                     checked={!isBackgroundTransparent}
                     onChange={handleChangeTransparentBackground}
-                />
-                <LabelledCheckbox
-                    label="Shade area below the line"
-                    checked={options.area}
-                    onChange={(e) => handleOptionChange('area', e.target.checked)}
                 />
             </FormRow>
             <FormRow rowGap={3}>

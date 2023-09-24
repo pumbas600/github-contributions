@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BooleanModel, ColourModel } from './UtilModels';
+import { ColourModel } from './UtilModels';
 
 export const OptionsModel = z.object({
     colour: ColourModel.optional(),
@@ -10,7 +10,6 @@ export const OptionsModel = z.object({
     from: z.coerce.date().optional(),
     to: z.coerce.date().optional(),
     days: z.coerce.number().positive().optional(),
-    area: BooleanModel.optional(),
     cache: z.coerce.number().min(0).optional(),
 });
 
