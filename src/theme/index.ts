@@ -91,6 +91,21 @@ export function buildTheme(theme: ResolvedTheme): Theme {
                     },
                 },
             },
+            MuiTab: {
+                styleOverrides: {
+                    root: {
+                        textTransform: 'none',
+                        paddingBlock: '0.5rem',
+                    },
+                },
+            },
+            MuiTabs: {
+                styleOverrides: {
+                    root: {
+                        borderBottom: `1px solid ${palette.divider}`,
+                    },
+                },
+            },
         },
     });
 }
