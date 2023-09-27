@@ -3,6 +3,7 @@ import InternalServerError from '@/errors/InternalServerError';
 import NotFoundError from '@/errors/NotFoundError';
 import Contribution from '@/types/interfaces/Contribution';
 import { ContributionResponse, ContributionResponseError } from '@/types/interfaces/ContributionResponses';
+import DateRange from '@/types/interfaces/DateRange';
 
 export namespace ContributionsService {
     const WARN_RATE_LIMIT_BOUNDARY = 100;
@@ -46,7 +47,10 @@ export namespace ContributionsService {
         };
     }
 
-    export async function getContributions(username: string, from: Date, to: Date): Promise<GetContributionsReponse> {
+    export async function getContributions(
+        username: string,
+        { from, to }: DateRange,
+    ): Promise<GetContributionsReponse> {
         const body = generateGraphQLBody(username, from, to);
 
         let start = Date.now();

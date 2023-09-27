@@ -11,12 +11,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const { username, ...queryOptions } = await QueryParamsModel.parseAsync(req.query);
         const options = OptionsService.getOptions(queryOptions);
+        const dateRange = OptionsService.getDateRange(options);
 
-        const { contributions, fetchingMs } = await ContributionsService.getContributions(
-            username,
-            options.from,
-            options.to,
-        );
+        const { contributions, fetchingMs } = await ContributionsService.getContributions(username, dateRange);
 
         const start = Date.now();
         const html = renderToString(
@@ -37,9 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         font-family: Segoe UI,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Arial;
                     }
                     .recharts-line > path {
-                        animation: draw 5s ease-in-out forwards;
-                        stroke-dasharray: 5000;
-                        stroke-dashoffset: 5000;
+                        animation: draw ${3000 + 60 * options.days}ms ease-in-out forwards;
+                        stroke-dasharray: ${100 * options.days};
+                        stroke-dashoffset: ${100 * options.days};
                     }
 
                     @keyframes draw {
@@ -54,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200)
             .setHeader('Content-Type', 'image/svg+xml')
-            .setHeader('Cache-Control', `public, s-maxage=${options.cache}`)
+            .setHeader('Cache-Control', `public, s-maxage=${OptionsService.CACHE_TIME_SECONDS}`)
             .send(svg);
     } catch (error) {
         ErrorService.handleError(res, error);

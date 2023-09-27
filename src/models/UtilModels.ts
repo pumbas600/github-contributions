@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-export const BooleanModel = z.enum(['true', 'false']).transform((value) => value === 'true');
-
 // You can't pass a hash in a query parameter
 export const ColourModel = z
     .string()

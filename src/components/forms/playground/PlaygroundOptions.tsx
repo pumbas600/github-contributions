@@ -6,15 +6,10 @@ import { OptionsService } from '@/services/OptionsService';
 import { fromEntries, toEntries } from '@/utilities';
 import ColourField, { ColourFieldProps } from '../ColourField';
 import NumberField from '../NumberField';
+import { Options } from '@/models/Options';
 
-export type OptionErrors = Partial<Record<keyof OptionsService.ContributionOptions, string>>;
-
-// Stingify all options except booleans as that is what is returned from the inputs.
-export type StringifiedOptions = {
-    [Key in keyof OptionsService.ContributionOptions]: OptionsService.ContributionOptions[Key] extends boolean
-        ? boolean
-        : string;
-};
+export type StringifiedOptions = Record<keyof Options, string>;
+export type OptionErrors = Partial<StringifiedOptions>;
 
 export interface PlaygroundOptionsProps {
     errors: OptionErrors;
@@ -29,12 +24,7 @@ export interface PlaygroundOptionsProps {
 }
 
 export const DefaultOptions = fromEntries<StringifiedOptions>(
-    toEntries(OptionsService.DefaultOptions).map(([key, value]) => {
-        if (typeof value === 'boolean') {
-            return [key, value];
-        }
-        return [key, value?.toString()];
-    }),
+    toEntries(OptionsService.DefaultOptions).map(([key, value]) => [key, value?.toString()]),
 );
 
 export function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<StringifiedOptions> {
@@ -104,23 +94,16 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
                     checked={!isBackgroundTransparent}
                     onChange={handleChangeTransparentBackground}
                 />
-                <LabelledCheckbox
-                    label="Shade area below the line"
-                    checked={options.area}
-                    onChange={(e) => handleOptionChange('area', e.target.checked)}
-                />
             </FormRow>
             <FormRow rowGap={3}>
                 <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
                 {!isBackgroundTransparent && (
                     <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                 )}
-                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
             </FormRow>
             <FormRow rowGap={3}>
+                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
                 <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
-                <NumberField label="Width (px)" {...getTextFieldProps('width')} />
-                <NumberField label="Height (px)" {...getTextFieldProps('height')} />
             </FormRow>
             {isResetButtonVisible && (
                 <FormRow direction="row-reverse">
