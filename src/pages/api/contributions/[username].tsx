@@ -34,9 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         font-family: Segoe UI,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Arial;
                     }
                     .recharts-line > path {
-                        animation: draw 5s ease-in-out forwards;
-                        stroke-dasharray: 5000;
-                        stroke-dashoffset: 5000;
+                        animation: draw ${3000 + 60 * options.days}ms ease-in-out forwards;
+                        stroke-dasharray: ${100 * options.days};
+                        stroke-dashoffset: ${100 * options.days};
                     }
 
                     @keyframes draw {
