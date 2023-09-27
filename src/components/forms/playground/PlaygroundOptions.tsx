@@ -102,8 +102,8 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
                 )}
             </FormRow>
             <FormRow rowGap={3}>
-                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
                 <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
+                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
             </FormRow>
             {isResetButtonVisible && (
                 <FormRow direction="row-reverse">
