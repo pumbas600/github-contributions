@@ -1,7 +1,7 @@
 import { OptionsWithDimensions } from '@/models/Options';
 import Contribution from '@/types/interfaces/Contribution';
-import { Bar, CartesianGrid, ComposedChart, XAxis, YAxis } from 'recharts';
-import LineChart from './LineChart';
+import { CartesianGrid, ComposedChart, XAxis, YAxis } from 'recharts';
+import getChartElements from './ChartFactory';
 
 interface ContributionProps {
     username: string;
@@ -20,6 +20,8 @@ export default function ContributionsChart({ username, options, contributions }:
         tick: { fill: options.colour },
         allowDecimals: false,
     };
+
+    const chartElements = getChartElements(options);
 
     return (
         <ComposedChart
@@ -59,8 +61,7 @@ export default function ContributionsChart({ username, options, contributions }:
                 }}
                 {...axisStyles}
             />
-            {options.chart === 'line' && <LineChart options={options} />}
-            {options.chart === 'bar' && <Bar dataKey="count" fill={options.colour} />}
+            {chartElements}
         </ComposedChart>
     );
 }
