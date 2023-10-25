@@ -1,4 +1,5 @@
 import { Options, OptionsWithDimensions } from '@/models/Options';
+import { ChartType } from '@/types/enums/ChartType';
 import DateRange from '@/types/interfaces/DateRange';
 
 export namespace OptionsService {
@@ -9,7 +10,7 @@ export namespace OptionsService {
         bgColour: 'transparent',
         dotColour: '#E5E5E5',
         days: 30,
-        chart: 'line',
+        chart: ChartType.Line,
     };
 
     export function getOptions(options: Partial<Options> = {}): OptionsWithDimensions {
