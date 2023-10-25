@@ -9,6 +9,7 @@ export namespace OptionsService {
         bgColour: 'transparent',
         dotColour: '#E5E5E5',
         days: 30,
+        chart: 'line',
     };
 
     export function getOptions(options: Partial<Options> = {}): OptionsWithDimensions {

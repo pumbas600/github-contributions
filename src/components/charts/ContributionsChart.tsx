@@ -1,6 +1,6 @@
 import { OptionsWithDimensions } from '@/models/Options';
 import Contribution from '@/types/interfaces/Contribution';
-import { CartesianGrid, ComposedChart, XAxis, YAxis } from 'recharts';
+import { Bar, CartesianGrid, ComposedChart, XAxis, YAxis } from 'recharts';
 import LineChart from './LineChart';
 
 interface ContributionProps {
@@ -59,7 +59,8 @@ export default function ContributionsChart({ username, options, contributions }:
                 }}
                 {...axisStyles}
             />
-            <LineChart options={options} />
+            {options.chart === 'line' && <LineChart options={options} />}
+            {options.chart === 'bar' && <Bar dataKey="count" fill={options.colour} />}
         </ComposedChart>
     );
 }

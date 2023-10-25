@@ -7,6 +7,7 @@ export const OptionsModel = z.object({
     dotColour: ColourModel.optional(),
     // GitHub doesn't allow queries for contributions over a period of more than a year
     days: z.coerce.number().positive().max(365).optional(),
+    chart: z.enum(['bar', 'line']).optional(),
 });
 
 export type Options = Required<z.infer<typeof OptionsModel>>;
