@@ -1,4 +1,4 @@
-import ContributionsChart from '@/components/ContributionsChart';
+import ContributionsChart from '@/components/charts/ContributionsChart';
 import { QueryParamsModel } from '@/models/QueryParams';
 import { ContributionsService } from '@/services/ContributionsService';
 import { ErrorService } from '@/services/ErrorService';
