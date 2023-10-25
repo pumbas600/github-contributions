@@ -38,10 +38,11 @@ There is also support for a number of options which allow you to style the graph
 
 Query Parameter | Description             | Type    | Default Value
 ----------------|-------------------------|---------|-----------------
-`colour`        | The colour of the line and text. A partially transparent version of this colour is used for the shaded area and grid | Hexcode | `#4BB5FC`
+`colour`        | The primary colour of the line and text. A partially transparent version of this colour is used for the shaded area and grid | Hexcode | `#4BB5FC`
 `bgColour`      | The background colour of the graph | Hexcode or `transparent` | `transparent`
-`dotColour`     | The colour of the dots for each day's contributions | Hexcode | `#E5E5E5`
+`dotColour`     | The colour of the dots for each day's contributions (Line chart only) | Hexcode | `#E5E5E5`
 `days`          | The past number of days to include in your contributions graph | Positive number that's ≤ 365 | `30`
+`chart`         | The type of chart to use when rendering the graph | `line` or `bar` | `line`
 
 An example using some of these looks like:
 
