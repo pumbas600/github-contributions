@@ -7,6 +7,7 @@ export default function getChartElements(options: Options): JSX.Element[] {
         case ChartType.Line:
             return [
                 <Line
+                    key="line"
                     type="monotone"
                     dataKey="count"
                     stroke={options.colour}
@@ -14,9 +15,9 @@ export default function getChartElements(options: Options): JSX.Element[] {
                     fill={options.colour}
                     dot={{ fill: options.dotColour, stroke: options.dotColour }}
                 />,
-                <Area type="monotone" dataKey="count" fill={options.colour} opacity={0.3} strokeWidth={0} />,
+                <Area key="area" type="monotone" dataKey="count" fill={options.colour} opacity={0.3} strokeWidth={0} />,
             ];
         case ChartType.Bar:
-            return [<Bar dataKey="count" fill={options.colour} />];
+            return [<Bar key="bar" dataKey="count" fill={options.colour} />];
     }
 }
