@@ -20,7 +20,8 @@ export namespace MetricsService {
 
     export async function getGeneratedGraphCount(source: Query = githubContributionMetrics): Promise<number> {
         try {
-            const response = await getCountFromServer(source);
+            const productionQuery = query(source, where('environment', '==', 'production'));
+            const response = await getCountFromServer(productionQuery);
             return response.data().count;
         } catch (error) {
             console.error(error);
