@@ -10,6 +10,9 @@ export namespace MetricsService {
     ): Promise<void> {
         const metric: ContributionMetric = {
             ...partialMetric,
+            // Usernames are case-insensitive in GitHub, so to be able to get the count for a user we need to
+            // store it in a consistent format.
+            username: partialMetric.username.toLowerCase(),
             date: new Date(),
             environment: process.env.NODE_ENV,
         };
@@ -41,7 +44,7 @@ export namespace MetricsService {
         username: string,
         source: Query = githubContributionMetrics,
     ): Promise<number> {
-        const userQuery = query(source, where('username', '==', username));
+        const userQuery = query(source, where('username', '==', username.toLowerCase()));
         return getGeneratedGraphCount(userQuery);
     }
 
