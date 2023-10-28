@@ -50,19 +50,19 @@ An example using some of these looks like:
 
 ## Respecting User's Themes
 
-It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only` fragments](https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/) so that you can change the styling based on the user's theme. They simply need to be appended to the end of the URL and will not be rendered unless their respective mode is active.
+It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only`](https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/) fragments so that you can change the styling based on the user's theme. They simply need to be appended to the end of markdown URLs and they will not be rendered unless their respective mode is active.
 
 ```md
 <!-- Dark mode image -->
-[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22#gh-dark-mode-only)](https://github.com/pumbas600/github-contributions#gh-dark-mode-only)
+[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22)](https://github.com/pumbas600/github-contributions#gh-dark-mode-only)
 
 
 <!-- Light mode image -->
-[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA#gh-light-mode-only)](https://github.com/pumbas600/github-contributions#gh-light-mode-only)
+[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA)](https://github.com/pumbas600/github-contributions#gh-light-mode-only)
 ```
 
 > **Important**
-> For some reason, this doesn't work unless you wrap the original markdown image in either another image, or link with the fragments.
+> For some reason, this doesn't work directly on the API URL, so you need to wrap it in another URL with the fragment applied.
 
 GitHub has also added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
 
