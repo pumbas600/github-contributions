@@ -11,7 +11,7 @@ const Config = {
         storageBucket: required(process.env.FIREBASE_STORAGE_BUCKET, 'FIREBASE_STORAGE_BUCKET'),
         messagingSenderId: required(process.env.FIREBASE_MESSAGING_SENDER_ID, 'FIREBASE_MESSAGING_SENDER_ID'),
         appId: required(process.env.FIREBASE_APP_ID, 'FIREBASE_APP_ID'),
-        masurementId: required(process.env.FIREBASE_MEASUREMENT_ID, 'FIREBASE_MEASUREMENT_ID'),
+        measurementId: required(process.env.FIREBASE_MEASUREMENT_ID, 'FIREBASE_MEASUREMENT_ID'),
     },
 } as const;
 
