@@ -1,18 +1,11 @@
-<picture>
-    <source
-        srcset="https://github.pumbas.net/api/contributions/pumbas600?bgColour=161B22"
-        media="(prefers-color-scheme: dark)"
-    />
-    <img 
-        src="https://github.pumbas.net/api/contributions/pumbas600?colour=002AFF&bgColour=F6F8FA"
-        alt="pumbas600's Contributions"
-    />
-</picture>
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?bgColour=161B22#gh-dark-mode-only)
+![pumbas600's Contributions](https://github.pumbas.net/api/contributions/pumbas600?colour=002AFF&bgColour=F6F8FA#gh-light-mode-only)
+
 
 <div align="center">
     <h1>GitHub Contributions</h1>
-    <img alt="Graphs generated last week" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub-contributions-git-feature-metrics-endpoint-pumbas600.vercel.app%2Fapi%2Fmetrics%3Fdays%3D7&query=%24.count&suffix=%20graphs&label=last%20week&labelColor=%235d5d5d" />
-    <img alt="Graphs generated in total" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub-contributions-git-feature-metrics-endpoint-pumbas600.vercel.app%2Fapi%2Fmetrics&query=%24.count&suffix=%20graphs&label=in%20total&labelColor=%235d5d5d" />
+    <img alt="Graphs generated last week" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.pumbas.net%2Fapi%2Fmetrics%3Fdays%3D7&query=%24.count&suffix=%20graphs&label=last%20week&labelColor=%235d5d5d" />
+    <img alt="Graphs generated in total" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.pumbas.net%2Fapi%2Fmetrics&query=%24.count&suffix=%20graphs&label=in%20total&labelColor=%235d5d5d" />
 </div>
 
 ### [View GitHub Contributions Playground](https://github.pumbas.net)
@@ -57,7 +50,18 @@ An example using some of these looks like:
 
 ## Respecting User's Themes
 
-GitHub has added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
+It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only` fragments](https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/) so that you can change the styling based on the user's theme. They simply need to be appended to the end of the URL and will not be rendered unless their respective mode is active.
+
+```md
+<!-- Dark mode image -->
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22#gh-dark-mode-only)
+
+
+<!-- Light mode image -->
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA#gh-light-mode-only)
+```
+
+GitHub has also added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
 
 ```html
 <picture>
