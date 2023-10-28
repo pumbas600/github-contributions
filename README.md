@@ -11,8 +11,8 @@
 
 <div align="center">
     <h1>GitHub Contributions</h1>
-    <img alt="Graphs generated last week" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub-contributions-git-feature-metrics-endpoint-pumbas600.vercel.app%2Fapi%2Fmetrics%3Fdays%3D7&query=%24.count&suffix=%20graphs&label=last%20week&labelColor=%235d5d5d" />
-    <img alt="Graphs generated in total" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub-contributions-git-feature-metrics-endpoint-pumbas600.vercel.app%2Fapi%2Fmetrics&query=%24.count&suffix=%20graphs&label=in%20total&labelColor=%235d5d5d" />
+    <img alt="Graphs generated last week" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.pumbas.net%2Fapi%2Fmetrics%3Fdays%3D7&query=%24.count&suffix=%20graphs&label=last%20week&labelColor=%235d5d5d" />
+    <img alt="Graphs generated in total" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.pumbas.net%2Fapi%2Fmetrics&query=%24.count&suffix=%20graphs&label=in%20total&labelColor=%235d5d5d" />
 </div>
 
 ### [View GitHub Contributions Playground](https://github.pumbas.net)
