@@ -54,15 +54,15 @@ It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only`](htt
 
 ```md
 <!-- Dark mode image -->
-[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22)](https://github.com/pumbas600/github-contributions#gh-dark-mode-only)
+[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22#gh-dark-mode-only)](https://github.com/pumbas600/github-contributions#gh-dark-mode-only)
 
 
 <!-- Light mode image -->
-[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA)](https://github.com/pumbas600/github-contributions#gh-light-mode-only)
+[![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA#gh-light-mode-only)](https://github.com/pumbas600/github-contributions#gh-light-mode-only)
 ```
 
 > **Important**
-> For some reason, this doesn't work directly on the API URL, so you need to wrap it in another URL with the fragment applied.
+> For some reason, it only works on the API URL in VS Code and you need to wrap it in another URL with the fragment applied for it to behave  correctly in GitHub.
 
 GitHub has also added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
 
