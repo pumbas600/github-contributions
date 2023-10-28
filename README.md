@@ -50,7 +50,7 @@ An example using some of these looks like:
 
 ## Respecting User's Themes
 
-It is recommended to use the `#gh-light-mode-only` or `#gh-dark-mode-only` fragments so that you can change the styling based on the user's theme. They simply need to be appended to the end of the URL and will not be rendered unless their respective mode is active.
+It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only` fragments](https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/) so that you can change the styling based on the user's theme. They simply need to be appended to the end of the URL and will not be rendered unless their respective mode is active.
 
 ```md
 <!-- Dark mode image -->
