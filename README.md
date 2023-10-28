@@ -50,7 +50,18 @@ An example using some of these looks like:
 
 ## Respecting User's Themes
 
-GitHub has added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
+It is recommended to use the `#gh-light-mode-only` or `#gh-dark-mode-only` fragments so that you can change the styling based on the user's theme. They simply need to be appended to the end of the URL and will not be rendered unless their respective mode is active.
+
+```md
+<!-- Dark mode image -->
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?bgColour=161B22#gh-dark-mode-only)
+
+
+<!-- Light mode image -->
+![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA#gh-light-mode-only)
+```
+
+GitHub has also added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
 
 ```html
 <picture>
