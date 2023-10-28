@@ -1,16 +1,17 @@
 import { MetricsWithUsernameModel } from '@/models/MetricsModel';
 import { ErrorService } from '@/services/ErrorService';
 import { MetricsService } from '@/services/MetricsService';
+import { daysBeforeToday } from '@/utilities/date';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     try {
-        const { username, since } = await MetricsWithUsernameModel.parseAsync(req.query);
+        const { username, days } = await MetricsWithUsernameModel.parseAsync(req.query);
 
         const count =
-            since === undefined
+            days === undefined
                 ? await MetricsService.getGeneratedGraphCountForUser(username)
-                : await MetricsService.getGeneratedGraphCountForUserSince(username, since);
+                : await MetricsService.getGeneratedGraphCountForUserSince(username, daysBeforeToday(days));
 
         res.status(200).json({ count });
     } catch (error) {

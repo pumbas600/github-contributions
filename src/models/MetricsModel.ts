@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const MetricsModel = z.object({
-    since: z.coerce.date().optional(),
+    days: z.coerce.number().optional(),
 });
 
 export const MetricsWithUsernameModel = MetricsModel.extend({
