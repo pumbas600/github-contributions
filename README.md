@@ -62,7 +62,7 @@ It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only`](htt
 ```
 
 > **Important**
-> For some reason, it only works on the API URL in VS Code and you need to wrap it in another URL with the fragment applied for it to behave  correctly in GitHub.
+> For some reason, it only works on the API URL in VS Code, To get it to behave correctly on GitHub, you need to wrap it in another URL with the fragment applied.
 
 GitHub has also added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
 
