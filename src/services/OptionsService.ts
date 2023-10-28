@@ -1,5 +1,6 @@
 import { Options, OptionsWithDimensions } from '@/models/Options';
 import DateRange from '@/types/interfaces/DateRange';
+import { daysBeforeToday, endOfToday } from '@/utilities/date';
 
 export namespace OptionsService {
     export const CACHE_TIME_SECONDS = 60 * 10; // 10 Minutes
@@ -19,8 +20,8 @@ export namespace OptionsService {
     }
 
     export function getDateRange(options: Options): DateRange {
-        const today = new Date();
-        const from = new Date(today.getFullYear(), today.getMonth(), today.getDate() - options.days);
-        return { from, to: today };
+        const from = daysBeforeToday(options.days);
+        const to = endOfToday();
+        return { from, to };
     }
 }
