@@ -30,7 +30,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     height="${options.height}" viewBox="0 0 ${options.width} ${options.height}">
                 <style>
                     svg {
-                        background-color: ${options.bgColour};
                         font-family: Segoe UI,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Arial;
                     }
                     .recharts-line > path {
@@ -44,6 +43,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     }
 
                 </style>
+                <rect width="${options.width}" height="${options.height}" rx="${options.borderRadius}" 
+                      fill="${options.bgColour}" />
                 ${htmlWithoutDiv}
             </svg>`;
 
