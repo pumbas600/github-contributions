@@ -11,13 +11,14 @@ interface ContributionProps {
 export default function ContributionsChart({ username, options, contributions }: ContributionProps) {
     const labelStyles = {
         fill: options.colour,
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 600,
     };
 
     const axisStyles = {
         tick: { fill: options.colour },
         allowDecimals: false,
+        fontSize: 14,
     };
 
     return (
@@ -26,34 +27,31 @@ export default function ContributionsChart({ username, options, contributions }:
             height={options.height}
             data={contributions}
             margin={{
-                top: 90,
+                top: 70,
                 right: 30,
                 bottom: 40,
-                left: 40,
-            }}
-            style={{
-                backgroundColor: options.bgColour,
+                left: 30,
             }}
         >
             <text
                 x={options.width / 2 + 30}
-                y={40}
+                y={30}
                 fill={options.colour}
                 textAnchor="middle"
                 dominantBaseline="central"
             >
-                <tspan fontSize={32} fontWeight={600}>
+                <tspan fontSize={24} fontWeight={600}>
                     {`${username}'s Contributions`}
                 </tspan>
             </text>
             <CartesianGrid strokeDasharray="3 3" stroke={options.colour} strokeOpacity={0.3} />
-            <XAxis dataKey="date" label={{ value: 'Day', dy: 30, ...labelStyles }} {...axisStyles} />
+            <XAxis dataKey="date" label={{ value: 'Day', dy: 25, ...labelStyles }} {...axisStyles} />
             <YAxis
                 tickCount={6}
                 label={{
                     value: 'Contributions',
                     angle: -90,
-                    dx: -30,
+                    dx: -25,
                     ...labelStyles,
                 }}
                 {...axisStyles}

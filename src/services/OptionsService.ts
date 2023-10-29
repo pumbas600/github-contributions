@@ -15,8 +15,8 @@ export namespace OptionsService {
     export function getOptions(options: Partial<Options> = {}): OptionsWithDimensions {
         const mergedOptions = { ...DefaultOptions, ...options };
 
-        const width = mergedOptions.days * 35 + 100;
-        return { ...mergedOptions, width, height: 450 };
+        const width = mergedOptions.days * 25 + 100;
+        return { ...mergedOptions, width, height: 330 };
     }
 
     export function getDateRange(options: Options): DateRange {

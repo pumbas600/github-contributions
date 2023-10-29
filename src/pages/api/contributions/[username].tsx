@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     }
 
                 </style>
-                <rect width="${options.width}" height="${options.height}" rx="9" fill="${options.bgColour}"/>
+                <rect width="${options.width}" height="${options.height}" rx="4.5" fill="${options.bgColour}"/>
                 ${htmlWithoutDiv}
             </svg>`;
 
