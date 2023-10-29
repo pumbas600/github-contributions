@@ -1,3 +1,4 @@
+import useDebounce from '@/hooks/useDebounce';
 import { TextField, TextFieldProps } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -9,6 +10,13 @@ export interface ColourFieldProps
 
 export default function ColourField({ value: initialValue, onChange, ...props }: ColourFieldProps) {
     const [value, setValue] = useState(initialValue);
+    const debouncedValue = useDebounce(value, 200);
+
+    useEffect(() => {
+        if (debouncedValue !== undefined) {
+            onChange(debouncedValue);
+        }
+    }, [debouncedValue]);
 
     useEffect(() => {
         setValue(initialValue);
@@ -18,9 +26,5 @@ export default function ColourField({ value: initialValue, onChange, ...props }:
         setValue(e.target.value);
     }
 
-    function handleBlur(e: React.FocusEvent<HTMLInputElement>): void {
-        onChange(e.target.value);
-    }
-
-    return <TextField type="color" {...props} value={value} onChange={handleChange} onBlur={handleBlur} />;
+    return <TextField type="color" {...props} value={value} onChange={handleChange} />;
 }
