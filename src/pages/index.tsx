@@ -28,7 +28,7 @@ export default function Home() {
 
                 <meta property="og:title" content="GitHub Contributions Playground" />
                 <meta property="og:type" content="website" />
-                <meta property="og:image" content="https://github.pumbas.net/api/contributions/pumbas600" />
+                <meta property="og:image" content="/contributionsGraph.png" />
                 <meta property="og:url" content="https://github.pumbas.net" />
                 <meta name="twitter:card" content="summary_large_image" />
 
