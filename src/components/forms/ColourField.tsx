@@ -1,31 +1,13 @@
 import useDebounce from '@/hooks/useDebounce';
-import {
-    Box,
-    FormControl,
-    FormHelperText,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    OutlinedInputProps,
-} from '@mui/material';
+import { Box, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-export interface ColourFieldProps extends Omit<OutlinedInputProps, 'value' | 'defaultValue' | 'type' | 'onChange'> {
-    id: string;
+export interface ColourFieldProps extends Omit<TextFieldProps, 'value' | 'defaultValue' | 'type' | 'onChange'> {
     value?: string;
-    helperText?: string;
     onChange(value: string): void;
 }
 
-export default function ColourField({
-    value: initialValue,
-    id,
-    helperText,
-    error,
-    label,
-    onChange,
-    ...props
-}: ColourFieldProps) {
+export default function ColourField({ value: initialValue, onChange, ...props }: ColourFieldProps) {
     const [value, setValue] = useState(initialValue);
     const debouncedValue = useDebounce(value, 200);
 
@@ -44,15 +26,13 @@ export default function ColourField({
     }
 
     return (
-        <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor={id}>{label}</InputLabel>
-            <OutlinedInput
-                id={id}
-                value={value}
-                label={label}
-                onChange={handleChange}
-                {...props}
-                startAdornment={
+        <TextField
+            fullWidth
+            value={value}
+            onChange={handleChange}
+            {...props}
+            InputProps={{
+                startAdornment: (
                     <InputAdornment position="start">
                         <Box
                             bgcolor={value}
@@ -63,9 +43,9 @@ export default function ColourField({
                             borderColor="divider"
                         />
                     </InputAdornment>
-                }
-            />
-            <FormHelperText error={error}>{helperText}</FormHelperText>
-        </FormControl>
+                ),
+            }}
+            inputProps={{ pattern: '#[A-Fa-fd]{0,6}' }}
+        />
     );
 }

@@ -95,11 +95,11 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
                 />
             </FormRow>
             <FormRow rowGap={3}>
-                <ColourField id="colour" label="Primary colour" {...getColourFieldProps('colour')} />
+                <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
                 {!isBackgroundTransparent && (
-                    <ColourField id="bgColour" label="Background Colour" {...getColourFieldProps('bgColour')} />
+                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                 )}
-                <ColourField id="dotColour" label="Dot colour" {...getColourFieldProps('dotColour')} />
+                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
             </FormRow>
             <FormRow rowGap={3}>
                 <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
