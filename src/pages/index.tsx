@@ -28,13 +28,14 @@ export default function Home() {
 
                 <meta property="og:title" content="GitHub Contributions Playground" />
                 <meta property="og:type" content="website" />
-                <meta property="og:image" content="/contributionsGraph.png" />
+                {/* og:image doesn't support relative paths unfortunately... */}
+                <meta property="og:image" content="https://github.pumbas.net/contributionsGraph.png" />
                 <meta property="og:url" content="https://github.pumbas.net" />
                 <meta name="twitter:card" content="summary_large_image" />
 
                 <meta property="og:description" content={Description} />
                 <meta property="og:site_name" content="GitHub Contributions" />
-                <meta name="twitter:image:alt" content="An example contributions graph" />
+                <meta name="og:image:alt" content="An example contributions graph" />
             </Head>
             <main>
                 <ResponsiveContainer maxWidth="md">
