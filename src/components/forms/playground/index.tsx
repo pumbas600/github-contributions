@@ -14,43 +14,6 @@ import { ChangeEvent, useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import ChartImage from '../ChartImage';
 import GeneratedValues from '@/components/cards/GeneratedValues';
-import { Options } from '@/models/Options';
-import { toEntries } from '@/utilities';
-
-type Validator = {
-    isValid: (value: string) => boolean;
-    error: string;
-};
-
-const PositiveNumberValidator: Validator = {
-    isValid(value: string): boolean {
-        if (value === '') return false;
-
-        const number = Number(value);
-        return !isNaN(number) && number > 0;
-    },
-    error: 'The value must be greater than 0',
-};
-
-const ColourValidator: Validator = {
-    isValid(value: string): boolean {
-        if (value === '') return false;
-
-        return /^#[A-Fa-f\d]{3}|[A-Fa-f\d]{6}$/.test(value);
-    },
-    error: 'The value must be a valid hex colour',
-};
-
-const Validators: Record<keyof Options, Validator> = {
-    colour: ColourValidator,
-    bgColour: {
-        isValid: (value) => value === 'transparent' || ColourValidator.isValid(value),
-        error: 'The value must be a valid hex colour',
-    },
-    dotColour: ColourValidator,
-    borderRadius: PositiveNumberValidator,
-    days: PositiveNumberValidator,
-};
 
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
@@ -63,24 +26,6 @@ export default function Playground() {
     const showRenderedChart =
         debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
     const contributionImageAltText = `${username}’s GitHub Contributions`;
-
-    const validateOptions = (optionsWithoutDefaults: Partial<StringifiedOptions>): boolean => {
-        const errors: OptionErrors = {};
-
-        toEntries(optionsWithoutDefaults).forEach(([key, value]) => {
-            if (value === undefined) return;
-
-            const validator = Validators[key];
-            if (!validator.isValid(value)) {
-                errors[key] = validator.error;
-            }
-        });
-
-        const hasErrors = Object.keys(errors).length != 0;
-
-        setErrors(errors);
-        return !hasErrors;
-    };
 
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
         const baseUrl = `/api/contributions/${username}`;
@@ -104,7 +49,8 @@ export default function Playground() {
         if (username.length === 0) return;
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
-        if (validateOptions(optionsWithoutDefaults)) {
+        const hasError = Object.keys(errors).length != 0;
+        if (!hasError) {
             const generatedUrl = generateApiUrl(username, optionsWithoutDefaults);
             setGeneratedUrl(generatedUrl);
         }
@@ -147,7 +93,12 @@ export default function Playground() {
                 />
                 {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                 {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
-                <PlaygroundOptions errors={errors} options={options} onChange={handleOptionsChange} />
+                <PlaygroundOptions
+                    errors={errors}
+                    setErrors={setErrors}
+                    options={options}
+                    onChange={handleOptionsChange}
+                />
             </Stack>
             <Alert severity="info">
                 For more information, refer to <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on
