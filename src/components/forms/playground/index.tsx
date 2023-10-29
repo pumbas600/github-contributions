@@ -27,31 +27,6 @@ export default function Playground() {
         debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
     const contributionImageAltText = `${username}’s GitHub Contributions`;
 
-    const validateOptions = (optionsWithoutDefaults: Partial<StringifiedOptions>): boolean => {
-        const errors: OptionErrors = {};
-
-        if (isNotPositiveNumber(optionsWithoutDefaults.days)) {
-            errors.days = 'Days must be greater than 0';
-        }
-
-        if (isNotPositiveNumber(optionsWithoutDefaults.borderRadius)) {
-            errors.borderRadius = 'Border radius must be greater than 0';
-        }
-
-        const hasErrors = Object.keys(errors).length != 0;
-
-        setErrors(errors);
-        return !hasErrors;
-    };
-
-    const isNotPositiveNumber = (value?: string): boolean => {
-        if (value === undefined) return false;
-        if (value === '') return true;
-
-        const number = Number(value);
-        return isNaN(number) || number <= 0;
-    };
-
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
         const baseUrl = `/api/contributions/${username}`;
         const url = new URL(baseUrl, window.location.origin);
@@ -62,7 +37,7 @@ export default function Playground() {
             let stringValue = value.toString();
             if (stringValue.startsWith('#')) {
                 // Remove the hash from the colours
-                stringValue = stringValue.replace('#', '').toUpperCase();
+                stringValue = stringValue.replace('#', '');
             }
             url.searchParams.set(key, stringValue);
         }
@@ -74,7 +49,8 @@ export default function Playground() {
         if (username.length === 0) return;
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
 
-        if (validateOptions(optionsWithoutDefaults)) {
+        const hasError = Object.keys(errors).length != 0;
+        if (!hasError) {
             const generatedUrl = generateApiUrl(username, optionsWithoutDefaults);
             setGeneratedUrl(generatedUrl);
         }
@@ -117,7 +93,12 @@ export default function Playground() {
                 />
                 {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                 {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
-                <PlaygroundOptions errors={errors} options={options} onChange={handleOptionsChange} />
+                <PlaygroundOptions
+                    errors={errors}
+                    setErrors={setErrors}
+                    options={options}
+                    onChange={handleOptionsChange}
+                />
             </Stack>
             <Alert severity="info">
                 For more information, refer to <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on

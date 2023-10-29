@@ -13,15 +13,45 @@ export type OptionErrors = Partial<StringifiedOptions>;
 
 export interface PlaygroundOptionsProps {
     errors: OptionErrors;
+    setErrors: (errors: OptionErrors) => void;
     options: StringifiedOptions;
-
-    /**
-     * Called when the playground options selected change.
-     *
-     * @param options The new options that have been set
-     */
     onChange: (options: StringifiedOptions) => void;
 }
+
+type Validator = {
+    isValid: (value: string) => boolean;
+    error: string;
+};
+
+const PositiveNumberValidator: Validator = {
+    isValid(value: string): boolean {
+        if (value === '') return false;
+
+        const number = Number(value);
+        return !isNaN(number) && number > 0;
+    },
+    error: 'The value must be greater than 0',
+};
+
+const ColourValidator: Validator = {
+    isValid(value: string): boolean {
+        if (value === '') return false;
+
+        return /^#[A-Fa-f\d]{6}$/i.test(value);
+    },
+    error: 'The value must be a valid hex colour',
+};
+
+const Validators: Record<keyof Options, Validator> = {
+    colour: ColourValidator,
+    bgColour: {
+        isValid: (value) => value === 'transparent' || ColourValidator.isValid(value),
+        error: 'The value must be a valid hex colour',
+    },
+    dotColour: ColourValidator,
+    borderRadius: PositiveNumberValidator,
+    days: PositiveNumberValidator,
+};
 
 export const DefaultOptions = fromEntries<StringifiedOptions>(
     toEntries(OptionsService.DefaultOptions).map(([key, value]) => [key, value?.toString()]),
@@ -33,7 +63,7 @@ export function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<
     );
 }
 
-export default function PlaygroundOptions({ errors, options, onChange }: PlaygroundOptionsProps) {
+export default function PlaygroundOptions({ errors, setErrors, options, onChange }: PlaygroundOptionsProps) {
     const theme = useTheme();
 
     const [previousBgColour, setPreviousBgColour] = useState<string | null>(null);
@@ -52,7 +82,17 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
         value: StringifiedOptions[Key],
     ): void => {
         const newOptions = { ...options, [key]: value };
+
+        const validator = Validators[key];
+        const newErrors = { ...errors };
+        if (!validator.isValid(value)) {
+            newErrors[key] = validator.error;
+        } else {
+            delete newErrors[key];
+        }
+
         onChange(newOptions);
+        setErrors(newErrors);
     };
 
     const handleChangeTransparentBackground = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -78,7 +118,7 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
 
     const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): ColourFieldProps => {
         return {
-            fullWidth: true,
+            id: key,
             error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? DefaultOptions[key],

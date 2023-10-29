@@ -1,3 +1,12 @@
 html {
     scrollbar-gutter: stable;
 }
+
+body {
+    /* 
+     * When opening a MUI Menu, it expects the scrollbar to disappear as it has disabled overflow in the body and so
+     * it adds right padding to compensate. The srollbar-gutter: stable style, however, means that there is already a
+     * gap accounting for the scrollbar and so this causes it to double-up.
+    */
+    padding-right: 0 !important;
+}
