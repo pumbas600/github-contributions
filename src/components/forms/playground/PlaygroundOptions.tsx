@@ -100,10 +100,11 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
                 {!isBackgroundTransparent && (
                     <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
                 )}
+                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
             </FormRow>
             <FormRow rowGap={3}>
-                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
                 <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
+                <NumberField label="Border Radius" {...getTextFieldProps('borderRadius')} />
             </FormRow>
             {isResetButtonVisible && (
                 <FormRow direction="row-reverse">

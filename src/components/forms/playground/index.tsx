@@ -30,15 +30,26 @@ export default function Playground() {
     const validateOptions = (optionsWithoutDefaults: Partial<StringifiedOptions>): boolean => {
         const errors: OptionErrors = {};
 
-        const days = Number(optionsWithoutDefaults.days);
-        if (optionsWithoutDefaults.days !== undefined && (isNaN(days) || days <= 0)) {
+        if (isNotPositiveNumber(optionsWithoutDefaults.days)) {
             errors.days = 'Days must be greater than 0';
+        }
+
+        if (isNotPositiveNumber(optionsWithoutDefaults.borderRadius)) {
+            errors.borderRadius = 'Border radius must be greater than 0';
         }
 
         const hasErrors = Object.keys(errors).length != 0;
 
         setErrors(errors);
         return !hasErrors;
+    };
+
+    const isNotPositiveNumber = (value?: string): boolean => {
+        if (value === undefined) return false;
+        if (value === '') return true;
+
+        const number = Number(value);
+        return isNaN(number) || number <= 0;
     };
 
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
