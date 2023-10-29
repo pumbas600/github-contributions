@@ -13,17 +13,28 @@ const ResponsiveContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
+const Title = 'GitHub Contributions Playground';
+const Description =
+    'A playground for previewing the styling of GitHub contribution graphs and generating the code for embedding them in Markdown and HTML.';
+
 export default function Home() {
     return (
         <>
             <Head>
-                <title>GitHub Contributions Playground</title>
-                <meta
-                    name="description"
-                    content="A playground for styling GitHub contribution graphs and generating the markdown for displaying them in READMEs"
-                />
+                <title>{Title}</title>
+                <meta name="description" content={Description} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
+
+                <meta property="og:title" content="GitHub Contributions Playground" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="https://github.pumbas.net/api/contributions/pumbas600" />
+                <meta property="og:url" content="https://github.pumbas.net" />
+                <meta name="twitter:card" content="summary_large_image" />
+
+                <meta property="og:description" content={Description} />
+                <meta property="og:site_name" content="GitHub Contributions" />
+                <meta name="twitter:image:alt" content="An example contributions graph" />
             </Head>
             <main>
                 <ResponsiveContainer maxWidth="md">
