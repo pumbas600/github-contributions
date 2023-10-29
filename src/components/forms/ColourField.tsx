@@ -11,7 +11,7 @@ export interface ColourFieldProps extends Omit<TextFieldProps, 'value' | 'defaul
 
 export default function ColourField({ id, value: initialValue, onChange, ...props }: ColourFieldProps) {
     const [value, setValue] = useState(initialValue);
-    const debouncedValue = useDebounce(value, 350);
+    const debouncedValue = useDebounce(value, 400);
 
     useEffect(() => {
         if (debouncedValue !== undefined) {

@@ -23,7 +23,7 @@ const ColourPreview = styled(Box)(({ theme }) => ({
     cursor: 'pointer',
 }));
 
-export default function HexColourPreviewPicker({ id, value, handleChange, ...dialogProps }: ColorPickerBaseProps) {
+export default function HexColourPreviewPicker({ id, value, handleChange }: ColorPickerBaseProps) {
     const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
     const isPickerOpen = anchorElement !== null;
 
@@ -52,6 +52,7 @@ export default function HexColourPreviewPicker({ id, value, handleChange, ...dia
                 anchorEl={anchorElement}
                 open={isPickerOpen}
                 onClose={handleClose}
+                disableScrollLock
                 MenuListProps={{
                     'aria-labelledby': previewId,
                 }}
