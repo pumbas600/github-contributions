@@ -54,7 +54,14 @@ export default function ColourField({
                 {...props}
                 startAdornment={
                     <InputAdornment position="start">
-                        <Box bgcolor={value} width="2rem" height="2rem" borderRadius="4px" />
+                        <Box
+                            bgcolor={value}
+                            width="2rem"
+                            height="2rem"
+                            borderRadius="4px"
+                            border="1px solid"
+                            borderColor="divider"
+                        />
                     </InputAdornment>
                 }
             />
