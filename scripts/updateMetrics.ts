@@ -1,13 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import {
-    DocumentData,
-    DocumentReference,
-    QueryDocumentSnapshot,
-    collection,
-    getDocs,
-    getFirestore,
-    updateDoc,
-} from 'firebase/firestore';
+import { QueryDocumentSnapshot, collection, getDocs, getFirestore, updateDoc } from 'firebase/firestore';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });

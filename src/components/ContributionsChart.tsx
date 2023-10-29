@@ -18,7 +18,7 @@ export default function ContributionsChart({ username, options, contributions }:
     const axisStyles = {
         tick: { fill: options.colour },
         allowDecimals: false,
-        fontSize: 14,
+        fontSize: 12,
     };
 
     return (
