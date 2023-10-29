@@ -1,15 +1,17 @@
 import useDebounce from '@/hooks/useDebounce';
-import { Box, InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useEffect, useState } from 'react';
+import HexColourPreviewPicker from './HexColourPreviewPicker';
 
 export interface ColourFieldProps extends Omit<TextFieldProps, 'value' | 'defaultValue' | 'type' | 'onChange'> {
+    id: string; // Require an id
     value?: string;
     onChange(value: string): void;
 }
 
-export default function ColourField({ value: initialValue, onChange, ...props }: ColourFieldProps) {
+export default function ColourField({ id, value: initialValue, onChange, ...props }: ColourFieldProps) {
     const [value, setValue] = useState(initialValue);
-    const debouncedValue = useDebounce(value, 200);
+    const debouncedValue = useDebounce(value, 350);
 
     useEffect(() => {
         if (debouncedValue !== undefined) {
@@ -21,31 +23,26 @@ export default function ColourField({ value: initialValue, onChange, ...props }:
         setValue(initialValue);
     }, [initialValue]);
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-        setValue(e.target.value.toUpperCase());
+    function handleChange(value: string): void {
+        setValue(value.toUpperCase());
     }
 
     return (
-        <TextField
-            fullWidth
-            value={value}
-            onChange={handleChange}
-            {...props}
-            InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <Box
-                            bgcolor={value}
-                            width="2rem"
-                            height="2rem"
-                            borderRadius="4px"
-                            border="1px solid"
-                            borderColor="divider"
-                        />
-                    </InputAdornment>
-                ),
-            }}
-            inputProps={{ pattern: '#[A-Fa-fd]{0,6}' }}
-        />
+        <>
+            <TextField
+                id={id}
+                fullWidth
+                value={value}
+                onChange={(e) => handleChange(e.target.value)}
+                {...props}
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <HexColourPreviewPicker value={value} handleChange={handleChange} id={id} />
+                        </InputAdornment>
+                    ),
+                }}
+            />
+        </>
     );
 }

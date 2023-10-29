@@ -116,8 +116,9 @@ export default function PlaygroundOptions({ errors, setErrors, options, onChange
         };
     };
 
-    const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): Omit<ColourFieldProps, 'id'> => {
+    const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): ColourFieldProps => {
         return {
+            id: key,
             error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? DefaultOptions[key],
