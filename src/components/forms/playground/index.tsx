@@ -62,7 +62,7 @@ export default function Playground() {
             let stringValue = value.toString();
             if (stringValue.startsWith('#')) {
                 // Remove the hash from the colours
-                stringValue = stringValue.replace('#', '').toUpperCase();
+                stringValue = stringValue.replace('#', '');
             }
             url.searchParams.set(key, stringValue);
         }

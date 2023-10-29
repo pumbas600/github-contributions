@@ -11,17 +11,17 @@ export function buildTheme(theme: ResolvedTheme): Theme {
         mode: theme,
         ...(theme === 'light'
             ? {
-                  divider: '#d0d7de',
+                  divider: '#D0D7DE',
                   background: {
                       default: '#FFFFFF',
-                      paper: '#f6f8fa',
+                      paper: '#F6F8FA',
                   },
               }
             : {
-                  divider: '#30363d',
+                  divider: '#30363D',
                   background: {
-                      default: '#0d1117',
-                      paper: '#161b22',
+                      default: '#0D1117',
+                      paper: '#161B22',
                   },
               }),
     };

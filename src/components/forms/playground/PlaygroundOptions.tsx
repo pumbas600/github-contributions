@@ -76,9 +76,8 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
         };
     };
 
-    const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): ColourFieldProps => {
+    const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): Omit<ColourFieldProps, 'id'> => {
         return {
-            fullWidth: true,
             error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? DefaultOptions[key],
@@ -96,11 +95,11 @@ export default function PlaygroundOptions({ errors, options, onChange }: Playgro
                 />
             </FormRow>
             <FormRow rowGap={3}>
-                <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
+                <ColourField id="colour" label="Primary colour" {...getColourFieldProps('colour')} />
                 {!isBackgroundTransparent && (
-                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                    <ColourField id="bgColour" label="Background Colour" {...getColourFieldProps('bgColour')} />
                 )}
-                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
+                <ColourField id="dotColour" label="Dot colour" {...getColourFieldProps('dotColour')} />
             </FormRow>
             <FormRow rowGap={3}>
                 <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
