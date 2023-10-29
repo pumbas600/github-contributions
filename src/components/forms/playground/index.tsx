@@ -14,6 +14,43 @@ import { ChangeEvent, useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import ChartImage from '../ChartImage';
 import GeneratedValues from '@/components/cards/GeneratedValues';
+import { Options } from '@/models/Options';
+import { toEntries } from '@/utilities';
+
+type Validator = {
+    isValid: (value: string) => boolean;
+    error: string;
+};
+
+const PositiveNumberValidator: Validator = {
+    isValid(value: string): boolean {
+        if (value === '') return false;
+
+        const number = Number(value);
+        return !isNaN(number) && number > 0;
+    },
+    error: 'The value must be greater than 0',
+};
+
+const ColourValidator: Validator = {
+    isValid(value: string): boolean {
+        if (value === '') return false;
+
+        return /^#[A-Fa-f\d]{3}|[A-Fa-f\d]{6}$/.test(value);
+    },
+    error: 'The value must be a valid hex colour',
+};
+
+const Validators: Record<keyof Options, Validator> = {
+    colour: ColourValidator,
+    bgColour: {
+        isValid: (value) => value === 'transparent' || ColourValidator.isValid(value),
+        error: 'The value must be a valid hex colour',
+    },
+    dotColour: ColourValidator,
+    borderRadius: PositiveNumberValidator,
+    days: PositiveNumberValidator,
+};
 
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
@@ -30,26 +67,19 @@ export default function Playground() {
     const validateOptions = (optionsWithoutDefaults: Partial<StringifiedOptions>): boolean => {
         const errors: OptionErrors = {};
 
-        if (isNotPositiveNumber(optionsWithoutDefaults.days)) {
-            errors.days = 'Days must be greater than 0';
-        }
+        toEntries(optionsWithoutDefaults).forEach(([key, value]) => {
+            if (value === undefined) return;
 
-        if (isNotPositiveNumber(optionsWithoutDefaults.borderRadius)) {
-            errors.borderRadius = 'Border radius must be greater than 0';
-        }
+            const validator = Validators[key];
+            if (!validator.isValid(value)) {
+                errors[key] = validator.error;
+            }
+        });
 
         const hasErrors = Object.keys(errors).length != 0;
 
         setErrors(errors);
         return !hasErrors;
-    };
-
-    const isNotPositiveNumber = (value?: string): boolean => {
-        if (value === undefined) return false;
-        if (value === '') return true;
-
-        const number = Number(value);
-        return isNaN(number) || number <= 0;
     };
 
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
