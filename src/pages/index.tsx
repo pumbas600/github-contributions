@@ -26,10 +26,10 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
 
-                <meta property="og:title" content="GitHub Contributions Playground" />
+                <meta property="og:title" content={Title} />
                 <meta property="og:type" content="website" />
                 {/* og:image doesn't support relative paths unfortunately... */}
-                <meta property="og:image" content="https://github.pumbas.net/contributionsGraph.png" />
+                <meta property="og:image" content={`${window.location.origin}/contributionsGraph.png`} />
                 <meta property="og:url" content="https://github.pumbas.net" />
                 <meta name="twitter:card" content="summary_large_image" />
 
