@@ -2,7 +2,7 @@ import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/
 import StyledLink from '@/components/typography/StyledLink';
 import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
-import { Alert, Box, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Grid, Stack, TextField, Typography } from '@mui/material';
 import OldPlaygroundOptions, {
     DefaultOptions,
     OptionErrors,
@@ -94,6 +94,7 @@ export default function Playground() {
                         {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                         {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
                         <Alert severity="info">
+                            <AlertTitle>Note</AlertTitle>
                             For more information, refer to{' '}
                             <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on GitHub.
                         </Alert>
