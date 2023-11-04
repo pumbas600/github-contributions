@@ -5,33 +5,34 @@ import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/700.css';
-import createPalette from '@mui/material/styles/createPalette';
 
 export function buildTheme(theme: ResolvedTheme): Theme {
-    const palette = createPalette({
-        mode: theme,
-        ...(theme === 'light'
-            ? {
-                  primary: {
-                      main: '#0969DA',
-                  },
-                  divider: '#D0D7DE',
-                  background: {
-                      default: '#FFFFFF',
-                      paper: '#F6F8FA',
-                  },
-              }
-            : {
-                  primary: {
-                      main: '#2F81F7',
-                  },
-                  divider: '#30363D',
-                  background: {
-                      default: '#0D1117',
-                      paper: '#161B22',
-                  },
-              }),
-    });
+    const palette = createTheme({
+        palette: {
+            mode: theme,
+            ...(theme === 'light'
+                ? {
+                      primary: {
+                          main: '#0969DA',
+                      },
+                      divider: '#D0D7DE',
+                      background: {
+                          default: '#FFFFFF',
+                          paper: '#F6F8FA',
+                      },
+                  }
+                : {
+                      primary: {
+                          main: '#2F81F7',
+                      },
+                      divider: '#30363D',
+                      background: {
+                          default: '#0D1117',
+                          paper: '#161B22',
+                      },
+                  }),
+        },
+    }).palette;
 
     return createTheme({
         palette,
