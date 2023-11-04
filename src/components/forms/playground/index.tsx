@@ -1,4 +1,4 @@
-import GitHubCard from '@/components/cards/GitHubCard';
+import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
 import StyledLink from '@/components/typography/StyledLink';
 import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
@@ -85,14 +85,12 @@ export default function Playground() {
             </Grid>
             <Grid item xs={12} lg={8}>
                 <GitHubCard>
-                    <Stack gap={3}>
-                        <Box>
-                            <Subtitle>Enter your username to get started</Subtitle>
-                            <Typography variant="body2">
-                                This playground is styled after the GitHub default light and dark themes in order to
-                                accurately recreate how the charts will look in GitHub READMEs.
-                            </Typography>
-                        </Box>
+                    <GitHubCardHeader
+                        header="Enter your username to get started"
+                        secondary="This playground is styled after the GitHub default light and dark themes in order to
+                            accurately recreate how the charts will look in GitHub READMEs."
+                    />
+                    <GitHubContent>
                         <TextField
                             spellCheck={false}
                             required
@@ -110,11 +108,11 @@ export default function Playground() {
                             options={options}
                             onChange={handleOptionsChange}
                         />
-                    </Stack>
-                    <Alert severity="info">
-                        For more information, refer to <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink>{' '}
-                        on GitHub.
-                    </Alert>
+                        <Alert severity="info">
+                            For more information, refer to{' '}
+                            <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on GitHub.
+                        </Alert>
+                    </GitHubContent>
                 </GitHubCard>
             </Grid>
         </Grid>

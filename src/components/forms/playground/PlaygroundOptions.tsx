@@ -1,4 +1,4 @@
-import GitHubCard from '@/components/cards/GitHubCard';
+import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
 import Subtitle from '@/components/typography/Subtitle';
 import { Button, TextField, TextFieldProps, useTheme } from '@mui/material';
 import ColourField, { ColourFieldProps } from '../ColourField';
@@ -138,33 +138,37 @@ export default function PlaygroundOptions({
 
     return (
         <GitHubCard>
-            <Subtitle>Options</Subtitle>
-            <TextField
-                size="medium"
-                spellCheck={false}
-                required
-                fullWidth
-                label="GitHub username"
-                placeholder="E.g. pumbas600"
-                value={username}
-                onChange={(e) => onChangeUsername(e.target.value)}
-            />
-            <LabelledCheckbox
-                sx={{ mb: -1 }}
-                label="Use coloured background"
-                checked={!isBackgroundTransparent}
-                onChange={handleChangeTransparentBackground}
-            />
-            <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
-            {!isBackgroundTransparent && <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />}
-            <ColourField label="Dot Colour" value="#000000" {...getColourFieldProps('dotColour')} />
-            <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
-            <NumberField label="Border Radius" {...getTextFieldProps('borderRadius')} />
-            {isResetButtonVisible && (
-                <Button sx={{ mt: -1 }} onClick={handleResetToDefaults}>
-                    Reset to defaults
-                </Button>
-            )}
+            <GitHubCardHeader header="Options" />
+            <GitHubContent>
+                <TextField
+                    size="medium"
+                    spellCheck={false}
+                    required
+                    fullWidth
+                    label="GitHub username"
+                    placeholder="E.g. pumbas600"
+                    value={username}
+                    onChange={(e) => onChangeUsername(e.target.value)}
+                />
+                <LabelledCheckbox
+                    sx={{ mb: -1 }}
+                    label="Use coloured background"
+                    checked={!isBackgroundTransparent}
+                    onChange={handleChangeTransparentBackground}
+                />
+                <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
+                {!isBackgroundTransparent && (
+                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                )}
+                <ColourField label="Dot Colour" value="#000000" {...getColourFieldProps('dotColour')} />
+                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
+                <NumberField label="Border Radius" {...getTextFieldProps('borderRadius')} />
+                {isResetButtonVisible && (
+                    <Button sx={{ mt: -1 }} onClick={handleResetToDefaults}>
+                        Reset to defaults
+                    </Button>
+                )}
+            </GitHubContent>
         </GitHubCard>
     );
 }
