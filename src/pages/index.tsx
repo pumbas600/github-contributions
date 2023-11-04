@@ -1,7 +1,6 @@
-import GitHubCard from '@/components/cards/GitHubCard';
 import Playground from '@/components/forms/playground';
 import Header from '@/components/header';
-import { Container, Grid, styled } from '@mui/material';
+import { Container, styled } from '@mui/material';
 import Head from 'next/head';
 
 const ResponsiveContainer = styled(Container)(({ theme }) => ({
@@ -41,14 +40,7 @@ export default function Home() {
             <main>
                 <ResponsiveContainer maxWidth="lg">
                     <Header />
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} lg={4}>
-                            <GitHubCard>Options :)</GitHubCard>
-                        </Grid>
-                        <Grid item xs={12} lg={8}>
-                            <Playground />
-                        </Grid>
-                    </Grid>
+                    <Playground />
                 </ResponsiveContainer>
             </main>
         </>

@@ -2,8 +2,8 @@ import GitHubCard from '@/components/cards/GitHubCard';
 import StyledLink from '@/components/typography/StyledLink';
 import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
-import { Alert, Box, Stack, TextField, Typography } from '@mui/material';
-import PlaygroundOptions, {
+import { Alert, Box, Grid, Stack, TextField, Typography } from '@mui/material';
+import OldPlaygroundOptions, {
     DefaultOptions,
     OptionErrors,
     StringifiedOptions,
@@ -72,37 +72,44 @@ export default function Playground() {
     };
 
     return (
-        <GitHubCard>
-            <Stack gap={3}>
-                <Box>
-                    <Subtitle>Enter your username to get started</Subtitle>
-                    <Typography variant="body2">
-                        This playground is styled after the GitHub default light and dark themes in order to accurately
-                        recreate how the charts will look in GitHub READMEs.
-                    </Typography>
-                </Box>
-                <TextField
-                    spellCheck={false}
-                    required
-                    fullWidth
-                    label="GitHub username"
-                    placeholder="E.g. pumbas600"
-                    value={username}
-                    onChange={handleUsernameChange}
-                />
-                {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
-                {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
-                <PlaygroundOptions
-                    errors={errors}
-                    setErrors={setErrors}
-                    options={options}
-                    onChange={handleOptionsChange}
-                />
-            </Stack>
-            <Alert severity="info">
-                For more information, refer to <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on
-                GitHub.
-            </Alert>
-        </GitHubCard>
+        <Grid container spacing={2}>
+            <Grid item xs={12} lg={4}>
+                <GitHubCard>Options :)</GitHubCard>
+            </Grid>
+            <Grid item xs={12} lg={8}>
+                <GitHubCard>
+                    <Stack gap={3}>
+                        <Box>
+                            <Subtitle>Enter your username to get started</Subtitle>
+                            <Typography variant="body2">
+                                This playground is styled after the GitHub default light and dark themes in order to
+                                accurately recreate how the charts will look in GitHub READMEs.
+                            </Typography>
+                        </Box>
+                        <TextField
+                            spellCheck={false}
+                            required
+                            fullWidth
+                            label="GitHub username"
+                            placeholder="E.g. pumbas600"
+                            value={username}
+                            onChange={handleUsernameChange}
+                        />
+                        {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
+                        {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
+                        <OldPlaygroundOptions
+                            errors={errors}
+                            setErrors={setErrors}
+                            options={options}
+                            onChange={handleOptionsChange}
+                        />
+                    </Stack>
+                    <Alert severity="info">
+                        For more information, refer to <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink>{' '}
+                        on GitHub.
+                    </Alert>
+                </GitHubCard>
+            </Grid>
+        </Grid>
     );
 }

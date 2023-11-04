@@ -63,7 +63,7 @@ export function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<
     );
 }
 
-export default function PlaygroundOptions({ errors, setErrors, options, onChange }: PlaygroundOptionsProps) {
+export default function OldPlaygroundOptions({ errors, setErrors, options, onChange }: PlaygroundOptionsProps) {
     const theme = useTheme();
 
     const [previousBgColour, setPreviousBgColour] = useState<string | null>(null);
