@@ -8,11 +8,12 @@ import OldPlaygroundOptions, {
     OptionErrors,
     StringifiedOptions,
     getOptionsWithoutDefaults,
-} from './PlaygroundOptions';
+} from './OldPlaygroundOptions';
 import { ChangeEvent, useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import ChartImage from '../ChartImage';
 import GeneratedValues from '@/components/cards/GeneratedValues';
+import PlaygroundOptions from './PlaygroundOptions';
 
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
@@ -55,8 +56,7 @@ export default function Playground() {
         }
     };
 
-    const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        const username = e.target.value;
+    const handleUsernameChange = (username: string): void => {
         setUsername(username);
 
         if (username.length == 0) {
@@ -74,7 +74,7 @@ export default function Playground() {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} lg={4}>
-                <GitHubCard>Options :)</GitHubCard>
+                <PlaygroundOptions username={username} onUsernameChange={handleUsernameChange} />
             </Grid>
             <Grid item xs={12} lg={8}>
                 <GitHubCard>
@@ -93,7 +93,7 @@ export default function Playground() {
                             label="GitHub username"
                             placeholder="E.g. pumbas600"
                             value={username}
-                            onChange={handleUsernameChange}
+                            onChange={(e) => handleUsernameChange(e.target.value)}
                         />
                         {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                         {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
