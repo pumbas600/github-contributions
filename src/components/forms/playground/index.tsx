@@ -88,7 +88,7 @@ export default function Playground() {
                 <GitHubCard>
                     <GitHubContent>
                         <GitHubCardHeader
-                            header="Enter your username to get started"
+                            header="Preview your contributions"
                             secondary="This playground is styled after the GitHub default light and dark themes in order to
                             accurately recreate how the charts will look in GitHub READMEs."
                         />
