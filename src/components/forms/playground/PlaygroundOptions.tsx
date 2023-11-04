@@ -1,12 +1,13 @@
 import GitHubCard from '@/components/cards/GitHubCard';
 import Subtitle from '@/components/typography/Subtitle';
-import { TextField, TextFieldProps, useTheme } from '@mui/material';
+import { Button, TextField, TextFieldProps, useTheme } from '@mui/material';
 import ColourField, { ColourFieldProps } from '../ColourField';
 import NumberField from '../NumberField';
 import { Options } from '@/models/Options';
 import { fromEntries, toEntries } from '@/utilities';
 import { OptionsService } from '@/services/OptionsService';
 import { useEffect, useState } from 'react';
+import LabelledCheckbox from '../LabelledCheckbox';
 
 export type StringifiedOptions = Record<keyof Options, string>;
 export type OptionErrors = Partial<StringifiedOptions>;
@@ -148,11 +149,22 @@ export default function PlaygroundOptions({
                 value={username}
                 onChange={(e) => onChangeUsername(e.target.value)}
             />
+            <LabelledCheckbox
+                sx={{ mb: -1 }}
+                label="Use coloured background"
+                checked={!isBackgroundTransparent}
+                onChange={handleChangeTransparentBackground}
+            />
             <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
-            <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+            {!isBackgroundTransparent && <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />}
             <ColourField label="Dot Colour" value="#000000" {...getColourFieldProps('dotColour')} />
             <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
             <NumberField label="Border Radius" {...getTextFieldProps('borderRadius')} />
+            {isResetButtonVisible && (
+                <Button sx={{ mt: -1 }} onClick={handleResetToDefaults}>
+                    Reset to defaults
+                </Button>
+            )}
         </GitHubCard>
     );
 }
