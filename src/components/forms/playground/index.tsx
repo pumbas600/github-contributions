@@ -8,10 +8,12 @@ import PlaygroundOptions, {
     StringifiedOptions,
     getOptionsWithoutDefaults,
 } from './PlaygroundOptions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import ChartImage from '../ChartImage';
 import GeneratedValues from '@/components/cards/GeneratedValues';
+
+const PlaceholderUsername = 'YOUR_USERNAME';
 
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
@@ -23,7 +25,13 @@ export default function Playground() {
 
     const showRenderedChart =
         debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
-    const contributionImageAltText = `${username}’s GitHub Contributions`;
+
+    const displayedUsername = username.length === 0 ? PlaceholderUsername : username;
+    const contributionImageAltText = `${displayedUsername}'s GitHub contributions`;
+
+    useEffect(() => {
+        setGeneratedUrl(generateApiUrl(PlaceholderUsername, {}));
+    }, []);
 
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
         const baseUrl = `/api/contributions/${username}`;
@@ -44,9 +52,9 @@ export default function Playground() {
     };
 
     const handleGenerateApiUrl = (options: StringifiedOptions, username: string): void => {
-        if (username.length === 0) return;
-        const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
+        username = username.length === 0 ? PlaceholderUsername : username;
 
+        const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
         const hasError = Object.keys(errors).length != 0;
         if (!hasError) {
             const generatedUrl = generateApiUrl(username, optionsWithoutDefaults);
@@ -56,12 +64,7 @@ export default function Playground() {
 
     const handleUsernameChange = (username: string): void => {
         setUsername(username);
-
-        if (username.length == 0) {
-            setGeneratedUrl(null);
-        } else {
-            handleGenerateApiUrl(options, username);
-        }
+        handleGenerateApiUrl(options, username);
     };
 
     const handleOptionsChange = (options: StringifiedOptions): void => {
@@ -90,7 +93,7 @@ export default function Playground() {
                     />
                     <GitHubContent>
                         {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
-                        {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
+                        {generatedUrl !== null && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
                         <Alert severity="info">
                             <AlertTitle>Note</AlertTitle>
                             For more information, refer to{' '}

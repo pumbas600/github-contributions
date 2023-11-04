@@ -4,11 +4,6 @@ import { SyntheticEvent, useMemo, useState } from 'react';
 import TabPanel from '../tabs/TabPanel';
 import CodeBlock from './CodeBlock';
 
-export interface GeneratedValuesProps {
-    url: string;
-    alt: string;
-}
-
 const GeneratedTabs = {
     Markdown: 'markdown',
     Html: 'html',
@@ -17,18 +12,23 @@ const GeneratedTabs = {
 
 type GeneratedTabs = ValuesOf<typeof GeneratedTabs>;
 
-function ariaProps(tab: GeneratedTabs): TabProps {
-    return {
-        value: tab,
-        id: `generated-tab-${tab}`,
-        'aria-controls': `generated-tabpanel-${tab}`,
-    };
+export interface GeneratedValuesProps {
+    url: string;
+    alt: string;
 }
 
 interface GeneratedValue {
     tab: GeneratedTabs;
     label: string;
     value: string;
+}
+
+function ariaProps(tab: GeneratedTabs): TabProps {
+    return {
+        value: tab,
+        id: `generated-tab-${tab}`,
+        'aria-controls': `generated-tabpanel-${tab}`,
+    };
 }
 
 export default function GeneratedValues({ url, alt }: GeneratedValuesProps) {

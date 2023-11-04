@@ -1,4 +1,4 @@
-import { PaletteOptions, Theme, alertClasses, alertTitleClasses, createTheme } from '@mui/material';
+import { Theme, alertClasses, alertTitleClasses, createTheme } from '@mui/material';
 import { ResolvedTheme } from '@/contexts/ThemeContext';
 
 import '@fontsource/inter/300.css';

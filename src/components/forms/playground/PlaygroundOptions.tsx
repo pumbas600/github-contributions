@@ -1,5 +1,4 @@
 import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
-import Subtitle from '@/components/typography/Subtitle';
 import { Button, Divider, TextField, TextFieldProps, useTheme } from '@mui/material';
 import ColourField, { ColourFieldProps } from '../ColourField';
 import NumberField from '../NumberField';
