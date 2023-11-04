@@ -1,5 +1,4 @@
-import CodeBlock from '@/components/cards/CodeBlock';
-import PlaygroundCard from '@/components/cards/PlaygroundCard';
+import GitHubCard from '@/components/cards/GitHubCard';
 import StyledLink from '@/components/typography/StyledLink';
 import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
@@ -73,7 +72,7 @@ export default function Playground() {
     };
 
     return (
-        <PlaygroundCard>
+        <GitHubCard>
             <Stack gap={3}>
                 <Box>
                     <Subtitle>Enter your username to get started</Subtitle>
@@ -104,6 +103,6 @@ export default function Playground() {
                 For more information, refer to <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on
                 GitHub.
             </Alert>
-        </PlaygroundCard>
+        </GitHubCard>
     );
 }

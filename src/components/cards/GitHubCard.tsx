@@ -19,6 +19,6 @@ const PaddedCard = styled(Card)(({ theme }) => ({
     },
 }));
 
-export default function PlaygroundCard({ children }: PlaygroundCardProps) {
+export default function GitHubCard({ children }: PlaygroundCardProps) {
     return <PaddedCard elevation={0}>{children}</PaddedCard>;
 }
