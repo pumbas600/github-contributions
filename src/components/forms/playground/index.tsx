@@ -1,19 +1,17 @@
 import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
 import StyledLink from '@/components/typography/StyledLink';
-import Subtitle from '@/components/typography/Subtitle';
 import { GitHubRepoUrl } from '@/data/Links';
-import { Alert, AlertTitle, Box, Grid, Stack, TextField, Typography } from '@mui/material';
-import OldPlaygroundOptions, {
+import { Alert, AlertTitle, Grid } from '@mui/material';
+import PlaygroundOptions, {
     DefaultOptions,
     OptionErrors,
     StringifiedOptions,
     getOptionsWithoutDefaults,
-} from './OldPlaygroundOptions';
-import { ChangeEvent, useState } from 'react';
+} from './PlaygroundOptions';
+import { useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import ChartImage from '../ChartImage';
 import GeneratedValues from '@/components/cards/GeneratedValues';
-import PlaygroundOptions from './PlaygroundOptions';
 
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
