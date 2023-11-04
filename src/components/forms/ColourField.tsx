@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import HexColourPreviewPicker from './HexColourPreviewPicker';
 
 export interface ColourFieldProps extends Omit<TextFieldProps, 'value' | 'defaultValue' | 'type' | 'onChange'> {
-    id: string; // Require an id
+    id: string;
     value?: string;
     onChange(value: string): void;
 }

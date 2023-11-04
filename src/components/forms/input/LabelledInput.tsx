@@ -5,24 +5,25 @@ export interface BaseInputProps {
     name: string;
 }
 
-export interface LabelledInputProps<InputProps> {
+export interface LabelledInputProps<InputProps> extends BaseInputProps {
     label?: string;
-    inputProps: InputProps;
+    inputProps: Omit<InputProps, keyof BaseInputProps>;
     Input: React.ComponentType<InputProps>;
 }
 
-export default function LabelledInput<InputProps extends BaseInputProps>({
+export default function LabelledInput<InputProps>({
+    id,
+    name,
     label,
     inputProps,
     Input,
 }: LabelledInputProps<InputProps>) {
-    let { id, name } = inputProps;
     id ??= `${name}-id`;
 
     return (
         <Stack gap={0.5}>
             <InputLabel htmlFor={id}>{label}</InputLabel>
-            <Input {...inputProps} id={id} name={name} />
+            <Input {...(inputProps as unknown as InputProps)} id={id} name={name} />
         </Stack>
     );
 }

@@ -2,6 +2,7 @@ import GitHubCard from '@/components/cards/GitHubCard';
 import Subtitle from '@/components/typography/Subtitle';
 import { TextField } from '@mui/material';
 import LabelledInput from '../input/LabelledInput';
+import ColourField from '../ColourField';
 
 interface PlaygroundOptionsProps {
     username: string;
@@ -22,10 +23,12 @@ export default function PlaygroundOptions({ username, onUsernameChange }: Playgr
                 value={username}
                 onChange={(e) => onUsernameChange(e.target.value)}
             />
+            <LabelledInput name="test" label="Test" Input={TextField} inputProps={{ placeholder: 'Placeholder...' }} />
             <LabelledInput
-                label="Test"
-                Input={TextField}
-                inputProps={{ name: 'test', placeholder: 'Placeholder...' }}
+                name="colour"
+                label="Colour"
+                Input={ColourField}
+                inputProps={{ value: '#000000', onChange: console.log }}
             />
         </GitHubCard>
     );
