@@ -1,10 +1,10 @@
 import useDebounce from '@/hooks/useDebounce';
-import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { InputAdornment, StandardTextFieldProps, TextField, TextFieldProps } from '@mui/material';
 import { useEffect, useState } from 'react';
 import HexColourPreviewPicker from './HexColourPreviewPicker';
 import Validator from '@/types/interfaces/Validator';
 
-export interface ColourFieldProps extends Omit<TextFieldProps, 'value' | 'defaultValue' | 'type' | 'onChange'> {
+export interface ColourFieldProps extends Omit<StandardTextFieldProps, 'value' | 'defaultValue' | 'type' | 'onChange'> {
     id: string;
     value?: string;
     onChange(value: string): void;

@@ -1,5 +1,5 @@
 import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
-import { Button, Divider, TextField, TextFieldProps, useTheme } from '@mui/material';
+import { Button, Divider, StandardTextFieldProps, TextField, useTheme } from '@mui/material';
 import ColourField, { ColourFieldProps, ColourValidator } from '../ColourField';
 import NumberField, { PositiveNumberValidator } from '../NumberField';
 import { Options } from '@/models/Options';
@@ -92,23 +92,17 @@ export default function PlaygroundOptions({
         onChange(DefaultOptions);
     };
 
-    const getTextFieldProps = (key: keyof StringifiedOptions): TextFieldProps => {
-        return {
-            fullWidth: true,
-            error: !!errors[key],
-            helperText: errors[key],
-            value: options[key] ?? DefaultOptions[key],
-            onChange: (e) => handleOptionChange(key, e.target.value),
-        };
-    };
-
-    const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): ColourFieldProps => {
+    const getFieldProps = (key: keyof StringifiedOptions): StandardTextFieldProps & ColourFieldProps => {
         return {
             id: key,
+            fullWidth: true,
             error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? DefaultOptions[key],
-            onChange: (value) => handleOptionChange(key, value),
+            onChange(value) {
+                const stringValue = typeof value === 'string' ? value : value.target.value;
+                handleOptionChange(key, stringValue);
+            },
         };
     };
 
@@ -135,13 +129,11 @@ export default function PlaygroundOptions({
                     checked={!isBackgroundTransparent}
                     onChange={handleChangeTransparentBackground}
                 />
-                <ColourField label="Primary Colour" {...getColourFieldProps('colour')} />
-                {!isBackgroundTransparent && (
-                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
-                )}
-                <ColourField label="Dot Colour" value="#000000" {...getColourFieldProps('dotColour')} />
-                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
-                <NumberField label="Border Radius" {...getTextFieldProps('borderRadius')} />
+                <ColourField label="Primary Colour" {...getFieldProps('colour')} />
+                {!isBackgroundTransparent && <ColourField label="Background Colour" {...getFieldProps('bgColour')} />}
+                <ColourField label="Dot Colour" value="#000000" {...getFieldProps('dotColour')} />
+                <NumberField label="Duration (days)" {...getFieldProps('days')} />
+                <NumberField label="Border Radius" {...getFieldProps('borderRadius')} />
                 {isResetButtonVisible && (
                     <Button sx={{ mt: -1 }} onClick={handleResetToDefaults}>
                         Reset to defaults
