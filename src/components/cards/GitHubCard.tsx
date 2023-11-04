@@ -18,12 +18,13 @@ export const GitHubContent = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     gap: theme.spacing(3),
     height: '100%',
-    padding: theme.spacing(2, 4),
+    paddingInline: theme.spacing(4),
+    marginBlock: theme.spacing(2),
 
     [theme.breakpoints.down('md')]: {
         gap: theme.spacing(2),
         borderWidth: '0',
-        padding: 0,
+        paddingInline: 0,
     },
 }));
 
@@ -38,7 +39,7 @@ export interface GitHubCardHeaderProps {
 
 export function GitHubCardHeader({ header, secondary }: GitHubCardHeaderProps) {
     return (
-        <GitHubContent sx={{ paddingBottom: 0 }}>
+        <GitHubContent>
             {header && <Subtitle>{header}</Subtitle>}
             {secondary && <Typography variant="body2">{secondary}</Typography>}
         </GitHubContent>

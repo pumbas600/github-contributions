@@ -1,6 +1,6 @@
 import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
 import Subtitle from '@/components/typography/Subtitle';
-import { Button, TextField, TextFieldProps, useTheme } from '@mui/material';
+import { Button, Divider, TextField, TextFieldProps, useTheme } from '@mui/material';
 import ColourField, { ColourFieldProps } from '../ColourField';
 import NumberField from '../NumberField';
 import { Options } from '@/models/Options';
@@ -150,6 +150,9 @@ export default function PlaygroundOptions({
                     value={username}
                     onChange={(e) => onChangeUsername(e.target.value)}
                 />
+            </GitHubContent>
+            <Divider />
+            <GitHubContent>
                 <LabelledCheckbox
                     sx={{ mb: -1 }}
                     label="Use coloured background"
