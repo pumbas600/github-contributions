@@ -106,13 +106,6 @@ export function buildTheme(theme: ResolvedTheme): Theme {
                     },
                 },
             },
-            MuiOutlinedInput: {
-                styleOverrides: {
-                    input: {
-                        padding: `12px 14px`,
-                    },
-                },
-            },
         },
     });
 }

@@ -74,7 +74,14 @@ export default function Playground() {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} lg={4}>
-                <PlaygroundOptions username={username} onUsernameChange={handleUsernameChange} />
+                <PlaygroundOptions
+                    errors={errors}
+                    options={options}
+                    username={username}
+                    setErrors={setErrors}
+                    onChange={handleOptionsChange}
+                    onChangeUsername={handleUsernameChange}
+                />
             </Grid>
             <Grid item xs={12} lg={8}>
                 <GitHubCard>
