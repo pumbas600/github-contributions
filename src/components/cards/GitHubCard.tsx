@@ -9,7 +9,7 @@ const PaddedCard = styled(Card)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(3),
-    padding: theme.spacing(4, 8),
+    padding: theme.spacing(2, 4),
 
     [theme.breakpoints.down('md')]: {
         borderRadius: 0,
