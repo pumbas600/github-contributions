@@ -72,7 +72,7 @@ export default function Playground() {
     };
 
     return (
-        <Grid container columnSpacing={2}>
+        <Grid container columnSpacing={2} rowSpacing={{ md: 2, xs: 0 }}>
             <Grid item xs={12} lg={4}>
                 <PlaygroundOptions
                     errors={errors}
@@ -91,23 +91,8 @@ export default function Playground() {
                             accurately recreate how the charts will look in GitHub READMEs."
                     />
                     <GitHubContent>
-                        <TextField
-                            spellCheck={false}
-                            required
-                            fullWidth
-                            label="GitHub username"
-                            placeholder="E.g. pumbas600"
-                            value={username}
-                            onChange={(e) => handleUsernameChange(e.target.value)}
-                        />
                         {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                         {generatedUrl && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
-                        <OldPlaygroundOptions
-                            errors={errors}
-                            setErrors={setErrors}
-                            options={options}
-                            onChange={handleOptionsChange}
-                        />
                         <Alert severity="info">
                             For more information, refer to{' '}
                             <StyledLink href={GitHubRepoUrl}>the documentation</StyledLink> on GitHub.

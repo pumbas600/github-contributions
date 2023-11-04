@@ -7,9 +7,11 @@ export interface GitHubCardProps {
 }
 
 const OutlinedCard = styled(Card)(({ theme }) => ({
+    height: '100%',
     [theme.breakpoints.down('md')]: {
         borderRadius: 0,
         borderWidth: '0',
+        marginBlockStart: theme.spacing(-2),
     },
 }));
 
@@ -17,7 +19,6 @@ export const GitHubContent = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(3),
-    height: '100%',
     paddingInline: theme.spacing(4),
     marginBlock: theme.spacing(2),
 
@@ -25,6 +26,13 @@ export const GitHubContent = styled(Box)(({ theme }) => ({
         gap: theme.spacing(2),
         borderWidth: '0',
         paddingInline: 0,
+    },
+}));
+
+export const GitHubHeaderContent = styled(GitHubContent)(({ theme }) => ({
+    gap: 0,
+    [theme.breakpoints.down('md')]: {
+        gap: 0,
     },
 }));
 
@@ -39,9 +47,9 @@ export interface GitHubCardHeaderProps {
 
 export function GitHubCardHeader({ header, secondary }: GitHubCardHeaderProps) {
     return (
-        <GitHubContent>
+        <GitHubHeaderContent>
             {header && <Subtitle>{header}</Subtitle>}
             {secondary && <Typography variant="body2">{secondary}</Typography>}
-        </GitHubContent>
+        </GitHubHeaderContent>
     );
 }
