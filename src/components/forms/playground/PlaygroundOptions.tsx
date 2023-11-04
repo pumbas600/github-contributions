@@ -137,8 +137,8 @@ export default function PlaygroundOptions({
 
     return (
         <GitHubCard>
-            <GitHubCardHeader header="Options" />
             <GitHubContent>
+                <GitHubCardHeader header="Options" />
                 <TextField
                     size="medium"
                     spellCheck={false}

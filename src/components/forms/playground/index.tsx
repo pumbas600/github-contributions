@@ -86,17 +86,13 @@ export default function Playground() {
             </Grid>
             <Grid item xs={12} lg={8}>
                 <GitHubCard>
-                    <GitHubCardHeader
-                        header="Enter your username to get started"
-                        secondary="This playground is styled after the GitHub default light and dark themes in order to
-                            accurately recreate how the charts will look in GitHub READMEs."
-                    />
-                    {showRenderedChart && (
-                        <GitHubContent>
-                            <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />
-                        </GitHubContent>
-                    )}
                     <GitHubContent>
+                        <GitHubCardHeader
+                            header="Enter your username to get started"
+                            secondary="This playground is styled after the GitHub default light and dark themes in order to
+                            accurately recreate how the charts will look in GitHub READMEs."
+                        />
+                        {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                         {generatedUrl !== null && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
                         <Alert severity="info">
                             <AlertTitle>Note</AlertTitle>
