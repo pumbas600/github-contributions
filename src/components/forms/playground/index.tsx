@@ -91,8 +91,12 @@ export default function Playground() {
                         secondary="This playground is styled after the GitHub default light and dark themes in order to
                             accurately recreate how the charts will look in GitHub READMEs."
                     />
+                    {showRenderedChart && (
+                        <GitHubContent>
+                            <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />
+                        </GitHubContent>
+                    )}
                     <GitHubContent>
-                        {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
                         {generatedUrl !== null && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
                         <Alert severity="info">
                             <AlertTitle>Note</AlertTitle>
