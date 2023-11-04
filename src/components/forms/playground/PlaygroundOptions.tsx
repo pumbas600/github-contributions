@@ -1,12 +1,13 @@
 import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
 import { Button, Divider, TextField, TextFieldProps, useTheme } from '@mui/material';
-import ColourField, { ColourFieldProps } from '../ColourField';
-import NumberField from '../NumberField';
+import ColourField, { ColourFieldProps, ColourValidator } from '../ColourField';
+import NumberField, { PositiveNumberValidator } from '../NumberField';
 import { Options } from '@/models/Options';
 import { fromEntries, toEntries } from '@/utilities';
 import { OptionsService } from '@/services/OptionsService';
 import { useEffect, useState } from 'react';
 import LabelledCheckbox from '../LabelledCheckbox';
+import Validator from '@/types/interfaces/Validator';
 
 export type StringifiedOptions = Record<keyof Options, string>;
 export type OptionErrors = Partial<StringifiedOptions>;
@@ -19,30 +20,6 @@ interface PlaygroundOptionsProps {
     onChange: (options: StringifiedOptions) => void;
     onChangeUsername: (username: string) => void;
 }
-
-type Validator = {
-    isValid: (value: string) => boolean;
-    error: string;
-};
-
-const PositiveNumberValidator: Validator = {
-    isValid(value: string): boolean {
-        if (value === '') return false;
-
-        const number = Number(value);
-        return !isNaN(number) && number > 0;
-    },
-    error: 'The value must be greater than 0',
-};
-
-const ColourValidator: Validator = {
-    isValid(value: string): boolean {
-        if (value === '') return false;
-
-        return /^#[A-Fa-f\d]{6}$/i.test(value);
-    },
-    error: 'The value must be a valid hex colour',
-};
 
 const Validators: Record<keyof Options, Validator> = {
     colour: ColourValidator,

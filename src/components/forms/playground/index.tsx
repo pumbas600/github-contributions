@@ -34,8 +34,8 @@ export default function Playground() {
     }, []);
 
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
-        const baseUrl = `/api/contributions/${username}`;
-        const url = new URL(baseUrl, window.location.origin);
+        const apiUrl = `/api/contributions/${username}`;
+        const url = new URL(apiUrl, window.location.origin);
 
         for (const [key, value] of Object.entries(options)) {
             if (value === undefined) continue;
