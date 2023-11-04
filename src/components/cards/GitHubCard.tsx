@@ -1,4 +1,4 @@
-import { Box, Card, Typography, styled } from '@mui/material';
+import { Box, Card, Stack, Typography, styled } from '@mui/material';
 import { ReactNode } from 'react';
 import Subtitle from '../typography/Subtitle';
 
@@ -47,9 +47,9 @@ export interface GitHubCardHeaderProps {
 
 export function GitHubCardHeader({ header, secondary }: GitHubCardHeaderProps) {
     return (
-        <Typography variant="body2">
+        <Stack>
             {header && <Subtitle>{header}</Subtitle>}
-            {secondary}
-        </Typography>
+            {secondary && <Typography variant="body2">{secondary}</Typography>}
+        </Stack>
     );
 }
