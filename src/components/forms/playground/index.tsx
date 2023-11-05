@@ -15,13 +15,32 @@ import GeneratedValues from '@/components/cards/GeneratedValues';
 
 const PlaceholderUsername = 'YOUR_USERNAME';
 
+function generateApiUrl(username: string, options: Partial<StringifiedOptions>): string {
+    const apiUrl = `/api/contributions/${username}`;
+    const url = new URL(apiUrl, window.location.origin);
+
+    for (const [key, value] of Object.entries(options)) {
+        if (value === undefined) continue;
+
+        let stringValue = value.toString();
+        if (stringValue.startsWith('#')) {
+            // Remove the hash from the colours
+            stringValue = stringValue.replace('#', '');
+        }
+        url.searchParams.set(key, stringValue);
+    }
+
+    return url.toString();
+}
+
 export default function Playground() {
     const [username, setUsername] = useState<string>('');
     const [options, setOptions] = useState(DefaultOptions);
     const [errors, setErrors] = useState<OptionErrors>({});
-    const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+    const [chartUrl, setChartUrl] = useState<string | null>(null);
+    const [displayedUrl, setDisplayedUrl] = useState<string | null>(null);
 
-    const debouncedGeneratedUrl = useDebounce(generatedUrl);
+    const debouncedGeneratedUrl = useDebounce(chartUrl);
 
     const showRenderedChart =
         debouncedGeneratedUrl !== null && username.length !== 0 && Object.keys(errors).length === 0;
@@ -30,7 +49,7 @@ export default function Playground() {
     const contributionImageAltText = `${displayedUsername}'s GitHub contributions`;
 
     useEffect(() => {
-        setGeneratedUrl(generateApiUrl(PlaceholderUsername, {}));
+        setDisplayedUrl(generateApiUrl(PlaceholderUsername, {}));
     }, []);
 
     const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
@@ -52,13 +71,16 @@ export default function Playground() {
     };
 
     const handleGenerateApiUrl = (options: StringifiedOptions, username: string): void => {
-        username = username.length === 0 ? PlaceholderUsername : username;
-
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
         const hasError = Object.keys(errors).length != 0;
-        if (!hasError) {
+        if (hasError) return;
+
+        if (username.length !== 0) {
             const generatedUrl = generateApiUrl(username, optionsWithoutDefaults);
-            setGeneratedUrl(generatedUrl);
+            setDisplayedUrl(generatedUrl);
+            setChartUrl(generatedUrl);
+        } else {
+            setDisplayedUrl(generateApiUrl(PlaceholderUsername, optionsWithoutDefaults));
         }
     };
 
@@ -93,7 +115,7 @@ export default function Playground() {
                             accurately recreate how the charts will look in GitHub READMEs."
                         />
                         {showRenderedChart && <ChartImage src={debouncedGeneratedUrl} alt={contributionImageAltText} />}
-                        {generatedUrl !== null && <GeneratedValues url={generatedUrl} alt={contributionImageAltText} />}
+                        {displayedUrl !== null && <GeneratedValues url={displayedUrl} alt={contributionImageAltText} />}
                         <Alert severity="info">
                             <AlertTitle>Note</AlertTitle>
                             For more information, refer to{' '}
