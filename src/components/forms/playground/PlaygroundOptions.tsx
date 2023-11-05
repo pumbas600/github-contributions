@@ -121,10 +121,10 @@ export default function PlaygroundOptions({
                     onChange={(e) => onChangeUsername(e.target.value)}
                 />
             </GitHubContent>
-            <Divider />
-            <GitHubContent>
+            <Divider sx={{ display: { md: 'inherit', xs: 'none' } }} />
+            <GitHubContent marginTop={{ md: 0, xs: -2 }}>
                 <LabelledCheckbox
-                    containerSx={{ mb: -1 }}
+                    containerSx={{ mt: -1 }}
                     label="Use coloured background"
                     checked={!isBackgroundTransparent}
                     onChange={handleChangeTransparentBackground}
