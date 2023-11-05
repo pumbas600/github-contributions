@@ -124,7 +124,7 @@ export default function PlaygroundOptions({
             <Divider />
             <GitHubContent>
                 <LabelledCheckbox
-                    sx={{ mb: -1 }}
+                    containerSx={{ mb: -1 }}
                     label="Use coloured background"
                     checked={!isBackgroundTransparent}
                     onChange={handleChangeTransparentBackground}
