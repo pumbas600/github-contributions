@@ -52,24 +52,6 @@ export default function Playground() {
         setDisplayedUrl(generateApiUrl(PlaceholderUsername, {}));
     }, []);
 
-    const generateApiUrl = (username: string, options: Partial<StringifiedOptions>): string => {
-        const apiUrl = `/api/contributions/${username}`;
-        const url = new URL(apiUrl, window.location.origin);
-
-        for (const [key, value] of Object.entries(options)) {
-            if (value === undefined) continue;
-
-            let stringValue = value.toString();
-            if (stringValue.startsWith('#')) {
-                // Remove the hash from the colours
-                stringValue = stringValue.replace('#', '');
-            }
-            url.searchParams.set(key, stringValue);
-        }
-
-        return url.toString();
-    };
-
     const handleGenerateApiUrl = (options: StringifiedOptions, username: string): void => {
         const optionsWithoutDefaults = getOptionsWithoutDefaults(options);
         const hasError = Object.keys(errors).length != 0;
@@ -95,7 +77,12 @@ export default function Playground() {
     };
 
     return (
-        <Grid container columnSpacing={2} rowSpacing={{ md: 2, xs: 0 }}>
+        <Grid
+            container
+            columnSpacing={2}
+            rowSpacing={{ md: 2, xs: 0 }}
+            sx={{ flexDirection: { md: 'row', xs: 'column-reverse' } }}
+        >
             <Grid item xs={12} lg={4}>
                 <PlaygroundOptions
                     errors={errors}
