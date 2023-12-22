@@ -1,46 +1,25 @@
-import { Button, Stack, TextFieldProps, useTheme } from '@mui/material';
-import FormRow from '../FormRow';
-import LabelledCheckbox from '../LabelledCheckbox';
-import { useEffect, useState } from 'react';
-import { OptionsService } from '@/services/OptionsService';
-import { fromEntries, toEntries } from '@/utilities';
-import ColourField, { ColourFieldProps } from '../ColourField';
-import NumberField from '../NumberField';
+import GitHubCard, { GitHubCardHeader, GitHubContent } from '@/components/cards/GitHubCard';
+import { Button, Divider, StandardTextFieldProps, TextField, useTheme } from '@mui/material';
+import ColourField, { ColourFieldProps, ColourValidator } from '../ColourField';
+import NumberField, { PositiveNumberValidator } from '../NumberField';
 import { Options } from '@/models/Options';
+import { fromEntries, toEntries } from '@/utilities';
+import { OptionsService } from '@/services/OptionsService';
+import { useEffect, useState } from 'react';
+import LabelledCheckbox from '../LabelledCheckbox';
+import Validator from '@/types/interfaces/Validator';
 
 export type StringifiedOptions = Record<keyof Options, string>;
 export type OptionErrors = Partial<StringifiedOptions>;
 
-export interface PlaygroundOptionsProps {
+interface PlaygroundOptionsProps {
     errors: OptionErrors;
-    setErrors: (errors: OptionErrors) => void;
     options: StringifiedOptions;
+    username: string;
+    setErrors: (errors: OptionErrors) => void;
     onChange: (options: StringifiedOptions) => void;
+    onChangeUsername: (username: string) => void;
 }
-
-type Validator = {
-    isValid: (value: string) => boolean;
-    error: string;
-};
-
-const PositiveNumberValidator: Validator = {
-    isValid(value: string): boolean {
-        if (value === '') return false;
-
-        const number = Number(value);
-        return !isNaN(number) && number > 0;
-    },
-    error: 'The value must be greater than 0',
-};
-
-const ColourValidator: Validator = {
-    isValid(value: string): boolean {
-        if (value === '') return false;
-
-        return /^#[A-Fa-f\d]{6}$/i.test(value);
-    },
-    error: 'The value must be a valid hex colour',
-};
 
 const Validators: Record<keyof Options, Validator> = {
     colour: ColourValidator,
@@ -63,7 +42,14 @@ export function getOptionsWithoutDefaults(options: StringifiedOptions): Partial<
     );
 }
 
-export default function PlaygroundOptions({ errors, setErrors, options, onChange }: PlaygroundOptionsProps) {
+export default function PlaygroundOptions({
+    errors,
+    options,
+    username,
+    setErrors,
+    onChange,
+    onChangeUsername,
+}: PlaygroundOptionsProps) {
     const theme = useTheme();
 
     const [previousBgColour, setPreviousBgColour] = useState<string | null>(null);
@@ -106,51 +92,54 @@ export default function PlaygroundOptions({ errors, setErrors, options, onChange
         onChange(DefaultOptions);
     };
 
-    const getTextFieldProps = (key: keyof StringifiedOptions): TextFieldProps => {
-        return {
-            fullWidth: true,
-            error: !!errors[key],
-            helperText: errors[key],
-            value: options[key] ?? DefaultOptions[key],
-            onChange: (e) => handleOptionChange(key, e.target.value),
-        };
-    };
-
-    const getColourFieldProps = (key: 'colour' | 'bgColour' | 'dotColour'): ColourFieldProps => {
+    const getFieldProps = (key: keyof StringifiedOptions): StandardTextFieldProps & ColourFieldProps => {
         return {
             id: key,
+            fullWidth: true,
             error: errors[key] !== undefined,
             helperText: errors[key],
             value: options[key] ?? DefaultOptions[key],
-            onChange: (value) => handleOptionChange(key, value),
+            onChange(value) {
+                const stringValue = typeof value === 'string' ? value : value.target.value;
+                handleOptionChange(key, stringValue);
+            },
         };
     };
 
     return (
-        <Stack gap={3}>
-            <FormRow rowGap={0.5}>
+        <GitHubCard>
+            <GitHubContent>
+                <GitHubCardHeader header="Get started with your username" />
+                <TextField
+                    size="medium"
+                    spellCheck={false}
+                    required
+                    fullWidth
+                    label="GitHub username"
+                    placeholder="E.g. pumbas600"
+                    value={username}
+                    onChange={(e) => onChangeUsername(e.target.value)}
+                />
+            </GitHubContent>
+            <Divider sx={{ display: { md: 'inherit', xs: 'none' } }} />
+            <GitHubContent marginTop={{ md: 0, xs: -2 }}>
                 <LabelledCheckbox
+                    containerSx={{ mt: -1 }}
                     label="Use coloured background"
                     checked={!isBackgroundTransparent}
                     onChange={handleChangeTransparentBackground}
                 />
-            </FormRow>
-            <FormRow rowGap={3}>
-                <ColourField label="Primary colour" {...getColourFieldProps('colour')} />
-                {!isBackgroundTransparent && (
-                    <ColourField label="Background Colour" {...getColourFieldProps('bgColour')} />
+                <ColourField label="Primary Colour" {...getFieldProps('colour')} />
+                {!isBackgroundTransparent && <ColourField label="Background Colour" {...getFieldProps('bgColour')} />}
+                <ColourField label="Dot Colour" value="#000000" {...getFieldProps('dotColour')} />
+                <NumberField label="Duration (days)" {...getFieldProps('days')} />
+                <NumberField label="Border Radius" {...getFieldProps('borderRadius')} />
+                {isResetButtonVisible && (
+                    <Button sx={{ mt: -1 }} onClick={handleResetToDefaults}>
+                        Reset to defaults
+                    </Button>
                 )}
-                <ColourField label="Dot colour" {...getColourFieldProps('dotColour')} />
-            </FormRow>
-            <FormRow rowGap={3}>
-                <NumberField label="Duration (days)" {...getTextFieldProps('days')} />
-                <NumberField label="Border Radius" {...getTextFieldProps('borderRadius')} />
-            </FormRow>
-            {isResetButtonVisible && (
-                <FormRow direction="row-reverse">
-                    <Button onClick={handleResetToDefaults}>Reset to defaults</Button>
-                </FormRow>
-            )}
-        </Stack>
+            </GitHubContent>
+        </GitHubCard>
     );
 }

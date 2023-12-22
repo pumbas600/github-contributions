@@ -1,4 +1,4 @@
-import { PaletteOptions, Theme, createTheme } from '@mui/material';
+import { Theme, alertClasses, alertTitleClasses, createTheme } from '@mui/material';
 import { ResolvedTheme } from '@/contexts/ThemeContext';
 
 import '@fontsource/inter/300.css';
@@ -7,24 +7,32 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/700.css';
 
 export function buildTheme(theme: ResolvedTheme): Theme {
-    const palette: PaletteOptions = {
-        mode: theme,
-        ...(theme === 'light'
-            ? {
-                  divider: '#D0D7DE',
-                  background: {
-                      default: '#FFFFFF',
-                      paper: '#F6F8FA',
-                  },
-              }
-            : {
-                  divider: '#30363D',
-                  background: {
-                      default: '#0D1117',
-                      paper: '#161B22',
-                  },
-              }),
-    };
+    const palette = createTheme({
+        palette: {
+            mode: theme,
+            ...(theme === 'light'
+                ? {
+                      primary: {
+                          main: '#0969DA',
+                      },
+                      divider: '#D0D7DE',
+                      background: {
+                          default: '#FFFFFF',
+                          paper: '#F6F8FA',
+                      },
+                  }
+                : {
+                      primary: {
+                          main: '#2F81F7',
+                      },
+                      divider: '#30363D',
+                      background: {
+                          default: '#0D1117',
+                          paper: '#161B22',
+                      },
+                  }),
+        },
+    }).palette;
 
     return createTheme({
         palette,
@@ -69,10 +77,24 @@ export function buildTheme(theme: ResolvedTheme): Theme {
             MuiAlert: {
                 styleOverrides: {
                     standardError: {
+                        borderInlineStart: `4px solid ${palette.error.main}`,
                         backgroundColor: theme === 'dark' ? '#2b0a0c' : undefined,
+                        [`.${alertClasses.icon}`]: {
+                            color: palette.error.main,
+                        },
+                        [`.${alertTitleClasses.root}`]: {
+                            color: palette.error.main,
+                        },
                     },
                     standardInfo: {
+                        borderInlineStart: `4px solid ${palette.primary.main}`,
                         backgroundColor: theme === 'dark' ? '#0b181e' : undefined,
+                        [`.${alertClasses.icon}`]: {
+                            color: palette.primary.main,
+                        },
+                        [`.${alertTitleClasses.root}`]: {
+                            color: palette.primary.main,
+                        },
                     },
                 },
             },

@@ -38,7 +38,7 @@ export default function Home() {
                 <meta name="og:image:alt" content="An example contributions graph" />
             </Head>
             <main>
-                <ResponsiveContainer maxWidth="md">
+                <ResponsiveContainer maxWidth="lg">
                     <Header />
                     <Playground />
                 </ResponsiveContainer>

@@ -1,4 +1,4 @@
-import { Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, SvgIconTypeMap } from '@mui/material';
+import { Box, IconButton, Menu, SvgIconTypeMap } from '@mui/material';
 import { useState, MouseEvent } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LightModeIcon from '@mui/icons-material/LightMode';
