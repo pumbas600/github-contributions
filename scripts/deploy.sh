@@ -12,17 +12,17 @@ git reset --hard --quiet
 echo "Pulling from origin"
 git pull --quiet
 
+export NODE_ENV=production
+
 echo "Installing dependencies"
-npm install --silent --frozen-lockfile
+npm install --omit=dev --silent --frozen-lockfile
 
 echo "Building"
 npm run build
-
-export NODE_ENV=production
 
 echo "Killing old instance"
 # deletion is allowed to fail, since the process might not have been running previously
 pm2 delete $processName --silent || true 
 
 echo "Starting new instance"
-pm2 start "npm run start" --name $processName --silent
+pm2 start "npm run start" --name $processName --max-memory-restart 300M --silent
