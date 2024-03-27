@@ -30,7 +30,7 @@ It works through a simple API that generates an SVG which can be used as an imag
 
 There is also support for a number of options which allow you to style the graph to your hearts content. Each option can be configured through the use of query parameters in the url.
 
-> **Note**
+> [!NOTE]
 > All colours are hexcodes without the starting '#'. E.g. `#4BB5FC` → `4BB5FC`.
 
 Query Parameter | Description             | Type    | Default Value
@@ -62,7 +62,7 @@ It is recommended to use the [`#gh-light-mode-only` or `#gh-dark-mode-only`](htt
 [![YOUR_GITHUB_USERNAME's Contributions](https://github.pumbas.net/api/contributions/YOUR_GITHUB_USERNAME?colour=002AFF&bgColour=F6F8FA#gh-light-mode-only)](https://github.com/pumbas600/github-contributions#gh-light-mode-only)
 ```
 
-> **Important**
+> [!IMPORTANT]
 > For some reason, it only works on the API URL in VS Code, To get it to behave correctly on GitHub, you need to wrap it in another URL with the fragment applied.
 
 GitHub has also added support for the [`prefers-color-scheme` media query](https://github.blog/changelog/2022-05-19-specify-theme-context-for-images-in-markdown-beta/), which can be used in conjunction with the HTML [`<picture>`](https://www.w3schools.com/TAGS/tag_picture.asp) tags to allow you to change the image you display based on the user's theme.
