@@ -18,4 +18,5 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   script: |
                       cd services/github-contributions
+                      chmod +x scripts/deploy.sh
                       ./scripts/deploy.sh
