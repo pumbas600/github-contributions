@@ -16,7 +16,7 @@
         "@mui/icons-material": "^5.11.16",
         "@mui/material": "^5.11.16",
         "firebase": "^10.3.1",
-        "next": "^14.1.4",
+        "next": "^14.2.10",
         "react": "^18.2.0",
         "react-colorful": "^5.6.1",
         "react-dom": "^18.2.0",
