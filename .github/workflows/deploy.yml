@@ -21,7 +21,7 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   script: |
                       cd ./services/github-contributions
-                      docker compose pull api
-                      docker compose down api
-                      docker compose up api --detach
+                      docker compose pull github-contributions
+                      docker compose down github-contributions
+                      docker compose up github-contributions --detach
                       docker image prune --force

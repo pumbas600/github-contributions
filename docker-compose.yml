@@ -1,0 +1,7 @@
+services:
+    github-contributions:
+        image: pumbas600/github-contributions:latest
+        ports:
+            - '3000:3000'
+        env_file:
+            - .env.local
