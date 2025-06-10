@@ -1,21 +1,27 @@
 name: Deploy
 
 on:
-    push:
-        branches:
-            - main
+    workflow_run:
+        workflows: ['Publish']
+        types: [completed]
+        branches: [main]
+    workflow_dispatch:
 
 jobs:
-    build:
+    deploy:
+        name: Production deployment
+        if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
         runs-on: ubuntu-latest
-
         steps:
-            - name: executing remote build process
-              uses: appleboy/ssh-action@v0.1.8
+            - name: Update instance
+              uses: appleboy/ssh-action@v1.1.0
               with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
-                      cd services/github-contributions
-                      ./scripts/deploy.sh
+                      cd ./services/github-contributions
+                      docker compose pull api
+                      docker compose down api
+                      docker compose up api --detach
+                      docker image prune --force
