@@ -21,14 +21,14 @@ source ~/.nvm/nvm.sh
 export NODE_ENV=production
 
 echo "Installing dependencies"
-npm install --omit=dev --silent --frozen-lockfile
+npm install --omit=dev --frozen-lockfile
 
 echo "Building"
 npm run build
 
 echo "Killing old instance"
 # Deletion is allowed to fail, since the process might not have been running previously
-pm2 delete $processName --silent || true 
+pm2 delete $processName || true 
 
 echo "Starting new instance"
 pm2 start "npm run start" --name $processName --max-memory-restart 300M --silent
