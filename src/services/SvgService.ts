@@ -1,14 +1,6 @@
+import { Point, Size } from '@/types/interfaces/Vectors';
+
 export namespace SvgService {
-    export interface Point {
-        x: number;
-        y: number;
-    }
-
-    export interface Size {
-        width: number;
-        height: number;
-    }
-
     export interface CardOptions {
         size: Size;
         style?: string;

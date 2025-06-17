@@ -1,8 +1,9 @@
 import { SvgService } from '@/services/SvgService';
+import { Size } from '@/types/interfaces/Vectors';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const gridSize: SvgService.Size = { width: 750, height: 180 };
+    const gridSize: Size = { width: 750, height: 180 };
     const gridLineOptions: SvgService.LineOptions = {
         stroke: '#4BB5FC',
         strokeOpacity: 0.3,
@@ -13,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         tickWidth: 6,
     };
 
-    const cardSize: SvgService.Size = { width: 850, height: 330 };
+    const cardSize: Size = { width: 850, height: 330 };
 
     const card = SvgService.card(
         cardSize,
