@@ -4,6 +4,7 @@ import { SvgService } from './SvgService';
 export namespace ChartService {
     export interface YAxisScale {
         lineCount: number;
+        spacing: number;
         axisMaxValue: number;
         axisStepValue: number;
     }
@@ -13,15 +14,18 @@ export namespace ChartService {
     };
 
     export function calculateYAxisScale<T>(
+        gridSize: Size,
         lineCount: number,
         data: NumericValues<T>[],
         key: keyof NumericValues<T>,
     ): YAxisScale {
+        const spacing = gridSize.height / lineCount;
         const maxValue = Math.max(...data.map((item) => item[key]));
         const axisStepValue = Math.ceil(maxValue / lineCount);
         const axisMaxValue = axisStepValue * lineCount;
 
         return {
+            spacing,
             lineCount,
             axisMaxValue,
             axisStepValue,
