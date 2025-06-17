@@ -1,3 +1,4 @@
+import { ChartService } from '@/services/ChartService';
 import { SvgService } from '@/services/SvgService';
 import { Size } from '@/types/interfaces/Vectors';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -9,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         strokeOpacity: 0.3,
         strokeDashArray: '3',
     };
-    const axisOptions: SvgService.AxisOptions = {
+    const axisOptions: ChartService.AxisOptions = {
         stroke: '#666',
         tickWidth: 6,
     };
@@ -21,10 +22,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         [
             SvgService.rect(cardSize, { fill: '#161B22', borderRadius: 4.5 }),
             '<g transform="translate(75, 80)">',
-            SvgService.horizontalGridLines(gridSize, 5, gridLineOptions),
-            SvgService.verticalGridLines(gridSize, 30, gridLineOptions),
-            SvgService.horizontalAxis(gridSize, 5, axisOptions),
-            SvgService.verticalAxis(gridSize, 30, axisOptions),
+            ChartService.horizontalGridLines(gridSize, 5, gridLineOptions),
+            ChartService.verticalGridLines(gridSize, 30, gridLineOptions),
+            ChartService.yAxis(gridSize, 5, axisOptions),
+            ChartService.xAxis(gridSize, 30, axisOptions),
             '</g>',
         ].join(''),
     );
