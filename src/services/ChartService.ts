@@ -2,9 +2,12 @@ import { Size } from '@/types/interfaces/Vectors';
 import { SvgService } from './SvgService';
 
 export namespace ChartService {
-    export interface YAxisScale {
+    export interface AxisScale {
         lineCount: number;
         spacing: number;
+    }
+
+    export interface YAxisScale extends AxisScale {
         axisMaxValue: number;
         axisStepValue: number;
     }
@@ -32,29 +35,35 @@ export namespace ChartService {
         };
     }
 
+    export function calculateXAxisScale<T>(gridSize: Size, data: NumericValues<T>[]): AxisScale {
+        const lineCount = data.length;
+        const spacing = gridSize.width / lineCount;
+
+        return {
+            spacing,
+            lineCount,
+        };
+    }
+
     export interface AxisOptions extends SvgService.LineOptions {
         tickWidth: number;
     }
 
-    export function yAxis(gridSize: Size, lineCount: number, options: AxisOptions): string {
-        const spacing = gridSize.height / lineCount;
-
+    export function yAxis(scale: AxisScale, gridSize: Size, options: AxisOptions): string {
         return [
             SvgService.line({ x: 0, y: 0 }, { x: 0, y: gridSize.height }, options),
-            ...SvgService.repeat(lineCount + 1, (index) => {
-                const yPosition = index * spacing;
+            ...SvgService.repeat(scale.lineCount + 1, (index) => {
+                const yPosition = index * scale.spacing;
                 return SvgService.line({ x: 0, y: yPosition }, { x: -options.tickWidth, y: yPosition }, options);
             }),
         ].join('');
     }
 
-    export function xAxis(gridSize: Size, lineCount: number, options: AxisOptions): string {
-        const spacing = gridSize.width / lineCount;
-
+    export function xAxis(scale: AxisScale, gridSize: Size, options: AxisOptions): string {
         return [
             SvgService.line({ x: 0, y: gridSize.height }, { x: gridSize.width, y: gridSize.height }, options),
-            ...SvgService.repeat(lineCount + 1, (index) => {
-                const xPosition = index * spacing;
+            ...SvgService.repeat(scale.lineCount + 1, (index) => {
+                const xPosition = index * scale.spacing;
                 return SvgService.line(
                     { x: xPosition, y: gridSize.height },
                     { x: xPosition, y: gridSize.height + options.tickWidth },
@@ -64,25 +73,23 @@ export namespace ChartService {
         ].join('');
     }
 
-    export function horizontalGridLines(gridSize: Size, lineCount: number, options: SvgService.LineOptions): string {
-        const spacing = gridSize.height / lineCount;
-
+    export function yAxisGridLines(scale: AxisScale, gridSize: Size, options: SvgService.LineOptions): string {
         return [
             '<g>',
-            ...SvgService.repeat(lineCount, (index) => {
-                const yPosition = index * spacing;
+            ...SvgService.repeat(scale.lineCount, (index) => {
+                const yPosition = index * scale.spacing;
                 return SvgService.line({ x: 0, y: yPosition }, { x: gridSize.width, y: yPosition }, options);
             }),
             '</g>',
         ].join('');
     }
 
-    export function verticalGridLines(gridSize: Size, lineCount: number, options: SvgService.LineOptions): string {
-        const spacing = gridSize.width / lineCount;
+    export function xAxisGridLines(scale: AxisScale, gridSize: Size, options: SvgService.LineOptions): string {
+        const spacing = gridSize.width / scale.lineCount;
 
         return [
             '<g>',
-            ...SvgService.repeat(lineCount, (index) => {
+            ...SvgService.repeat(scale.lineCount, (index) => {
                 const xPosition = (index + 1) * spacing;
                 return SvgService.line({ x: xPosition, y: 0 }, { x: xPosition, y: gridSize.height }, options);
             }),
