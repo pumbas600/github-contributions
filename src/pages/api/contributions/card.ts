@@ -21,11 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
 
     const cardSize: Size = { width: 850, height: 330 };
-    const data: Contribution[] = SvgService.repeat(30, (index) => ({ count: index, date: index + 1 }));
+    const data: Contribution[] = SvgService.repeat(30, (index) => ({ count: index, date: ((index + 5) % 30) + 1 }));
     const xAxisScale = ChartService.calculateXAxisScale(gridSize, data);
-    const yAxisScale = ChartService.calculateYAxisScale(gridSize, 5, data, 'count');
-
-    console.log(xAxisScale, yAxisScale);
+    const yAxisScale = ChartService.calculateYAxisScale(gridSize, 6, data, 'count');
 
     const card = SvgService.card(
         cardSize,
@@ -38,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             ChartService.xAxisGridLines(xAxisScale, gridSize, gridLineOptions),
             ChartService.yAxisGridLines(yAxisScale, gridSize, gridLineOptions),
 
-            ChartService.xAxis(xAxisScale, gridSize, axisOptions),
+            ChartService.xAxis(xAxisScale, gridSize, data, 'date', axisOptions),
             ChartService.yAxis(yAxisScale, gridSize, axisOptions),
             '</g>',
         ].join(''),

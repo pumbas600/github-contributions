@@ -22,10 +22,14 @@ export namespace ChartService {
         data: NumericValues<T>[],
         key: keyof NumericValues<T>,
     ): YAxisScale {
-        const spacing = gridSize.height / lineCount;
+        if (lineCount < 2) {
+            throw new Error('Line count must be at least 2');
+        }
+
+        const spacing = gridSize.height / (lineCount - 1);
         const maxValue = Math.max(...data.map((item) => item[key]));
-        const axisStepValue = Math.ceil(maxValue / lineCount);
-        const axisMaxValue = axisStepValue * lineCount;
+        const axisStepValue = Math.ceil(maxValue / (lineCount - 1));
+        const axisMaxValue = axisStepValue * (lineCount - 1);
 
         return {
             spacing,
@@ -37,7 +41,7 @@ export namespace ChartService {
 
     export function calculateXAxisScale<T>(gridSize: Size, data: NumericValues<T>[]): AxisScale {
         const lineCount = data.length;
-        const spacing = gridSize.width / lineCount;
+        const spacing = gridSize.width / (lineCount - 1);
 
         return {
             spacing,
@@ -55,7 +59,7 @@ export namespace ChartService {
     export function yAxis(scale: YAxisScale, gridSize: Size, options: AxisOptions): string {
         return [
             SvgService.line({ x: 0, y: 0 }, { x: 0, y: gridSize.height }, options),
-            ...SvgService.repeat(scale.lineCount + 1, (index) => {
+            ...SvgService.repeat(scale.lineCount, (index) => {
                 const yPosition = index * scale.spacing;
                 const xTickEnd = -options.tickWidth;
                 const xTickLabelStart = xTickEnd - options.tickLabelSpacing;
@@ -72,17 +76,18 @@ export namespace ChartService {
         ].join('');
     }
 
-    export function xAxis(scale: AxisScale, gridSize: Size, options: AxisOptions): string {
+    export function xAxis<T>(scale: AxisScale, gridSize: Size, data: T[], key: keyof T, options: AxisOptions): string {
         return [
             SvgService.line({ x: 0, y: gridSize.height }, { x: gridSize.width, y: gridSize.height }, options),
-            ...SvgService.repeat(scale.lineCount + 1, (index) => {
+            ...SvgService.repeat(scale.lineCount, (index) => {
                 const xPosition = index * scale.spacing;
                 const yTickStart = gridSize.height;
                 const yTickEnd = yTickStart + options.tickWidth;
+                const label = data[index][key];
                 return [
                     SvgService.line({ x: xPosition, y: yTickStart }, { x: xPosition, y: yTickEnd }, options),
                     `<text font-size="${options.tickLabelFontSize}" text-anchor="middle" fill="${options.tickLabelFill}" x="${xPosition}" y="${yTickEnd}">`,
-                    `<tspan dy="1em">${index + 1}</tspan>`,
+                    `<tspan dy="1em">${label}</tspan>`,
                     '</text>',
                 ].join('');
             }),
@@ -92,7 +97,7 @@ export namespace ChartService {
     export function yAxisGridLines(scale: AxisScale, gridSize: Size, options: SvgService.LineOptions): string {
         return [
             '<g>',
-            ...SvgService.repeat(scale.lineCount, (index) => {
+            ...SvgService.repeat(scale.lineCount - 1, (index) => {
                 const yPosition = index * scale.spacing;
                 return SvgService.line({ x: 0, y: yPosition }, { x: gridSize.width, y: yPosition }, options);
             }),
@@ -101,12 +106,10 @@ export namespace ChartService {
     }
 
     export function xAxisGridLines(scale: AxisScale, gridSize: Size, options: SvgService.LineOptions): string {
-        const spacing = gridSize.width / scale.lineCount;
-
         return [
             '<g>',
-            ...SvgService.repeat(scale.lineCount, (index) => {
-                const xPosition = (index + 1) * spacing;
+            ...SvgService.repeat(scale.lineCount - 1, (index) => {
+                const xPosition = (index + 1) * scale.spacing;
                 return SvgService.line({ x: xPosition, y: 0 }, { x: xPosition, y: gridSize.height }, options);
             }),
             '</g>',
