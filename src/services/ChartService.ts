@@ -77,11 +77,14 @@ export namespace ChartService {
             SvgService.line({ x: 0, y: gridSize.height }, { x: gridSize.width, y: gridSize.height }, options),
             ...SvgService.repeat(scale.lineCount + 1, (index) => {
                 const xPosition = index * scale.spacing;
-                return SvgService.line(
-                    { x: xPosition, y: gridSize.height },
-                    { x: xPosition, y: gridSize.height + options.tickWidth },
-                    options,
-                );
+                const yTickStart = gridSize.height;
+                const yTickEnd = yTickStart + options.tickWidth;
+                return [
+                    SvgService.line({ x: xPosition, y: yTickStart }, { x: xPosition, y: yTickEnd }, options),
+                    `<text font-size="${options.tickLabelFontSize}" text-anchor="middle" fill="${options.tickLabelFill}" x="${xPosition}" y="${yTickEnd}">`,
+                    `<tspan dy="1em">${index + 1}</tspan>`,
+                    '</text>',
+                ].join('');
             }),
         ].join('');
     }
