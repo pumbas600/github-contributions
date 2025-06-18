@@ -30,6 +30,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const card = SvgService.card(
         cardSize,
         [
+            '<style>',
+            'text { font-family: Segoe UI, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial; }',
+            '</style>',
             SvgService.rect(cardSize, { fill: '#161B22', borderRadius: 4.5 }),
             '<g transform="translate(75, 80)">',
             ChartService.xAxisGridLines(xAxisScale, gridSize, gridLineOptions),
