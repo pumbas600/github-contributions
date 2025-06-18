@@ -46,15 +46,28 @@ export namespace ChartService {
     }
 
     export interface AxisOptions extends SvgService.LineOptions {
+        tickLabelFontSize: number;
+        tickLabelFill: string;
+        tickLabelSpacing: number;
         tickWidth: number;
     }
 
-    export function yAxis(scale: AxisScale, gridSize: Size, options: AxisOptions): string {
+    export function yAxis(scale: YAxisScale, gridSize: Size, options: AxisOptions): string {
         return [
             SvgService.line({ x: 0, y: 0 }, { x: 0, y: gridSize.height }, options),
             ...SvgService.repeat(scale.lineCount + 1, (index) => {
                 const yPosition = index * scale.spacing;
-                return SvgService.line({ x: 0, y: yPosition }, { x: -options.tickWidth, y: yPosition }, options);
+                const xTickEnd = -options.tickWidth;
+                const xTickLabelStart = xTickEnd - options.tickLabelSpacing;
+                /* We need to subtract this from the max value because 0 is at the bottom. */
+                const tickLabel = scale.axisMaxValue - index * scale.axisStepValue;
+
+                return [
+                    SvgService.line({ x: 0, y: yPosition }, { x: xTickEnd, y: yPosition }, options),
+                    `<text font-size="${options.tickLabelFontSize}" text-anchor="end" fill="${options.tickLabelFill}" x="${xTickLabelStart}" y="${yPosition}">`,
+                    `<tspan dy="0.334em">${tickLabel}</tspan>`,
+                    '</text>',
+                ].join('');
             }),
         ].join('');
     }

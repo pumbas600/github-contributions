@@ -5,15 +5,19 @@ import { Size } from '@/types/interfaces/Vectors';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    const primaryColor = '#4BB5FC';
     const gridSize: Size = { width: 750, height: 180 };
     const gridLineOptions: SvgService.LineOptions = {
-        stroke: '#4BB5FC',
+        stroke: primaryColor,
         strokeOpacity: 0.3,
         strokeDashArray: '3',
     };
     const axisOptions: ChartService.AxisOptions = {
         stroke: '#666',
         tickWidth: 6,
+        tickLabelFontSize: 12,
+        tickLabelFill: primaryColor,
+        tickLabelSpacing: 2,
     };
 
     const cardSize: Size = { width: 850, height: 330 };
