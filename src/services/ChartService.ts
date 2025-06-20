@@ -1,4 +1,4 @@
-import { Size } from '@/types/interfaces/Vectors';
+import { Point, Size } from '@/types/interfaces/Vectors';
 import { SvgService } from './SvgService';
 
 export namespace ChartService {
@@ -20,14 +20,14 @@ export namespace ChartService {
         gridSize: Size,
         lineCount: number,
         data: NumericValues<T>[],
-        key: keyof NumericValues<T>,
+        valueKey: keyof NumericValues<T>,
     ): YAxisScale {
         if (lineCount < 2) {
             throw new Error('Line count must be at least 2');
         }
 
         const spacing = gridSize.height / (lineCount - 1);
-        const maxValue = Math.max(...data.map((item) => item[key]));
+        const maxValue = Math.max(...data.map((item) => item[valueKey]));
         const axisStepValue = Math.ceil(maxValue / (lineCount - 1));
         const axisMaxValue = axisStepValue * (lineCount - 1);
 
@@ -38,6 +38,33 @@ export namespace ChartService {
             axisStepValue,
         };
     }
+
+    export function calculatePoints<T>(
+        yScale: YAxisScale,
+        xScale: AxisScale,
+        gridSize: Size,
+        data: NumericValues<T>[],
+        valueKey: keyof NumericValues<T>,
+    ): Point[] {
+        return data.map((item, index) => {
+            const value = item[valueKey];
+            const x = index * xScale.spacing;
+            const y = gridSize.height * (1 - value / yScale.axisMaxValue);
+
+            return { x, y };
+        });
+    }
+
+    interface LineGraphOptions {
+        dot: SvgService.CircleOptions;
+    }
+
+    export function lineGraph(points: Point[], options: LineGraphOptions): string {
+        return points.map((point) => SvgService.circle(point, options.dot)).join('');
+    }
+
+    // TODO: Convert points to smooth curve.
+    // https://francoisromain.medium.com/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
 
     export function calculateXAxisScale<T>(gridSize: Size, data: NumericValues<T>[]): AxisScale {
         const lineCount = data.length;

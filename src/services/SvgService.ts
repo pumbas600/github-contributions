@@ -41,4 +41,13 @@ export namespace SvgService {
     export function repeat<T>(length: number, producer: (index: number) => T): T[] {
         return Array.from({ length }, (_, index) => producer(index));
     }
+
+    export interface CircleOptions {
+        fill: string;
+        radius: number;
+    }
+
+    export function circle(center: Point, { fill, radius }: CircleOptions): string {
+        return `<circle cx="${center.x}" cy="${center.y}" r="${radius}" fill="${fill}"></circle>`;
+    }
 }

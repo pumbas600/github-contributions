@@ -25,6 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const xAxisScale = ChartService.calculateXAxisScale(gridSize, data);
     const yAxisScale = ChartService.calculateYAxisScale(gridSize, 6, data, 'count');
 
+    const dataPoints = ChartService.calculatePoints(yAxisScale, xAxisScale, gridSize, data, 'count');
+
     const card = SvgService.card(
         cardSize,
         [
@@ -38,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             ChartService.xAxis(xAxisScale, gridSize, data, 'date', axisOptions),
             ChartService.yAxis(yAxisScale, gridSize, axisOptions),
+            ChartService.lineGraph(dataPoints, { dot: { fill: '#E5E5E5', radius: 5 } }),
             '</g>',
         ].join(''),
     );
