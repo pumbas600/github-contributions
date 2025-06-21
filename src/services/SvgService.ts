@@ -102,8 +102,9 @@ export namespace SvgService {
         return `C ${startControlPoint.x},${startControlPoint.y} ${endControlPoint.x},${endControlPoint.y} ${point.x},${point.y}`;
     }
 
-    export interface PathOptions extends SvgService.LineOptions {
+    export interface PathOptions extends Partial<SvgService.LineOptions> {
         fill?: string;
+        opacity?: number;
     }
 
     /**
