@@ -55,14 +55,6 @@ export namespace ChartService {
         });
     }
 
-    interface LineGraphOptions {
-        dot: SvgService.CircleOptions;
-    }
-
-    export function lineGraph(points: Point[], options: LineGraphOptions): string {
-        return points.map((point) => SvgService.circle(point, options.dot)).join('');
-    }
-
     // TODO: Convert points to smooth curve.
     // https://francoisromain.medium.com/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
 

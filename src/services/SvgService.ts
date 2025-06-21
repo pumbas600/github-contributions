@@ -26,16 +26,25 @@ export namespace SvgService {
     export interface LineOptions {
         stroke: string;
         strokeOpacity?: number;
-        strokeDashArray?: string;
+        strokeDasharray?: string;
+        strokeWidth?: number;
     }
 
-    export function line(
-        point1: Point,
-        point2: Point,
-        { stroke, strokeOpacity = 1, strokeDashArray }: LineOptions,
-    ): string {
-        const strokeDashArrayValue = strokeDashArray !== undefined ? `stroke-dasharray="${strokeDashArray}"` : '';
-        return `<line x1="${point1.x}" y1="${point1.y}" x2="${point2.x}" y2="${point2.y}" stroke="${stroke}" stroke-opacity="${strokeOpacity}" ${strokeDashArrayValue}></line>`;
+    export function line(point1: Point, point2: Point, options: LineOptions): string {
+        return `<line x1="${point1.x}" y1="${point1.y}" x2="${point2.x}" y2="${point2.y}" ${attributes(
+            options,
+        )}></line>`;
+    }
+
+    export function attributes(attributes: object): string {
+        return Object.entries(attributes)
+            .filter(([, value]) => value !== undefined)
+            .map(([key, value]) => `${camelCaseToSnakeCase(key)}="${value}"`)
+            .join(' ');
+    }
+
+    function camelCaseToSnakeCase(camelCaseKey: string): string {
+        return camelCaseKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     }
 
     export function repeat<T>(length: number, producer: (index: number) => T): T[] {

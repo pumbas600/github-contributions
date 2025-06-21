@@ -1,3 +1,4 @@
+import { lineGraph } from '@/services/charts/LineGraph';
 import { ChartService } from '@/services/ChartService';
 import { SvgService } from '@/services/SvgService';
 import Contribution from '@/types/interfaces/Contribution';
@@ -6,11 +7,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const primaryColor = '#4BB5FC';
+    const dotColor = '#E5E5E5';
     const gridSize: Size = { width: 750, height: 180 };
     const gridLineOptions: SvgService.LineOptions = {
         stroke: primaryColor,
         strokeOpacity: 0.3,
-        strokeDashArray: '3',
+        strokeDasharray: '3',
     };
     const axisOptions: ChartService.AxisOptions = {
         stroke: '#666',
@@ -40,7 +42,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             ChartService.xAxis(xAxisScale, gridSize, data, 'date', axisOptions),
             ChartService.yAxis(yAxisScale, gridSize, axisOptions),
-            ChartService.lineGraph(dataPoints, { dot: { fill: '#E5E5E5', radius: 5 } }),
+            lineGraph(dataPoints, {
+                dot: { fill: dotColor, radius: 5 },
+                line: { stroke: primaryColor, strokeWidth: 4 },
+            }),
             '</g>',
         ].join(''),
     );
