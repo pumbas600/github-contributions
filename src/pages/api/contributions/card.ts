@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const cardSize: Size = { width: 850, height: 330 };
     const data: Contribution[] = SvgService.repeat(30, (index) => ({
-        count: (index - 14 + Math.random() * 10) ** 2,
+        count: 0.1 * (index - 14) ** 2 + Math.random() * 10,
         date: index + 1,
     }));
     const xAxisScale = ChartService.calculateXAxisScale(gridSize, data);
@@ -45,9 +45,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             ChartService.xAxis(xAxisScale, gridSize, data, 'date', axisOptions),
             ChartService.yAxis(yAxisScale, gridSize, axisOptions),
-            lineGraph(dataPoints, {
+            lineGraph(gridSize, dataPoints, {
                 dot: { fill: dotColor, radius: 5 },
-                path: { stroke: primaryColor, strokeWidth: 4 },
+                path: { fill: 'transparent', stroke: primaryColor, strokeWidth: 4 },
                 area: { fill: primaryColor, opacity: 0.3 },
             }),
             '</g>',

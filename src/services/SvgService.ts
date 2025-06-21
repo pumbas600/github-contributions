@@ -114,6 +114,7 @@ export namespace SvgService {
         points: Point[],
         command: (point: Point, index: number, points: Point[]) => string,
         options: PathOptions,
+        pathSuffix = '',
     ): string {
         // build the d attributes by looping over the points
         const d = points.reduce(
@@ -121,6 +122,6 @@ export namespace SvgService {
                 index === 0 ? `M ${point.x},${point.y}` : `${acc} ${command(point, index, array)}`,
             '',
         );
-        return `<path d="${d}" ${SvgService.attributes(options)} />`;
+        return `<path d="${d + pathSuffix}" ${SvgService.attributes(options)} />`;
     }
 }
