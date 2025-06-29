@@ -19,8 +19,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         tick: {
             gap: 2,
             width: 6,
+        },
+        tickLabel: {
             fontSize: 12,
             fill: primaryColor,
+        },
+        label: {
+            fontSize: 16,
+            fontWeight: 600,
+            fill: primaryColor,
+            letterSpacing: '0.075em',
         },
     };
 
@@ -29,8 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         count: 0.1 * (index - 14) ** 2 + Math.random() * 10,
         date: index + 1,
     }));
-    const xAxisScale = ChartService.calculateXAxisScale(gridSize, data);
-    const yAxisScale = ChartService.calculateYAxisScale(gridSize, 6, data, 'count');
+    const xAxisScale = ChartService.calculateXAxisScale(gridSize, data, 'Day');
+    const yAxisScale = ChartService.calculateYAxisScale(gridSize, 6, data, 'count', 'Contributions');
 
     const dataPoints = ChartService.calculatePoints(yAxisScale, xAxisScale, gridSize, data, 'count');
 
@@ -41,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             'text { font-family: Segoe UI, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial; }',
             '</style>',
             SvgService.rect(cardSize, { fill: '#161B22', borderRadius: 4.5 }),
-            '<g transform="translate(75, 80)">',
+            '<g transform="translate(75, 70)">',
             ChartService.xAxisGridLines(xAxisScale, gridSize, gridLineOptions),
             ChartService.yAxisGridLines(yAxisScale, gridSize, gridLineOptions),
 

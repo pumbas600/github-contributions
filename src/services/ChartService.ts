@@ -5,6 +5,7 @@ export namespace ChartService {
     export interface AxisScale {
         lineCount: number;
         spacing: number;
+        label: string;
     }
 
     export interface YAxisScale extends AxisScale {
@@ -21,6 +22,7 @@ export namespace ChartService {
         lineCount: number,
         data: NumericValues<T>[],
         valueKey: keyof NumericValues<T>,
+        label: string,
     ): YAxisScale {
         if (lineCount < 2) {
             throw new Error('Line count must be at least 2');
@@ -32,6 +34,7 @@ export namespace ChartService {
         const axisMaxValue = axisStepValue * (lineCount - 1);
 
         return {
+            label,
             spacing,
             lineCount,
             axisMaxValue,
@@ -58,11 +61,12 @@ export namespace ChartService {
     // TODO: Convert points to smooth curve.
     // https://francoisromain.medium.com/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
 
-    export function calculateXAxisScale<T>(gridSize: Size, data: NumericValues<T>[]): AxisScale {
+    export function calculateXAxisScale<T>(gridSize: Size, data: NumericValues<T>[], label: string): AxisScale {
         const lineCount = data.length;
         const spacing = gridSize.width / (lineCount - 1);
 
         return {
+            label,
             spacing,
             lineCount,
         };
@@ -72,18 +76,21 @@ export namespace ChartService {
         tick: {
             width: number;
             gap: number;
-        } & Omit<SvgService.TextOptions, 'horizontalAnchor' | 'verticalAnchor'>;
+        };
+        tickLabel: SvgService.TextOptions;
+        label: SvgService.TextOptions;
     }
 
     export function yAxis(scale: YAxisScale, gridSize: Size, options: AxisOptions): string {
-        const { width: tickWidth, gap: tickGap, ...tickOptions } = options.tick;
+        const xTickEnd = -options.tick.width;
+        const xTickLabelStart = xTickEnd - options.tick.gap;
+        const labelPosition: Point = { x: xTickLabelStart - 32, y: gridSize.height / 2 };
 
         return [
             SvgService.line({ x: 0, y: 0 }, { x: 0, y: gridSize.height }, options),
             ...SvgService.repeat(scale.lineCount, (index) => {
                 const yPosition = index * scale.spacing;
-                const xTickEnd = -tickWidth;
-                const xTickLabelStart = xTickEnd - tickGap;
+
                 /* We need to subtract this from the max value because 0 is at the bottom. */
                 const tickLabel = scale.axisMaxValue - index * scale.axisStepValue;
 
@@ -91,30 +98,39 @@ export namespace ChartService {
                     SvgService.line({ x: 0, y: yPosition }, { x: xTickEnd, y: yPosition }, options),
                     SvgService.text(
                         tickLabel,
-                        { x: xTickLabelStart, y: yPosition },
-                        { horizontalAnchor: 'end', verticalAnchor: 'middle', ...tickOptions },
+                        { horizontal: 'end', vertical: 'middle' },
+                        { x: xTickLabelStart, y: yPosition, ...options.tickLabel },
                     ),
                 ].join('');
             }),
+            SvgService.text(
+                scale.label,
+                { horizontal: 'middle', vertical: 'end' },
+                {
+                    ...labelPosition,
+                    ...options.label,
+                    transform: `rotate(-90, ${labelPosition.x}, ${labelPosition.y})`,
+                },
+            ),
         ].join('');
     }
 
     export function xAxis<T>(scale: AxisScale, gridSize: Size, data: T[], key: keyof T, options: AxisOptions): string {
-        const { width: tickWidth, gap: tickGap, ...tickOptions } = options.tick;
+        const yTickStart = gridSize.height;
+        const yTickEnd = yTickStart + options.tick.width;
 
         return [
             SvgService.line({ x: 0, y: gridSize.height }, { x: gridSize.width, y: gridSize.height }, options),
             ...SvgService.repeat(scale.lineCount, (index) => {
                 const xPosition = index * scale.spacing;
-                const yTickStart = gridSize.height;
-                const yTickEnd = yTickStart + tickWidth;
+
                 const label = data[index][key];
                 return [
                     SvgService.line({ x: xPosition, y: yTickStart }, { x: xPosition, y: yTickEnd }, options),
                     SvgService.text(
                         label,
-                        { x: xPosition, y: yTickEnd },
-                        { horizontalAnchor: 'middle', verticalAnchor: 'start', ...tickOptions },
+                        { horizontal: 'middle', vertical: 'start' },
+                        { x: xPosition, y: yTickEnd, ...options.tickLabel },
                     ),
                 ].join('');
             }),

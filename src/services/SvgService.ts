@@ -125,26 +125,32 @@ export namespace SvgService {
         return `<path d="${d + pathSuffix}" ${SvgService.attributes(options)} />`;
     }
 
-    type Anchor = 'start' | 'middle' | 'end';
+    export type AxisAnchor = 'start' | 'middle' | 'end';
 
-    export interface TextOptions {
-        fill: string;
-        fontSize: number;
-        horizontalAnchor: Anchor;
-        verticalAnchor: Anchor;
+    export interface Anchor {
+        horizontal: AxisAnchor;
+        vertical: AxisAnchor;
     }
 
-    const VerticalAnchorOffset: Record<Anchor, string> = {
+    export interface TextOptions extends Partial<Point> {
+        fill: string;
+        fontSize: number;
+        transform?: string;
+        fontWeight?: number;
+        letterSpacing?: string;
+    }
+
+    const VerticalAnchorOffset: Record<AxisAnchor, string> = {
         start: '1em',
         middle: '0.334em',
         end: '0em',
     };
 
-    export function text(value: unknown, position: Point, options: TextOptions): string {
-        const verticalOffset = VerticalAnchorOffset[options.verticalAnchor];
+    export function text(value: unknown, anchor: Anchor, options: TextOptions): string {
+        const verticalOffset = VerticalAnchorOffset[anchor.vertical];
 
         return [
-            `<text font-size="${options.fontSize}" text-anchor="${options.horizontalAnchor}" fill="${options.fill}" x="${position.x}" y="${position.y}">`,
+            `<text text-anchor="${anchor.horizontal}" ${attributes(options)}>`,
             `<tspan dy="${verticalOffset}">${value}</tspan>`,
             '</text>',
         ].join('');
