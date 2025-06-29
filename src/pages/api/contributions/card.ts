@@ -9,6 +9,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const primaryColor = '#4BB5FC';
     const dotColor = '#E5E5E5';
     const gridSize: Size = { width: 750, height: 180 };
+    const cardSize: Size = { width: 850, height: 330 };
+    const headingOptions = {
+        fontWeight: 600,
+        fill: primaryColor,
+    };
+
     const gridLineOptions: SvgService.LineOptions = {
         stroke: primaryColor,
         strokeOpacity: 0.3,
@@ -26,13 +32,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
         label: {
             fontSize: 16,
-            fontWeight: 600,
-            fill: primaryColor,
-            letterSpacing: '0.075em',
+            letterSpacing: '0.05em',
+            ...headingOptions,
         },
     };
 
-    const cardSize: Size = { width: 850, height: 330 };
     const data: Contribution[] = SvgService.repeat(30, (index) => ({
         count: 0.1 * (index - 14) ** 2 + Math.random() * 10,
         date: index + 1,
@@ -49,6 +53,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             'text { font-family: Segoe UI, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial; }',
             '</style>',
             SvgService.rect(cardSize, { fill: '#161B22', borderRadius: 4.5 }),
+            SvgService.text(
+                `pumbas600’s Contributions`,
+                { horizontal: 'middle', vertical: 'start' },
+                { x: cardSize.width / 2, y: 16, fontSize: 24, letterSpacing: '0.025em', ...headingOptions },
+            ),
             '<g transform="translate(75, 70)">',
             ChartService.xAxisGridLines(xAxisScale, gridSize, gridLineOptions),
             ChartService.yAxisGridLines(yAxisScale, gridSize, gridLineOptions),
