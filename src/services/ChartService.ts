@@ -134,6 +134,11 @@ export namespace ChartService {
                     ),
                 ].join('');
             }),
+            SvgService.text(
+                scale.label,
+                { horizontal: 'middle', vertical: 'start' },
+                { x: gridSize.width / 2, y: yTickEnd + 24, ...options.label },
+            ),
         ].join('');
     }
 
