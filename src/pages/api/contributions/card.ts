@@ -16,10 +16,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
     const axisOptions: ChartService.AxisOptions = {
         stroke: '#666',
-        tickWidth: 6,
-        tickLabelFontSize: 12,
-        tickLabelFill: primaryColor,
-        tickLabelSpacing: 2,
+        tick: {
+            gap: 2,
+            width: 6,
+            fontSize: 12,
+            fill: primaryColor,
+        },
     };
 
     const cardSize: Size = { width: 850, height: 330 };

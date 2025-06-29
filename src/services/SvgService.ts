@@ -124,4 +124,29 @@ export namespace SvgService {
         );
         return `<path d="${d + pathSuffix}" ${SvgService.attributes(options)} />`;
     }
+
+    type Anchor = 'start' | 'middle' | 'end';
+
+    export interface TextOptions {
+        fill: string;
+        fontSize: number;
+        horizontalAnchor: Anchor;
+        verticalAnchor: Anchor;
+    }
+
+    const VerticalAnchorOffset: Record<Anchor, string> = {
+        start: '1em',
+        middle: '0.334em',
+        end: '0em',
+    };
+
+    export function text(value: unknown, position: Point, options: TextOptions): string {
+        const verticalOffset = VerticalAnchorOffset[options.verticalAnchor];
+
+        return [
+            `<text font-size="${options.fontSize}" text-anchor="${options.horizontalAnchor}" fill="${options.fill}" x="${position.x}" y="${position.y}">`,
+            `<tspan dy="${verticalOffset}">${value}</tspan>`,
+            '</text>',
+        ].join('');
+    }
 }

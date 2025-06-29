@@ -69,45 +69,53 @@ export namespace ChartService {
     }
 
     export interface AxisOptions extends SvgService.LineOptions {
-        tickLabelFontSize: number;
-        tickLabelFill: string;
-        tickLabelSpacing: number;
-        tickWidth: number;
+        tick: {
+            width: number;
+            gap: number;
+        } & Omit<SvgService.TextOptions, 'horizontalAnchor' | 'verticalAnchor'>;
     }
 
     export function yAxis(scale: YAxisScale, gridSize: Size, options: AxisOptions): string {
+        const { width: tickWidth, gap: tickGap, ...tickOptions } = options.tick;
+
         return [
             SvgService.line({ x: 0, y: 0 }, { x: 0, y: gridSize.height }, options),
             ...SvgService.repeat(scale.lineCount, (index) => {
                 const yPosition = index * scale.spacing;
-                const xTickEnd = -options.tickWidth;
-                const xTickLabelStart = xTickEnd - options.tickLabelSpacing;
+                const xTickEnd = -tickWidth;
+                const xTickLabelStart = xTickEnd - tickGap;
                 /* We need to subtract this from the max value because 0 is at the bottom. */
                 const tickLabel = scale.axisMaxValue - index * scale.axisStepValue;
 
                 return [
                     SvgService.line({ x: 0, y: yPosition }, { x: xTickEnd, y: yPosition }, options),
-                    `<text font-size="${options.tickLabelFontSize}" text-anchor="end" fill="${options.tickLabelFill}" x="${xTickLabelStart}" y="${yPosition}">`,
-                    `<tspan dy="0.334em">${tickLabel}</tspan>`,
-                    '</text>',
+                    SvgService.text(
+                        tickLabel,
+                        { x: xTickLabelStart, y: yPosition },
+                        { horizontalAnchor: 'end', verticalAnchor: 'middle', ...tickOptions },
+                    ),
                 ].join('');
             }),
         ].join('');
     }
 
     export function xAxis<T>(scale: AxisScale, gridSize: Size, data: T[], key: keyof T, options: AxisOptions): string {
+        const { width: tickWidth, gap: tickGap, ...tickOptions } = options.tick;
+
         return [
             SvgService.line({ x: 0, y: gridSize.height }, { x: gridSize.width, y: gridSize.height }, options),
             ...SvgService.repeat(scale.lineCount, (index) => {
                 const xPosition = index * scale.spacing;
                 const yTickStart = gridSize.height;
-                const yTickEnd = yTickStart + options.tickWidth;
+                const yTickEnd = yTickStart + tickWidth;
                 const label = data[index][key];
                 return [
                     SvgService.line({ x: xPosition, y: yTickStart }, { x: xPosition, y: yTickEnd }, options),
-                    `<text font-size="${options.tickLabelFontSize}" text-anchor="middle" fill="${options.tickLabelFill}" x="${xPosition}" y="${yTickEnd}">`,
-                    `<tspan dy="1em">${label}</tspan>`,
-                    '</text>',
+                    SvgService.text(
+                        label,
+                        { x: xPosition, y: yTickEnd },
+                        { horizontalAnchor: 'middle', verticalAnchor: 'start', ...tickOptions },
+                    ),
                 ].join('');
             }),
         ].join('');
