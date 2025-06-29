@@ -8,7 +8,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const primaryColor = '#4BB5FC';
     const dotColor = '#E5E5E5';
-    const gridSize: Size = { width: 750, height: 180 };
+    const gridSize: Size = { width: 730, height: 190 };
     const cardSize: Size = { width: 850, height: 330 };
     const headingOptions = {
         fontWeight: 600,
@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 { horizontal: 'middle', vertical: 'start' },
                 { x: cardSize.width / 2, y: 16, fontSize: 24, letterSpacing: '0.025em', ...headingOptions },
             ),
-            '<g transform="translate(75, 70)">',
+            '<g transform="translate(90, 70)">',
             ChartService.xAxisGridLines(xAxisScale, gridSize, gridLineOptions),
             ChartService.yAxisGridLines(yAxisScale, gridSize, gridLineOptions),
 

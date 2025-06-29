@@ -84,7 +84,7 @@ export namespace ChartService {
     export function yAxis(scale: YAxisScale, gridSize: Size, options: AxisOptions): string {
         const xTickEnd = -options.tick.width;
         const xTickLabelStart = xTickEnd - options.tick.gap;
-        const labelPosition: Point = { x: xTickLabelStart - 32, y: gridSize.height / 2 };
+        const labelPosition: Point = { x: xTickLabelStart - 38, y: gridSize.height / 2 };
 
         return [
             SvgService.line({ x: 0, y: 0 }, { x: 0, y: gridSize.height }, options),
