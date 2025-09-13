@@ -1,11 +1,8 @@
 import { addPoints, Point } from './point';
 
-export interface Size {
+export interface Rect {
     width: number;
     height: number;
-}
-
-export interface Rect extends Size {
     origin: Point;
 }
 
@@ -16,7 +13,7 @@ export function rectEndPoint(rect: Rect): Point {
 export function rectFromPoints(origin: Point, endPoint: Point): Rect {
     return {
         origin,
-        width: origin.x - endPoint.x,
-        height: origin.y - endPoint.y,
+        width: endPoint.x - origin.x,
+        height: endPoint.y - origin.y,
     };
 }

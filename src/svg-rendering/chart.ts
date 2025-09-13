@@ -1,5 +1,5 @@
 import { addPoints, Point } from './point';
-import { LineOptions, renderDebugRect, renderLine, renderText, TextOptions } from './primitives';
+import { LineOptions, renderLine, renderText, TextOptions } from './primitives';
 import { Rect, rectFromPoints } from './rect';
 import { renderRepeat } from './svg-helpers';
 
@@ -45,7 +45,6 @@ export function renderXAxis(rect: Rect, labels: string[], options: AxisOptions):
     const tickLabelFontSize = 0.6 * rect.height;
 
     return [
-        renderDebugRect(rect),
         renderLine(rect.origin, endPoint, options.axisLine),
         ...renderRepeat(labels.length, (index) => {
             const label = labels[index];

@@ -1,7 +1,6 @@
 import { required } from '@/utilities';
 
 const Config = {
-    debug: true,
     github: {
         token: required(process.env.GITHUB_TOKEN, 'GITHUB_TOKEN'),
     },

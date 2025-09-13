@@ -1,6 +1,5 @@
-import Config from '@/config';
 import { Point } from './point';
-import { Rect, Size } from './rect';
+import { Rect } from './rect';
 import { svgAttributesToString } from './svg-helpers';
 
 export interface LineOptions {
@@ -26,14 +25,17 @@ export function renderCircle(center: Point, options: CircleOptions): string {
 }
 
 export interface RectOptions {
-    borderRadius?: number;
+    rx?: number;
+    ry?: number;
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
 }
 
-export function renderRect(size: Size, options: RectOptions): string {
-    return `<rect width="${size.width}" height="${size.height}" ${svgAttributesToString(options)}></rect>`;
+export function renderRect(rect: Rect, options: RectOptions): string {
+    return `<rect x="${rect.origin.x}" y="${rect.origin.y}" width="${rect.width}" height="${
+        rect.height
+    }" ${svgAttributesToString(options)}></rect>`;
 }
 
 export type AxisAnchor = 'start' | 'middle' | 'end';
@@ -68,7 +70,5 @@ export function renderText(value: string, origin: Point, anchor: Anchor, options
 }
 
 export function renderDebugRect(rect: Rect): string {
-    if (Config.debug) {
-        return renderRect(rect, { fill: 'red', stroke: 'black', strokeWidth: 2 });
-    }
+    return renderRect(rect, { fill: 'red', stroke: 'black', strokeWidth: 2, rx: 4.5 });
 }
