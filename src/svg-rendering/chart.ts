@@ -6,6 +6,7 @@ import { renderRepeat } from './svg-helpers';
 export interface AxisOptions {
     axisLine: LineOptions;
     tickLabel: TextOptions;
+    tickLength: number;
 }
 
 export interface ChartRects {
@@ -41,25 +42,38 @@ export function renderXAxis(rect: Rect, labels: string[], options: AxisOptions):
     const endPoint = addPoints(rect.origin, { x: rect.width, y: 0 });
     const tickXSpacing = rect.width / (labels.length - 1);
 
-    const tickLength = 0.4 * rect.height;
-    const tickLabelFontSize = 0.6 * rect.height;
-
     return [
         renderLine(rect.origin, endPoint, options.axisLine),
         ...renderRepeat(labels.length, (index) => {
             const label = labels[index];
             const x = rect.origin.x + index * tickXSpacing;
             const tickStartPoint: Point = { x, y: rect.origin.y };
-            const tickEndPoint = addPoints(tickStartPoint, { x: 0, y: tickLength });
+            const tickEndPoint = addPoints(tickStartPoint, { x: 0, y: options.tickLength });
 
             return [
                 renderLine(tickStartPoint, tickEndPoint, options.axisLine),
-                renderText(
-                    label,
-                    tickEndPoint,
-                    { horizontal: 'middle', vertical: 'start' },
-                    { ...options.tickLabel, fontSize: tickLabelFontSize },
-                ),
+                renderText(label, tickEndPoint, { horizontal: 'middle', vertical: 'start' }, options.tickLabel),
+            ].join('');
+        }),
+    ].join('');
+}
+
+export function renderYAxis(rect: Rect, labels: string[], options: AxisOptions): string {
+    const lineStartPoint = addPoints(rect.origin, { x: rect.width, y: 0 });
+    const lineEndPoint = addPoints(lineStartPoint, { x: 0, y: rect.height });
+    const tickYSpacing = rect.height / (labels.length - 1);
+
+    return [
+        renderLine(lineStartPoint, lineEndPoint, options.axisLine),
+        ...renderRepeat(labels.length, (index) => {
+            const label = labels[index];
+            const y = lineEndPoint.y - index * tickYSpacing;
+            const tickStartPoint: Point = { x: lineStartPoint.x, y };
+            const tickEndPoint = addPoints(tickStartPoint, { x: -options.tickLength, y: 0 });
+
+            return [
+                renderLine(tickStartPoint, tickEndPoint, options.axisLine),
+                renderText(label, tickEndPoint, { horizontal: 'end', vertical: 'middle' }, options.tickLabel),
             ].join('');
         }),
     ].join('');
