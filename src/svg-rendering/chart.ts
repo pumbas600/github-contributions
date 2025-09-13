@@ -1,6 +1,6 @@
 import { addPoints, Point } from './point';
 import { LineOptions, renderLine, renderText, TextOptions } from './primitives';
-import { Rect, rectFromPoints } from './rect';
+import { Rect, rectFromPoints, shrinkRect } from './rect';
 import { renderRepeat } from './svg-helpers';
 
 export interface AxisOptions {
@@ -21,20 +21,10 @@ export function calculateChartRects(rect: Rect): ChartRects {
     const xAxisWidth = rect.width - yAxisWidth;
     const yAxisHeight = rect.height - xAxisHeight;
 
-    const yAxisStartPoint = rect.origin;
-    const yAxisEndPoint = addPoints(yAxisStartPoint, { x: yAxisWidth, y: yAxisHeight });
-    const xAxisEndPoint = addPoints(yAxisEndPoint, { x: xAxisWidth, y: xAxisHeight });
-    const chartOrigin = addPoints(yAxisStartPoint, { x: yAxisWidth, y: 0 });
-    const chartEndpoint = addPoints(yAxisEndPoint, { x: xAxisWidth, y: 0 });
-
-    const yAxisRect = rectFromPoints(yAxisStartPoint, yAxisEndPoint);
-    const xAxisRect = rectFromPoints(yAxisEndPoint, xAxisEndPoint);
-    const chartRect = rectFromPoints(chartOrigin, chartEndpoint);
-
     return {
-        xAxisRect,
-        yAxisRect,
-        chartRect,
+        xAxisRect: shrinkRect(rect, { xStart: yAxisWidth, yStart: yAxisHeight }),
+        yAxisRect: shrinkRect(rect, { xEnd: xAxisWidth, yEnd: xAxisHeight }),
+        chartRect: shrinkRect(rect, { xStart: yAxisWidth, yEnd: xAxisHeight }),
     };
 }
 
