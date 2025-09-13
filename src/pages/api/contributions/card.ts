@@ -1,7 +1,14 @@
 import { lineGraph } from '@/services/charts/LineGraph';
 import { ChartService } from '@/services/ChartService';
 import { SvgService } from '@/services/SvgService';
-import { AxisOptions, calculateChartRects, renderXAxis, renderYAxis } from '@/svg-rendering/chart';
+import {
+    AxisOptions,
+    calculateChartRects,
+    GridOptions,
+    renderGrid,
+    renderXAxis,
+    renderYAxis,
+} from '@/svg-rendering/chart';
 import { renderDebugRect } from '@/svg-rendering/primitives';
 import { Rect } from '@/svg-rendering/rect';
 import Contribution from '@/types/interfaces/Contribution';
@@ -56,6 +63,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         tickLabel: { fill: primaryColor, fontSize: 12 },
         tickLength: 6,
     };
+    const gridOptions: GridOptions = {
+        gridLine: gridLineOptions,
+        labelCounts: {
+            xAxis: xAxisLabels.length,
+            yAxis: yAxisLabels.length,
+        },
+    };
 
     const svgRect: Rect = { origin: { x: 0, y: 0 }, width: cardSize.width, height: cardSize.height };
     const chartRects = calculateChartRects(svgRect);
@@ -74,6 +88,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             renderXAxis(chartRects.xAxisRect, xAxisLabels, axisOptions),
             renderYAxis(chartRects.yAxisRect, yAxisLabels, axisOptions),
+            renderGrid(chartRects.chartRect, gridOptions),
 
             // SvgService.text(
             //     `pumbas600’s Contributions`,

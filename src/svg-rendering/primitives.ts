@@ -30,6 +30,7 @@ export interface RectOptions {
     fill?: string;
     stroke?: string;
     strokeWidth?: number;
+    opacity?: number;
 }
 
 export function renderRect(rect: Rect, options: RectOptions): string {
@@ -70,5 +71,5 @@ export function renderText(value: string, origin: Point, anchor: Anchor, options
 }
 
 export function renderDebugRect(rect: Rect): string {
-    return renderRect(rect, { fill: 'red', stroke: 'black', strokeWidth: 2, rx: 4.5 });
+    return renderRect(rect, { fill: 'red', stroke: 'black', strokeWidth: 2, rx: 4.5, opacity: 0.25 });
 }

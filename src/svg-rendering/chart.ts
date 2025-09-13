@@ -78,3 +78,31 @@ export function renderYAxis(rect: Rect, labels: string[], options: AxisOptions):
         }),
     ].join('');
 }
+
+export interface GridOptions {
+    labelCounts: {
+        xAxis: number;
+        yAxis: number;
+    };
+    gridLine: LineOptions;
+}
+
+export function renderGrid(rect: Rect, options: GridOptions): string {
+    const yAxisSpacing = rect.height / (options.labelCounts.yAxis - 1);
+    const xAxisSpacing = rect.width / (options.labelCounts.xAxis - 1);
+
+    return [
+        ...renderRepeat(options.labelCounts.yAxis - 1, (index) => {
+            const startPoint = addPoints(rect.origin, { x: 0, y: index * yAxisSpacing });
+            const endPoint = addPoints(startPoint, { x: rect.width, y: 0 });
+
+            return renderLine(startPoint, endPoint, options.gridLine);
+        }),
+        ...renderRepeat(options.labelCounts.xAxis - 1, (index) => {
+            const startPoint = addPoints(rect.origin, { x: (index + 1) * xAxisSpacing, y: 0 });
+            const endPoint = addPoints(startPoint, { x: 0, y: rect.height });
+
+            return renderLine(startPoint, endPoint, options.gridLine);
+        }),
+    ].join('');
+}
